@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify required Phase 0 documents exist
+      - name: Verify required documents exist
         shell: bash
         run: |
           set -euo pipefail
@@ -42,12 +42,15 @@ jobs:
             docs/STATE_REGISTRY.md
             docs/KNOWN_LIMITATIONS.md
             docs/PROJECT_STATUS.md
+            docs/UI_DIRECTION.md
             docs/adr/ADR-001-desktop-stack.md
             docs/adr/ADR-002-project-structure.md
             docs/adr/ADR-003-pdf-engine.md
             docs/adr/ADR-004-electron-security.md
             docs/adr/ADR-005-local-only-processing.md
             docs/adr/ADR-006-git-workflow.md
+            package.json
+            pnpm-workspace.yaml
           )
           missing=0
           for f in "${required[@]}"; do
@@ -57,10 +60,8 @@ jobs:
             fi
           done
           if [[ "$missing" -ne 0 ]]; then
-            echo "Required documentation missing."
             exit 1
           fi
-          echo "All required Phase 0 documents present."
 
   validate:
     name: Typecheck, lint, test, build
@@ -68,33 +69,20 @@ jobs:
     needs: docs-guard
     steps:
       - uses: actions/checkout@v4
-      - name: Detect workspace scaffold
-        id: scaffold
-        shell: bash
-        run: |
-          if [[ -f package.json ]]; then
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "No package.json yet (Phase 0). Skipping install/build jobs."
-          fi
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
       - uses: actions/setup-node@v4
-        if: steps.scaffold.outputs.ready == 'true'
         with:
           node-version: "22"
-          cache: npm
+          cache: pnpm
       - name: Install dependencies
-        if: steps.scaffold.outputs.ready == 'true'
-        run: npm install
+        run: pnpm install --frozen-lockfile
       - name: Typecheck
-        if: steps.scaffold.outputs.ready == 'true'
-        run: npm run typecheck
+        run: pnpm typecheck
       - name: Lint
-        if: steps.scaffold.outputs.ready == 'true'
-        run: npm run lint
+        run: pnpm lint
       - name: Unit tests
-        if: steps.scaffold.outputs.ready == 'true'
-        run: npm run test
+        run: pnpm test
       - name: Build
-        if: steps.scaffold.outputs.ready == 'true'
-        run: npm run build
+        run: pnpm build
