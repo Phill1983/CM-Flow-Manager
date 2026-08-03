@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 1 — Repository and workspace initialization** (complete) |
+| Current phase | **Phase 1.5 — Foundation hardening** (complete) |
 | Application version | `0.0.1` |
 | Date | 2026-08-03 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
@@ -27,9 +27,15 @@
 - Command Palette documented for post-MVP only (not implemented).
 - UI direction recorded in `docs/UI_DIRECTION.md`.
 
+### Phase 1.5 (narrow)
+- Tailwind CSS v4 via `@tailwindcss/vite` (no separate PostCSS/Autoprefixer — covered by Tailwind v4).
+- shadcn/ui initialized with Button, Card, Input, Label, Separator.
+- Shell UI migrated to Tailwind + shadcn without redesign.
+- ESLint zero-warning policy (`--max-warnings 0`); react-refresh warnings resolved.
+
 ## Work in progress
 
-- None after Phase 1 verification.
+- None after Phase 1.5 verification.
 
 ## Blockers
 
@@ -51,10 +57,10 @@ pnpm test → 4 files / 7 tests passed (2026-08-03)
 ## Latest build result
 
 ```text
+pnpm lint → pass (0 warnings / 0 errors)
 pnpm typecheck → pass
-pnpm lint → pass (2 react-refresh warnings)
+pnpm test → 4 files / 7 tests passed
 pnpm build → pass (electron-vite → apps/desktop/out)
-pnpm dev → Electron window launched; Vite renderer on http://localhost:5173/
 ```
 
 ## Environment snapshot

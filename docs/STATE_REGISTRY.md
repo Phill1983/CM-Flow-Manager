@@ -10,10 +10,12 @@ Living inventory of product and engineering state. Update after every meaningful
 - IPC allowlist: `app:getVersion`
 - React navigation shell with placeholder pages
 - Localization catalogs for pl / uk / en
-- Theme preference: light / dark / system
+- Theme preference: light / dark / system (shadcn `.dark` class)
+- Tailwind CSS v4 + shadcn/ui primitives (Button, Card, Input, Label, Separator)
 - `PdfUnlockService` port + unavailable mock
 - Unit tests for IPC allowlist, PDF mock, locales, module metadata
 - CI workflow present; GitHub remote: https://github.com/Phill1983/CM-Flow-Manager.git
+- ESLint enforced with `--max-warnings 0`
 
 ## Partially implemented features
 
@@ -31,7 +33,6 @@ Living inventory of product and engineering state. Update after every meaningful
 
 ## Known defects
 
-- ESLint react-refresh warnings on context hook exports (non-blocking)
 - Duplicate local folder `D:\Projects\CM Flow Manager` may remain locked beside `cm-flow-manager`
 
 ## Technical debt

@@ -8,6 +8,7 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/renderer/src/*"],
       "@renderer/*": ["src/renderer/src/*"],
       "@cm-flow-manager/ipc-contracts": ["../../packages/ipc-contracts/src/index.ts"],
       "@cm-flow-manager/pdf-engine": ["../../packages/pdf-engine/src/index.ts"],

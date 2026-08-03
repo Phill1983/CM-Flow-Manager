@@ -17,16 +17,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `PdfUnlockService` contract with explicit unavailable mock (no qpdf yet).
 - ESLint, Prettier, Vitest, and pnpm-based CI workflow.
 - UI direction doc; Command Palette backlog item for post-MVP / v0.2.x.
+- Phase 1.5: Tailwind CSS v4 + shadcn/ui (Button, Card, Input, Label, Separator).
 
 ### Changed
 
 - Workspace path standardized to `D:\Projects\cm-flow-manager`.
 - Package manager fixed to pnpm `9.15.9` via `packageManager` (lockfile: `pnpm-lock.yaml` only).
+- Shell styles migrated from handcrafted CSS to Tailwind utility classes.
+- Lint policy: zero warnings (`eslint --max-warnings 0`).
 
 ### Notes
 
 - No PDF unlocking in this release line yet — Phase 2.
-- GitHub remote still not created (`gh` unavailable).
+- GitHub remote: https://github.com/Phill1983/CM-Flow-Manager.git
 
 ## Planned version markers
 

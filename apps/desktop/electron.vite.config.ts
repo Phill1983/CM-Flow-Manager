@@ -1,12 +1,15 @@
 import { resolve } from 'node:path';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
 const workspacePackages = [
   '@cm-flow-manager/ipc-contracts',
   '@cm-flow-manager/pdf-engine',
   '@cm-flow-manager/pdf-password-remover',
 ];
+
+const rendererSrc = resolve('src/renderer/src');
 
 export default defineConfig({
   main: {
@@ -31,6 +34,11 @@ export default defineConfig({
   },
   renderer: {
     root: resolve('src/renderer'),
+    resolve: {
+      alias: {
+        '@': rendererSrc,
+      },
+    },
     build: {
       rollupOptions: {
         input: {
@@ -38,6 +46,6 @@ export default defineConfig({
         },
       },
     },
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
   },
 });

@@ -1,23 +1,40 @@
 # UI Direction
 
-Status: Accepted for Phase 1+ (visual polish deferred)
+Status: Accepted (Phase 1.5 design system established)
 
-## Principles
+## Philosophy
 
-- Use **shadcn/ui** components where practical.
-- Use the official shadcn **`dashboard-01`** block only as a **visual and structural reference**.
-- Do **not** copy the entire dashboard blindly.
-- CM Flow Manager is a **desktop productivity tool**, not a web analytics dashboard.
-- Avoid unnecessary charts and fabricated statistics.
-- Prefer:
-  - compact sidebar
-  - Quick Actions
-  - Recent Activity (real local events only — empty/honest placeholders in Phase 1)
-  - local-processing status
-  - module navigation
-- Prepare **light and dark** theme support from the shell onward.
-- Do **not** spend significant time polishing final visual design during Phase 1.
+CM Flow Manager is a **professional desktop productivity tool**, not a web analytics dashboard.
 
-## Phase 1 expectation
+Visual goals:
 
-A functional navigation shell with readable layout tokens and theme class toggling is enough. Pixel-perfect branding can wait.
+- clean, modern, minimal, compact
+- keyboard-friendly
+- left navigation
+- dark and light themes supported (system default remains valid)
+- Dashboard with Quick Actions, Recent Activity, and local-processing status
+- module-oriented cards/navigation
+- **no** unnecessary charts, fake analytics, or decorative widgets
+
+## Design system
+
+- **Tailwind CSS v4** via `@tailwindcss/vite` (built-in vendor prefixing; classic PostCSS + Autoprefixer not required separately)
+- **shadcn/ui** (New York style) as the component system
+- Official shadcn **`dashboard-01`** is inspiration only — do not copy wholesale
+
+## Installed shadcn primitives (Phase 1.5)
+
+- Button
+- Card
+- Input
+- Label
+- Separator
+
+Add more components only when a real screen needs them.
+
+## Layout expectations
+
+- Compact sidebar + content pane
+- Honest empty states (no fabricated activity)
+- Local-processing status visible on Dashboard
+- Avoid redesign churn while implementing PDF workflows

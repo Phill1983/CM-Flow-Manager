@@ -7,7 +7,7 @@
 | Desktop runtime | Electron | Windows-first packaging |
 | UI | React + TypeScript | Strict TS |
 | Bundler | Vite via electron-vite | Main/preload/renderer |
-| Styling | CSS variables in Phase 1; Tailwind + shadcn/ui when UI deepens | See UI_DIRECTION.md |
+| Styling | Tailwind CSS v4 + shadcn/ui | Via `@tailwindcss/vite`; Autoprefixer baked into Tailwind v4 |
 | Client state | Zustand available; minimal use in Phase 1 shell | Queue state in Phase 3+ |
 | Packaging | electron-builder planned Phase 5 | `pnpm build` produces `apps/desktop/out` now |
 | Unit tests | Vitest | |
@@ -54,6 +54,8 @@ Record decisions in `DECISIONS.md` and ADRs when architectural.
 | MuPDF / mupdf.js | AGPL or commercial | **Rejected** for proprietary app without commercial license |
 | Upstream pdf-lib | MIT | **Insufficient** for decrypt/unlock MVP |
 
-## Phase 1 stack notes
+## Phase 1.5 stack notes
 
-Application dependencies are installed under pnpm workspaces. Tailwind/shadcn are deferred until deeper UI work; Phase 1 shell uses compact CSS aligned with `docs/UI_DIRECTION.md`.
+- Tailwind v4 + shadcn/ui New York primitives: Button, Card, Input, Label, Separator.
+- Classic `postcss.config` + `autoprefixer` omitted on purpose — Tailwind v4 Vite plugin covers this.
+- Application dependencies are installed under pnpm workspaces.
