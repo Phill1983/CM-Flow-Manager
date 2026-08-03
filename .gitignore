@@ -70,10 +70,13 @@ Desktop.ini
 tmp/
 temp/
 *.tmp
+tmp-poc-*.pdf
 !**/fixtures/**
 
 # Local agent / personal notes (not project docs)
 .local/
 
-# Packaged vendor binaries downloaded during build (tracked separately when intentional)
+# Packaged vendor binaries downloaded for local Phase 2+ development
 vendor/qpdf/download/
+vendor/qpdf/extracted/
+vendor/qpdf/bin/

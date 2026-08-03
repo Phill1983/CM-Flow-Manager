@@ -18,6 +18,9 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:pdf": "vitest run packages/pdf-engine",
+    "fetch:qpdf": "node ./scripts/fetch-qpdf-dev.mjs",
+    "fixtures:pdf": "pnpm --filter @cm-flow-manager/pdf-engine generate:fixtures",
     "clean": "pnpm -r exec rimraf dist out coverage"
   },
   "devDependencies": {
