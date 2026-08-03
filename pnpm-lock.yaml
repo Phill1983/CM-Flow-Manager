@@ -50,6 +50,9 @@ importers:
 
   apps/desktop:
     dependencies:
+      '@cm-flow-manager/file-utils':
+        specifier: workspace:*
+        version: link:../../packages/file-utils
       '@cm-flow-manager/ipc-contracts':
         specifier: workspace:*
         version: link:../../packages/ipc-contracts
@@ -109,7 +112,7 @@ importers:
         specifier: ^5.8.2
         version: 5.9.3
       vite:
-        specifier: ^6.2.1
+        specifier: ^6.4.3
         version: 6.4.3(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)
 
   modules/pdf-password-remover:
@@ -122,6 +125,12 @@ importers:
         specifier: ^5.8.2
         version: 5.9.3
 
+  packages/file-utils:
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.3
+
   packages/ipc-contracts:
     devDependencies:
       typescript:
@@ -129,7 +138,14 @@ importers:
         version: 5.9.3
 
   packages/pdf-engine:
+    dependencies:
+      '@cm-flow-manager/file-utils':
+        specifier: workspace:*
+        version: link:../file-utils
     devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.20.1
       typescript:
         specifier: ^5.8.2
         version: 5.9.3

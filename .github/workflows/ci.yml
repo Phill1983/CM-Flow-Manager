@@ -78,11 +78,15 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Fetch development qpdf (Windows)
+        run: pnpm fetch:qpdf
+      - name: Generate PDF fixtures
+        run: pnpm fixtures:pdf
       - name: Typecheck
         run: pnpm typecheck
       - name: Lint
         run: pnpm lint
-      - name: Unit tests
+      - name: Unit and PDF integration tests
         run: pnpm test
       - name: Build
         run: pnpm build

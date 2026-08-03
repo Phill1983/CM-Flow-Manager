@@ -7,6 +7,7 @@ const workspacePackages = [
   '@cm-flow-manager/ipc-contracts',
   '@cm-flow-manager/pdf-engine',
   '@cm-flow-manager/pdf-password-remover',
+  '@cm-flow-manager/file-utils',
 ];
 
 const rendererSrc = resolve('src/renderer/src');

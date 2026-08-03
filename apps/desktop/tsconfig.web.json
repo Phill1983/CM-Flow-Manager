@@ -12,7 +12,8 @@
       "@renderer/*": ["src/renderer/src/*"],
       "@cm-flow-manager/ipc-contracts": ["../../packages/ipc-contracts/src/index.ts"],
       "@cm-flow-manager/pdf-engine": ["../../packages/pdf-engine/src/index.ts"],
-      "@cm-flow-manager/pdf-password-remover": ["../../modules/pdf-password-remover/src/index.ts"]
+      "@cm-flow-manager/pdf-password-remover": ["../../modules/pdf-password-remover/src/index.ts"],
+      "@cm-flow-manager/file-utils": ["../../packages/file-utils/src/index.ts"]
     }
   },
   "include": [
@@ -20,6 +21,7 @@
     "src/shared/**/*",
     "../../packages/ipc-contracts/src/**/*.ts",
     "../../packages/pdf-engine/src/**/*.ts",
+    "../../packages/file-utils/src/**/*.ts",
     "../../modules/pdf-password-remover/src/**/*.ts"
   ],
   "exclude": ["**/*.test.ts", "**/*.spec.ts"]
