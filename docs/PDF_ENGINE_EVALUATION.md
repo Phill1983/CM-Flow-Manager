@@ -62,9 +62,29 @@ Unlock encrypted PDFs **only with a user-supplied correct password**, write a se
 
 Release builds must ship `qpdf` (and required companion DLLs if any) inside the app resources so users do **not** install qpdf themselves. Apache-2.0 NOTICE/license files must be included.
 
-## Open items for Phase 2
+## Phase 2 results (2026-08-03)
 
-- Confirm stderr/exit-code mapping for incorrect password vs unsupported encryption.
-- Verify AES-256 and older RC4 encrypted samples.
-- Measure large-file behavior and cancellation (kill child process).
-- Document any encryption modes qpdf cannot handle in `KNOWN_LIMITATIONS.md`.
+| Item | Result |
+| --- | --- |
+| Tested qpdf | **12.3.2** (`qpdf-12.3.2-msvc64.zip`) |
+| Source | Official GitHub release `qpdf/qpdf` |
+| Checksum | Verified against `qpdf-12.3.2.sha256` (`8941870a…f202`) |
+| License | Apache-2.0 |
+| Dev install | `pnpm fetch:qpdf` → `vendor/qpdf/bin/qpdf.exe` (gitignored) |
+| Adapter | `QpdfUnlockService` implementing `PdfUnlockService` |
+| Spawn | `child_process.spawn` argv array, `shell: false` |
+| Password | `--password-file` temp file (wiped after use) |
+| Plain PDF | Defined behavior: write verified unencrypted copy; result `unlocked` |
+| Destination exists | `DestinationExists` failure (no overwrite) |
+
+### Development vs production
+
+- **Phase 2:** local/vendor qpdf for developers and CI machines that run `pnpm fetch:qpdf`.
+- **Later packaging phase:** embed qpdf into the Windows build so end users need no separate install.
+
+## Open items after Phase 2
+
+- Production resource packaging + attribution files in the installer.
+- Broader encryption matrix beyond AES-256 fixtures.
+- Cancel in-flight unlock from UI.
+- Max file size policy.

@@ -2,8 +2,8 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 1.5 — Foundation hardening** (complete) |
-| Application version | `0.0.1` |
+| Current phase | **Phase 2 — PDF engine proof of concept** (complete) |
+| Application version | `0.0.2` (engine PoC; package.json still `0.0.1` until release bump) |
 | Date | 2026-08-03 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
 | Product display name | CM Flow Manager |
@@ -11,71 +11,49 @@
 
 ## Completed work
 
-### Phase 0
-- Planning package, ADRs, Cursor rules/agents, PDF engine recommendation (qpdf).
+### Phase 0–1.5
+- Planning, shell, Tailwind/shadcn, zero-warning lint, GitHub remote.
 
-### Phase 1
-- Workspace relocated to `D:\Projects\cm-flow-manager` (Git verified).
-- pnpm `9.15.9` pinned via `packageManager` (+ user-local install; Corepack global shim blocked by Windows EPERM on Program Files).
-- Monorepo: `apps/desktop`, `packages/ipc-contracts`, `packages/pdf-engine`, `modules/pdf-password-remover`.
-- Electron main + secure preload + React/Vite renderer shell.
-- Navigation: Dashboard, PDF Tools → Password Remover (placeholder), Activity, Settings, About.
-- Localization skeleton: pl / uk / en.
-- Light/dark/system theme preparation.
-- `PdfUnlockService` contract + `UnavailablePdfUnlockService` mock (no qpdf).
-- ESLint, Prettier, Vitest, GitHub Actions CI (pnpm).
-- Command Palette documented for post-MVP only (not implemented).
-- UI direction recorded in `docs/UI_DIRECTION.md`.
-
-### Phase 1.5 (narrow)
-- Tailwind CSS v4 via `@tailwindcss/vite` (no separate PostCSS/Autoprefixer — covered by Tailwind v4).
-- shadcn/ui initialized with Button, Card, Input, Label, Separator.
-- Shell UI migrated to Tailwind + shadcn without redesign.
-- ESLint zero-warning policy (`--max-warnings 0`); react-refresh warnings resolved.
+### Phase 2
+- Official qpdf **12.3.2** msvc64 fetched with SHA-256 verification (`pnpm fetch:qpdf`).
+- `QpdfUnlockService` + path guards + sanitized logging.
+- `@cm-flow-manager/file-utils` for unlocked naming helpers.
+- Synthetic fixtures + integration tests (success, wrong password, invalid, missing, destination exists, plain copy, Unicode, spaces).
+- Allowlisted IPC: `dialog:openPdf`, `dialog:savePdf`, `pdf:inspect`, `pdf:unlock`.
+- Temporary DEV-only unlock panel + CLI `poc:unlock`.
+- Password via `--password-file` (not argv); documented residual disk exposure.
 
 ## Work in progress
 
-- None after Phase 1.5 verification.
+- None after Phase 2 verification.
 
 ## Blockers
 
-1. **Corepack enable** cannot write shims under `C:\Program Files\nodejs` without elevation (pnpm works via user install + `packageManager` pin).
-2. **Legacy folder** `D:\Projects\CM Flow Manager` may still exist if locked by Cursor — delete manually after closing old windows.
-3. **Owner approval required** before Phase 2 (qpdf PoC).
-4. GitHub CLI (`gh`) still not installed locally — remote was added via `git` URL.
+1. **Owner approval required** before Phase 3 (product Password Remover UI).
+2. Production qpdf bundling deferred.
 
 ## Next approved task
 
-Awaiting explicit approval for **Phase 2 — PDF engine proof of concept**.
+Awaiting explicit approval for **Phase 3 — MVP Password Remover UI**.
 
 ## Latest test result
 
 ```text
-pnpm test → 4 files / 7 tests passed (2026-08-03)
+pnpm test → 6 files / 20 tests passed
+pnpm test:pdf → integration suite included
 ```
 
 ## Latest build result
 
 ```text
-pnpm lint → pass (0 warnings / 0 errors)
 pnpm typecheck → pass
-pnpm test → 4 files / 7 tests passed
-pnpm build → pass (electron-vite → apps/desktop/out)
+pnpm lint → pass (0 warnings)
+pnpm build → pass
+Manual poc:unlock correct password → unlocked, output not encrypted
+Manual poc:unlock wrong password → incorrect_password, no output file
 ```
-
-## Environment snapshot
-
-| Tool | Status |
-| --- | --- |
-| Node.js | v22.19.0 |
-| pnpm | 9.15.9 (`packageManager` field) |
-| Git | OK at `D:/Projects/cm-flow-manager` |
-| GitHub CLI | Not found |
-| qpdf | Not bundled (Phase 2) |
 
 ## GitHub repository
 
-**Connected and pushed (Phase 1).**
-
 - Remote: https://github.com/Phill1983/CM-Flow-Manager.git
-- Branches on origin: `main`, `develop` @ `86ccc99`
+- Branches: `main`, `develop`

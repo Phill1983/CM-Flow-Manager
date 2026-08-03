@@ -9,7 +9,19 @@ MVP must decrypt PDFs with a user-provided password and write an unencrypted cop
 
 ## Decision
 
-Use a **bundled qpdf** binary invoked through a `PdfUnlockService` adapter in `packages/pdf-engine`. Spawn with argument arrays (no shell). Map process outcomes to typed domain errors.
+Use **qpdf** behind `PdfUnlockService` (`QpdfUnlockService`).
+
+### Phase 2 (development)
+
+- Official Windows `msvc64` binary **12.3.2**, fetched via `pnpm fetch:qpdf` with SHA-256 verification against the upstream `qpdf-*.sha256` asset.
+- Invoked with `spawn(..., { shell: false })`.
+- Passwords supplied with `--password-file` (temp file), not `--password` on argv.
+- Vendor binaries under `vendor/qpdf/bin` are **not** committed.
+
+### Future production
+
+- Bundle verified qpdf + required DLLs inside the app resources / installer with Apache-2.0 attribution.
+- Do not require end users to install qpdf separately.
 
 ## Consequences
 

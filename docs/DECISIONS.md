@@ -20,5 +20,6 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-03 | Command Palette deferred to post-MVP / v0.2.x | BACKLOG.md / ROADMAP.md |
 | 2026-08-03 | Phase 1 IPC minimal: `app:getVersion` only; PdfUnlockService unavailable mock | ADR-004 / Phase 1 |
 | 2026-08-03 | Phase 1.5: Tailwind v4 + minimal shadcn; zero ESLint warnings | UI_DIRECTION.md / TECH_STACK.md |
+| 2026-08-03 | Phase 2: qpdf 12.3.2 via `--password-file`; DestinationExists on clash | ADR-003 / PDF_ENGINE_EVALUATION.md |
 
 Update this file when making durable technical choices.

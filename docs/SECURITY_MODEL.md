@@ -28,22 +28,25 @@ Expose only a minimal typed API, e.g. file dialogs, queue job submit, cancel, op
 
 ## Password handling
 
-- Passed main ← renderer only over allowlisted IPC for an active job.
-- Used to invoke qpdf via argument vector.
-- Not written to disk, settings, clipboard (unless user explicitly pastes), or logs.
-- Cleared from Zustand/UI state after processing completes or cancels.
+- Passed main ← renderer only over allowlisted IPC for an active unlock request.
+- **Phase 2 unlock path:** password is written to a short-lived temp file and passed to qpdf as `--password-file=...` (not `--password=`), then the temp file/directory is deleted in `finally`.
+- Not written to application logs, settings, Zustand persistence, or error messages returned to the UI.
+- Cleared from the temporary developer UI field after unlock completes.
+- **Honest limitation:** while `--password-file` avoids placing the secret on the Windows process command line, the secret still exists briefly as a file on disk during the operation. Process dumps / forensic disk recovery could theoretically observe it. Do not claim stronger guarantees than qpdf + OS semantics provide.
+- Fixture generation scripts may pass passwords on argv; those scripts are developer-only and are not the production unlock path.
 
 ## File safety
 
-- Default: write `<name>_unlocked.pdf` (then `_2`, `_3`, …).
+- Default naming helper: `<name>_unlocked.pdf` (then `_2`, `_3`, …) in `@cm-flow-manager/file-utils`.
+- Phase 2 engine refuses to overwrite an existing destination (`DestinationExists`).
 - Never replace source unless a future, explicit, confirmed overwrite mode is designed.
-- Validate extensions and basic PDF magic where practical before heavy work.
-- Enforce sensible max file size (exact limit set in Phase 2/4; document in KNOWN_LIMITATIONS).
+- Validate `.pdf` extension and absolute paths in main before unlock/inspect.
+- Enforce sensible max file size in a later phase; not enforced yet.
 
 ## Logging
 
-Allowed: app version, module id, durations, counts, error categories, non-sensitive prefs.  
-Forbidden: passwords, PDF bytes, extracted text, full command lines with secrets.
+Allowed: app/qpdf version, sanitized source basename, durations, error categories, operation result.  
+Forbidden: passwords, PDF bytes, extracted text, full command lines with secrets, raw stderr that still contains secrets (stderr is redacted when secrets are known).
 
 ## Updates and network
 
