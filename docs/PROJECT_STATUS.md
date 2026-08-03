@@ -23,9 +23,12 @@
 - Temporary DEV-only unlock panel + CLI `poc:unlock`.
 - Password via `--password-file` (not argv); documented residual disk exposure.
 
+### Governance
+- Delivery cycle locked: **Implementation → Validation → Phase Report → Human approval → Commit → Push** (Cursor rules + `DEVELOPMENT_WORKFLOW.md`).
+
 ## Work in progress
 
-- None after Phase 2 verification.
+- None. Phase 3 not started.
 
 ## Blockers
 

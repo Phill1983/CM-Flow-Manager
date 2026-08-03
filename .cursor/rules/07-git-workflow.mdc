@@ -9,5 +9,6 @@ alwaysApply: true
 - Do not commit secrets, `.env`, customer PDFs, or passwords.
 - Do not mix unrelated concerns in one commit.
 - Prefer `feature/*`, `fix/*`, `docs/*` branches; keep `main` release-ready.
-- Only commit when the user requests it (unless executing an explicitly approved phase checklist that includes commits).
+- Phase delivery order: **Implementation → Validation → Phase Report → Human approval → Commit → Push**.
+- Do **not** commit or push phase deliverables until the Phase Report is accepted by the user.
 - Never force-push `main` or skip hooks unless the user explicitly requires it.
