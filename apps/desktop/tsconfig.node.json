@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "types": ["node"],
+    "lib": ["ES2022"],
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@cm-flow-manager/ipc-contracts": ["../../packages/ipc-contracts/src/index.ts"],
+      "@cm-flow-manager/pdf-engine": ["../../packages/pdf-engine/src/index.ts"],
+      "@cm-flow-manager/pdf-password-remover": ["../../modules/pdf-password-remover/src/index.ts"]
+    }
+  },
+  "include": [
+    "electron.vite.config.ts",
+    "src/main/**/*",
+    "src/preload/**/*",
+    "src/shared/**/*",
+    "src/env.d.ts",
+    "../../packages/ipc-contracts/src/**/*.ts",
+    "../../packages/pdf-engine/src/**/*.ts",
+    "../../modules/pdf-password-remover/src/**/*.ts"
+  ],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
+}

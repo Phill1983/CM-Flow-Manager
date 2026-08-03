@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": [],
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@renderer/*": ["src/renderer/src/*"],
+      "@cm-flow-manager/ipc-contracts": ["../../packages/ipc-contracts/src/index.ts"],
+      "@cm-flow-manager/pdf-engine": ["../../packages/pdf-engine/src/index.ts"],
+      "@cm-flow-manager/pdf-password-remover": ["../../modules/pdf-password-remover/src/index.ts"]
+    }
+  },
+  "include": [
+    "src/renderer/src/**/*",
+    "src/shared/**/*",
+    "../../packages/ipc-contracts/src/**/*.ts",
+    "../../packages/pdf-engine/src/**/*.ts",
+    "../../modules/pdf-password-remover/src/**/*.ts"
+  ],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@cm-flow-manager/desktop",
+  "version": "0.0.1",
+  "private": true,
+  "description": "CM Flow Manager Electron desktop shell",
+  "main": "./out/main/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
+    "preview": "electron-vite preview",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@cm-flow-manager/ipc-contracts": "workspace:*",
+    "@cm-flow-manager/pdf-engine": "workspace:*",
+    "@cm-flow-manager/pdf-password-remover": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.3.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^34.3.0",
+    "electron-vite": "^3.0.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.1"
+  }
+}

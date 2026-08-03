@@ -1,5 +1,6 @@
 # packages/
 
-Shared libraries will be created in Phase 1+:
+- `ipc-contracts` — typed IPC allowlist
+- `pdf-engine` — `PdfUnlockService` + Phase 1 unavailable mock
 
-- `core`, `ui`, `ipc-contracts`, `file-utils`, `logging`, `pdf-engine`
+Additional shared packages (`ui`, `logging`, `file-utils`, `core`) are added when first needed.
