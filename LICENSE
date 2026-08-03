@@ -1,0 +1,30 @@
+PROPRIETARY SOFTWARE NOTICE
+
+Copyright (c) 2026 CM Flow Manager project owner(s). All rights reserved.
+
+This software and its accompanying documentation ("Software") are the
+confidential and proprietary property of the copyright holder(s).
+
+Permission to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software is NOT granted by this notice.
+
+No license is granted under any patent, trademark, copyright, or other
+intellectual property right, except as may be separately agreed in writing
+between the copyright holder(s) and an authorized licensee.
+
+Until an open-source license is explicitly chosen and published by the
+owner(s), this repository and its contents must be treated as private and
+proprietary.
+
+THIRD-PARTY COMPONENTS
+
+This project will incorporate third-party software. Each third-party
+component remains under its own license terms. Redistribution of bundled
+binaries (including any PDF engine) must comply with those terms. See
+docs/TECH_STACK.md and docs/DECISIONS.md for dependency and license tracking.
+
+DISCLAIMER
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.

@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+out/
+release/
+build/
+*.tsbuildinfo
+
+# Electron / electron-builder
+apps/desktop/dist/
+apps/desktop/out/
+apps/desktop/release/
+*.exe
+*.blockmap
+*.dmg
+*.AppImage
+*.snap
+*.deb
+*.rpm
+!assets/**
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test / coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+*.swp
+*.swo
+
+# Local tooling caches
+.cache/
+.turbo/
+.eslintcache
+.prettiercache
+
+# Temporary PDF / fixture working copies (keep committed fixtures)
+tmp/
+temp/
+*.tmp
+!**/fixtures/**
+
+# Local agent / personal notes (not project docs)
+.local/
+
+# Packaged vendor binaries downloaded during build (tracked separately when intentional)
+vendor/qpdf/download/
