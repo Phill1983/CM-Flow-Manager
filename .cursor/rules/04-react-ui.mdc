@@ -1,0 +1,14 @@
+---
+description: React UI, accessibility, and localization rules
+globs: "**/*.{tsx,jsx}"
+alwaysApply: false
+---
+
+# React UI
+
+- Renderer must not access Node, FS, or shell directly — use preload API only.
+- No hard-coded user-visible strings; use localization keys (pl/uk/en).
+- Every control needs an accessible label; do not communicate status by color alone.
+- Keep the Password Remover screen focused: queue, password, output, progress, results.
+- Prefer existing `packages/ui` components before inventing new primitives.
+- Long work stays off the renderer thread (main/engine handles PDF work).

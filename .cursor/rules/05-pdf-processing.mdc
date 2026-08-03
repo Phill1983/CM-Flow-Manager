@@ -1,0 +1,15 @@
+---
+description: PDF unlock processing — qpdf adapter and password safety
+globs: "**/pdf-engine/**/*,**/pdf-password-remover/**/*"
+alwaysApply: false
+---
+
+# PDF Processing
+
+- Unlock only with user-provided passwords. No cracking/guessing.
+- Never overwrite source PDFs by default. Write `<name>_unlocked.pdf` (+ `_2`, `_3`, …).
+- Never log passwords, PDF contents, or command lines that include secrets.
+- Clear password from UI state after processing.
+- Map engine failures to typed errors (`IncorrectPasswordError`, `InvalidPdfError`, …).
+- Keep qpdf behind `PdfUnlockService`; swapping engines must not require UI rewrites.
+- Generate synthetic fixtures for tests — never commit confidential documents.

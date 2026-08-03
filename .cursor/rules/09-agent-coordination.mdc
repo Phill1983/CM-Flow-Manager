@@ -1,0 +1,20 @@
+---
+description: Multi-agent coordination order and handoff rules
+alwaysApply: true
+---
+
+# Agent Coordination
+
+Default sequence:
+
+```text
+strategy-guardian → solution-architect → implementer → testing-agent
+→ security-review-agent (if relevant) → quality-guardian
+→ code-review-agent → documentation-agent → release-manager-agent (if relevant)
+```
+
+- Agents must state scope, affected files, and phase alignment before coding.
+- Implementation agents must not mark work complete without validation evidence.
+- `strategy-guardian` may block out-of-scope work.
+- `code-review-agent` should not be the primary author of code it reviews.
+- Stop on blockers; record them in `PROJECT_STATUS.md`.

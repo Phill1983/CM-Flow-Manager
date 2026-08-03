@@ -1,0 +1,14 @@
+---
+description: Testing expectations — unit, integration, UI, E2E
+globs: "**/*.{test,spec}.{ts,tsx},**/tests/**/*,**/e2e/**/*"
+alwaysApply: false
+---
+
+# Testing
+
+- Behavior changes require test updates in the same change.
+- Prefer verifying behavior over asserting implementation details.
+- Cover filename collision, path validation, error mapping, and unlock success/failure paths.
+- Never skip or delete failing tests to force green CI.
+- Use synthetic PDF fixtures only.
+- Do not claim a feature complete without running the relevant validation.

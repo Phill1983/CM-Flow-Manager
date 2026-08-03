@@ -1,0 +1,21 @@
+---
+description: Electron security — main, preload, IPC, and privileges
+globs: "**/main/**/*.{ts,js},**/preload/**/*.{ts,js},**/electron/**/*.{ts,js}"
+alwaysApply: false
+---
+
+# Electron Security
+
+Required defaults:
+
+```text
+contextIsolation: true
+nodeIntegration: false
+sandbox: true where compatible
+```
+
+- No `remote` module. No Node in renderer.
+- Preload exposes a **minimal typed API** only — no generic unrestricted invoke.
+- Validate all IPC inputs in main. Explicit channel allowlist.
+- Never build shell command strings from paths/passwords. Use `spawn` + argv arrays.
+- Auto-update remains disabled until a reviewed implementation exists.

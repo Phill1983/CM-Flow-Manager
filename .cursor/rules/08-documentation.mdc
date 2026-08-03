@@ -1,0 +1,13 @@
+---
+description: Documentation accuracy and required status updates
+globs: "docs/**/*.md,*.md"
+alwaysApply: false
+---
+
+# Documentation
+
+- Docs must match the codebase — no aspirational claims presented as done.
+- Architectural changes need ADR updates and `docs/DECISIONS.md` entries.
+- After meaningful phases, update `PROJECT_STATUS.md` and `STATE_REGISTRY.md`.
+- Record limitations in `KNOWN_LIMITATIONS.md` instead of hiding them.
+- Prefer concrete project-specific text over generic filler.

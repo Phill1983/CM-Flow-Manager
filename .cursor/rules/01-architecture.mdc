@@ -1,0 +1,14 @@
+---
+description: Modular architecture boundaries and dependency rules
+alwaysApply: true
+---
+
+# Architecture
+
+- Structure: `apps/desktop`, `packages/*`, `modules/*` per ADR-002.
+- Module domain/application layers must **not** import React, Electron, or Node FS APIs.
+- PDF engine is accessed only via `PdfUnlockService` (or successor port). UI never calls qpdf directly.
+- Put IPC channel names and payloads in `packages/ipc-contracts` — do not invent ad-hoc channels in UI code.
+- Use dependency injection / adapters at infrastructure boundaries.
+- Do not rewrite working systems without an ADR or documented justification.
+- Cross-module imports use package public APIs only.

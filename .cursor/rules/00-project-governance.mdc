@@ -1,0 +1,16 @@
+---
+description: Project governance, phase gates, and non-negotiable product constraints
+alwaysApply: true
+---
+
+# Project Governance
+
+- Work only in the **approved phase** (`docs/PROJECT_STATUS.md`). Do not start Phase N+1 without explicit user approval.
+- v0.1.0 scope is **PDF Password Remover only**. Do not build merge/split/OCR/Audatex/cloud features early.
+- **Never** implement password cracking, brute force, dictionaries, blank/common guessing, or credential bypass.
+- Read relevant docs before editing. Prefer extending existing utilities over duplicating them.
+- Keep changes small and reviewable. Do not mix unrelated tasks in one commit.
+- Do not add dependencies without documenting why, license, maintenance, and Electron fit in `docs/DECISIONS.md`.
+- Update `docs/PROJECT_STATUS.md` and `docs/STATE_REGISTRY.md` after meaningful phases.
+- Stop and ask when a blocker needs a human decision. Never silently bypass failed tests or claim success without verification.
+- Prefer files under ~300 lines unless splitting harms clarity.

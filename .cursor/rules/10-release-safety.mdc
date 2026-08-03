@@ -1,0 +1,14 @@
+---
+description: Release safety — packaging, publishing, and verification gates
+globs: "**/*electron-builder*,**/release/**/*,.github/workflows/**/*"
+alwaysApply: false
+---
+
+# Release Safety
+
+- Do not publish GitHub Releases without green validation and human approval.
+- Ship qpdf (and licenses) inside the app — users must not install PDF tools separately for production builds.
+- Produce checksums for release artifacts.
+- Do not enable auto-update without a dedicated reviewed design.
+- Never claim SmartScreen warnings are “solved” without code signing.
+- CI validates; early pipelines must not auto-publish.

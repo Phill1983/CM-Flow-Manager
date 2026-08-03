@@ -1,0 +1,13 @@
+---
+description: Strict TypeScript standards for CM Flow Manager
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# TypeScript
+
+- Strict compiler options; no ignored TS errors; no `any` without a short justified comment.
+- Prefer explicit names, small functions, immutable data where practical.
+- Share types via `packages/*` or `ipc-contracts` — do not duplicate DTOs.
+- Exhaustive handling for status/error unions where feasible.
+- Do not disable lint rules without documenting why adjacent to the disable comment.
