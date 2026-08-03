@@ -2,65 +2,78 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 0 — Discovery and planning** (complete) |
-| Application version | `0.0.0-phase0` (no runtime package yet; target MVP `0.1.0`) |
+| Current phase | **Phase 1 — Repository and workspace initialization** (complete) |
+| Application version | `0.0.1` |
 | Date | 2026-08-03 |
-| Workspace path | `D:\Projects\CM Folw Manager` |
-| Intended repo name | `cm-flow-manager` |
+| Workspace path | `D:\Projects\cm-flow-manager` |
+| Product display name | CM Flow Manager |
+| Package ID | `com.cmflowmanager.desktop` |
 
 ## Completed work
 
-- Environment inspection (Node, npm, Git, Python, GitHub CLI).
-- Documentation set created under `docs/` and root governance files.
-- ADRs 001–006 authored.
-- Cursor rules (`00`–`10`) and agents (12) created.
-- PDF engine evaluation completed; qpdf recommended.
-- Proprietary LICENSE notice added.
-- Local Git repository initialized (see git history).
-- Initial backlog drafted (`docs/BACKLOG.md`).
+### Phase 0
+- Planning package, ADRs, Cursor rules/agents, PDF engine recommendation (qpdf).
+
+### Phase 1
+- Workspace relocated to `D:\Projects\cm-flow-manager` (Git verified).
+- pnpm `9.15.9` pinned via `packageManager` (+ user-local install; Corepack global shim blocked by Windows EPERM on Program Files).
+- Monorepo: `apps/desktop`, `packages/ipc-contracts`, `packages/pdf-engine`, `modules/pdf-password-remover`.
+- Electron main + secure preload + React/Vite renderer shell.
+- Navigation: Dashboard, PDF Tools → Password Remover (placeholder), Activity, Settings, About.
+- Localization skeleton: pl / uk / en.
+- Light/dark/system theme preparation.
+- `PdfUnlockService` contract + `UnavailablePdfUnlockService` mock (no qpdf).
+- ESLint, Prettier, Vitest, GitHub Actions CI (pnpm).
+- Command Palette documented for post-MVP only (not implemented).
+- UI direction recorded in `docs/UI_DIRECTION.md`.
 
 ## Work in progress
 
-- None in Phase 0 after this status update.
+- None after Phase 1 verification.
 
 ## Blockers
 
-1. **GitHub CLI (`gh`) not installed** — cannot create private GitHub repository `cm-flow-manager` from this environment.
-2. **pnpm not installed** — Phase 1 should enable Corepack/pnpm before monorepo scaffold.
-3. **Owner approval required** before Phase 1 implementation begins.
+1. **GitHub CLI (`gh`) still not installed** — no remote repository.
+2. **Corepack enable** cannot write shims under `C:\Program Files\nodejs` without elevation (pnpm works via user install + `packageManager` pin).
+3. **Legacy folder** `D:\Projects\CM Flow Manager` may still exist if locked by Cursor — delete manually after closing old windows.
+4. **Owner approval required** before Phase 2 (qpdf PoC).
 
 ## Next approved task
 
-Awaiting explicit user approval for **Phase 1 — Repository and workspace initialization**.
+Awaiting explicit approval for **Phase 2 — PDF engine proof of concept**.
 
 ## Latest test result
 
-N/A — no test runner configured in Phase 0.
+```text
+pnpm test → 4 files / 7 tests passed (2026-08-03)
+```
 
 ## Latest build result
 
-N/A — no application build in Phase 0.
+```text
+pnpm typecheck → pass
+pnpm lint → pass (2 react-refresh warnings)
+pnpm build → pass (electron-vite → apps/desktop/out)
+pnpm dev → Electron window launched; Vite renderer on http://localhost:5173/
+```
 
-## Environment snapshot (Phase 0)
+## Environment snapshot
 
 | Tool | Status |
 | --- | --- |
 | Node.js | v22.19.0 |
-| npm | 10.9.3 |
-| pnpm | Not found |
-| Git | 2.46.0.windows.1 |
+| pnpm | 9.15.9 (`packageManager` field) |
+| Git | OK at `D:/Projects/cm-flow-manager` |
 | GitHub CLI | Not found |
-| Python | 3.13.7 |
-| qpdf on PATH | Not found (expected; will bundle later) |
-| OS | Windows win32 x64 |
+| qpdf | Not bundled (Phase 2) |
 
 ## GitHub repository
 
-**Not created.** User action required:
+**Not created.** Optional for Phase 2+:
 
 ```bash
-# Install GitHub CLI, then:
 gh auth login
 gh repo create cm-flow-manager --private --source=. --remote=origin --description "A modular local-first desktop toolkit for PDF and workflow operations."
-git push -u origin HEAD
+git push -u origin main
+git push -u origin develop
 ```

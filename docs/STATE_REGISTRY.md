@@ -4,53 +4,63 @@ Living inventory of product and engineering state. Update after every meaningful
 
 ## Implemented features
 
-- None (planning package only).
+- Monorepo workspace with pnpm
+- Electron application shell (secure defaults)
+- Typed preload API: `window.cmFlow.getVersion()` only
+- IPC allowlist: `app:getVersion`
+- React navigation shell with placeholder pages
+- Localization catalogs for pl / uk / en
+- Theme preference: light / dark / system
+- `PdfUnlockService` port + unavailable mock
+- Unit tests for IPC allowlist, PDF mock, locales, module metadata
+- CI workflow stubs executable when GitHub remote exists
 
 ## Partially implemented features
 
-- None.
+- PDF Password Remover — route/UI placeholder only; engine unavailable
+- Activity history — empty honest placeholder
+- Shared `packages/ui`, `logging`, `file-utils`, `core` — deferred until needed
+- Windows installer packaging — deferred to Phase 5
 
 ## Planned features (approved for roadmap, not built)
 
-- Electron application shell with secure preload/IPC
-- Dashboard / Settings / About placeholders
-- Localization infrastructure (pl/uk/en)
-- PDF Password Remover (single then batch)
-- Local rotating logs
-- Windows installer packaging
-- CI validation workflows (stubs exist; runnable after Phase 1)
+- qpdf-backed unlock (Phase 2+)
+- Full Password Remover UX + batch (Phases 3–4)
+- Global Command Palette (post-MVP / v0.2.x)
+- Additional PDF/workflow modules after v0.1.0
 
 ## Known defects
 
-- None in application code (no app yet).
-- Workspace directory name typo: `CM Folw Manager` vs product name Flow.
+- ESLint react-refresh warnings on context hook exports (non-blocking)
+- Duplicate local folder `D:\Projects\CM Flow Manager` may remain locked beside `cm-flow-manager`
 
 ## Technical debt
 
-- GitHub remote missing.
-- CI workflows reference scripts that do not exist until Phase 1 — expected.
-- i18n library choice deferred to Phase 1 install checklist.
+- Corepack global enable blocked on this machine; document elevation if desired
+- Placeholder packages from ADR-002 (`ui`, `logging`, …) not scaffolded yet
+- No Playwright E2E yet (Phase 3+)
 
 ## Security decisions
 
-- Hardened Electron defaults required (ADR-004).
-- Local-only processing; no telemetry (ADR-005).
-- No password cracking ever.
-- Proprietary project license until owner selects OSS.
+- Hardened Electron defaults enforced in main process
+- No Node in renderer; sandbox + contextIsolation
+- Minimal preload; no FS/shell IPC in Phase 1
+- No telemetry; local-only
+- No password handling UI yet (engine unavailable)
 
 ## Dependency decisions
 
-- Stack per ADR-001 / TECH_STACK.md.
-- PDF engine: qpdf (ADR-003).
-- MuPDF rejected (AGPL).
-- pdf-lib rejected as unlock engine.
+- pnpm@9.15.9 only (`pnpm-lock.yaml`; no npm lockfile)
+- electron-vite + Electron 34 + React 19 + Vite 6
+- Custom lightweight i18n (no i18next yet)
+- PDF engine still planned as qpdf (ADR-003); mock only in Phase 1
 
 ## Release readiness
 
 | Checkpoint | Status |
 | --- | --- |
 | Phase 0 docs | Done |
-| Phase 1 shell | Not started |
+| Phase 1 shell | Done |
 | Phase 2 engine PoC | Not started |
 | Phase 3–5 MVP | Not started |
 | v0.1.0 readiness | Not ready |

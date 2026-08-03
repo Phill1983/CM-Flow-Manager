@@ -9,17 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Phase 0 planning package: product vision, architecture, security model, testing strategy, localization plan.
-- Architecture Decision Records ADR-001 through ADR-006.
-- Cursor project rules and specialized agent definitions.
-- GitHub issue/PR templates and CI workflow stubs (documentation-only until Phase 1 toolchain exists).
-- Proprietary LICENSE notice pending owner open-source decision.
-- PDF engine evaluation recommending bundled qpdf behind a replaceable adapter.
+- Phase 1 application shell (`0.0.1`): Electron + React + Vite monorepo.
+- Secure preload API and IPC allowlist (`app:getVersion`).
+- Navigation shell with Dashboard and Password Remover placeholders.
+- Localization skeleton (Polish, Ukrainian, English).
+- Light/dark/system theme preparation.
+- `PdfUnlockService` contract with explicit unavailable mock (no qpdf yet).
+- ESLint, Prettier, Vitest, and pnpm-based CI workflow.
+- UI direction doc; Command Palette backlog item for post-MVP / v0.2.x.
+
+### Changed
+
+- Workspace path standardized to `D:\Projects\cm-flow-manager`.
+- Package manager fixed to pnpm `9.15.9` via `packageManager` (lockfile: `pnpm-lock.yaml` only).
 
 ### Notes
 
-- No application source code or runtime dependencies installed in Phase 0.
-- Version tags below are planned progression, not released artifacts.
+- No PDF unlocking in this release line yet — Phase 2.
+- GitHub remote still not created (`gh` unavailable).
 
 ## Planned version markers
 

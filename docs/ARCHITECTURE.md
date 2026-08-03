@@ -38,7 +38,9 @@ cm-flow-manager/
 
 ### Structure adjustments vs initial proposal
 
-None material in Phase 0. Workspace package manager preference is **pnpm** with npm workspaces as fallback (pnpm not yet installed on the Phase 0 machine). Documented in ADR-002.
+- Phase 1 scaffolds only packages needed for the shell: `ipc-contracts`, `pdf-engine`, and module `pdf-password-remover`.
+- `core`, `ui`, `file-utils`, and `logging` remain planned and will be added when first required (avoid empty package noise).
+- Package manager is **pnpm@9.15.9** only (`packageManager` field + `pnpm-lock.yaml`).
 
 ## Process boundaries
 

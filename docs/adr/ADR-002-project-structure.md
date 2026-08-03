@@ -15,7 +15,9 @@ Use a monorepo:
 - `packages/*` — shared libraries (`core`, `ui`, `ipc-contracts`, `file-utils`, `logging`, `pdf-engine`)
 - `modules/*` — feature modules with domain/application/infrastructure/ui
 
-Prefer **pnpm** workspaces; fall back to npm workspaces if pnpm cannot be adopted quickly.
+Prefer **pnpm@9.15.9** workspaces exclusively (`packageManager` pin + `pnpm-lock.yaml` only).
+
+Phase 1 creates packages lazily: `ipc-contracts` and `pdf-engine` first; `core` / `ui` / `logging` / `file-utils` when needed.
 
 ## Consequences
 

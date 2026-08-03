@@ -1,14 +1,18 @@
 # Known Limitations
 
-## Phase 0
+## Phase 1
 
-- No application binary or source implementation yet.
-- PDF engine recommendation is documented but not integrated.
-- GitHub remote not created (`gh` missing / not authenticated).
-- pnpm not installed on the development machine (npm is available).
-- Folder path on disk is `CM Folw Manager` (typo); repository name remains `cm-flow-manager`.
+- PDF unlock engine is **unavailable** — `UnavailablePdfUnlockService` only; qpdf not bundled.
+- Password Remover is a placeholder route/UI notice, not a working tool.
+- Shared packages `ui`, `logging`, `file-utils`, and `core` are not scaffolded yet (created when needed).
+- No Playwright E2E suite yet.
+- Command Palette is documented for post-MVP only — not implemented.
+- Corepack cannot enable global shims into `C:\Program Files\nodejs` without elevation on this machine; pnpm `9.15.9` is installed in the user profile and pinned via `packageManager`.
+- Legacy path `D:\Projects\CM Flow Manager` may still exist if Windows/Cursor held a lock during rename — prefer `D:\Projects\cm-flow-manager`.
+- GitHub remote does not exist until `gh` is available and the private repo is created.
+- ESLint reports non-blocking react-refresh warnings for context hook export files.
 
-## Anticipated product limitations (to validate in later phases)
+## Anticipated product limitations (validate in later phases)
 
 - Shared password only for batch in v0.1.0 (no per-file passwords yet).
 - Some exotic PDF encryption modes may be unsupported; exact matrix TBD after Phase 2 fixtures.

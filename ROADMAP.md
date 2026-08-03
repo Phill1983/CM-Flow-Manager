@@ -19,6 +19,7 @@ CM Flow Manager becomes a modular local-first desktop workspace for documents, P
 
 Prioritization requires product owner approval. Candidates:
 
+- **Global Command Palette (v0.2.x, medium priority)** — shortcuts `Ctrl+Shift+P` / `Ctrl+K`; actions for navigation, select PDFs, open output folder, language, theme, module search. Not in v0.1.0.
 - PDF merge / split / page extract / rotate / compress
 - Images ↔ PDF
 - OCR

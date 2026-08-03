@@ -2,16 +2,16 @@
 
 Prioritized for post–Phase 0 work. Items marked **blocked** need user approval or tooling.
 
-## Now (awaiting Phase 1 approval)
+## Now (Phase 1 complete)
 
-1. Enable pnpm (Corepack) and pin Node/pnpm versions.
-2. Initialize monorepo `package.json` workspaces (`apps`, `packages`, `modules`).
-3. Scaffold Electron + Vite + React + TypeScript strict config.
-4. Configure ESLint, Prettier, Husky, lint-staged, Vitest.
-5. Implement secure BrowserWindow + preload stub + IPC contracts package.
-6. Placeholder Dashboard UI with localization skeleton.
-7. Make CI workflows executable (typecheck/lint/test/build).
-8. Create `develop` branch; push to GitHub when `gh` available.
+1. ~~Enable pnpm (Corepack) and pin Node/pnpm versions.~~
+2. ~~Initialize monorepo workspaces.~~
+3. ~~Scaffold Electron + Vite + React + TypeScript strict config.~~
+4. ~~Configure ESLint, Prettier, Vitest.~~
+5. ~~Secure BrowserWindow + preload + IPC contracts.~~
+6. ~~Placeholder Dashboard + localization skeleton.~~
+7. ~~CI workflows updated for pnpm validation.~~
+8. Push to GitHub when `gh` available (optional).
 
 ## Next (Phase 2)
 
@@ -27,6 +27,31 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 2. Batch, cancel, collision handling, activity history (non-sensitive).
 3. electron-builder NSIS installer + checksums.
 4. Security review + release candidate.
+
+## Post-MVP / v0.2.x
+
+### Global Command Palette
+
+- **Target:** post-MVP / v0.2.x
+- **Priority:** Medium
+- **Do not implement in Phase 1–5 / v0.1.0**
+
+Suggested shortcuts:
+
+- `Ctrl+Shift+P`
+- `Ctrl+K`
+
+Planned actions:
+
+- Open Dashboard
+- Open PDF Password Remover
+- Select PDF files
+- Open Activity
+- Open Settings
+- Open output folder
+- Change language
+- Toggle theme
+- Search available modules
 
 ## Parking lot (explicitly not scheduled)
 
