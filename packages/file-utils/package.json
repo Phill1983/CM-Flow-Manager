@@ -1,5 +1,5 @@
 {
-  "name": "@cm-flow-manager/pdf-engine",
+  "name": "@cm-flow-manager/file-utils",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -14,15 +14,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run",
-    "generate:fixtures": "node ./scripts/generate-fixtures.mjs",
-    "poc:unlock": "node ./scripts/unlock-poc.mjs"
-  },
-  "dependencies": {
-    "@cm-flow-manager/file-utils": "workspace:*"
+    "test": "vitest run"
   },
   "devDependencies": {
-    "@types/node": "^22.13.10",
     "typescript": "^5.8.2"
   }
 }

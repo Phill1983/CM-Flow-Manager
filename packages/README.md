@@ -1,6 +1,7 @@
 # packages/
 
 - `ipc-contracts` — typed IPC allowlist
-- `pdf-engine` — `PdfUnlockService` + Phase 1 unavailable mock
+- `pdf-engine` — `PdfUnlockService`, `QpdfUnlockService`, fixtures
+- `file-utils` — PDF path helpers and unlocked filename generation
 
-Additional shared packages (`ui`, `logging`, `file-utils`, `core`) are added when first needed.
+Additional shared packages (`ui`, `logging`, `core`) are added when first needed.
