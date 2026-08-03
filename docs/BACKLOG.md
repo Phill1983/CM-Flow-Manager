@@ -11,7 +11,7 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 5. ~~Secure BrowserWindow + preload + IPC contracts.~~
 6. ~~Placeholder Dashboard + localization skeleton.~~
 7. ~~CI workflows updated for pnpm validation.~~
-8. Push to GitHub when `gh` available (optional).
+8. ~~Push Phase 1 to GitHub (`main` + `develop`).~~
 
 ## Next (Phase 2)
 

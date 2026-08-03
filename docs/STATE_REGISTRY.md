@@ -13,7 +13,7 @@ Living inventory of product and engineering state. Update after every meaningful
 - Theme preference: light / dark / system
 - `PdfUnlockService` port + unavailable mock
 - Unit tests for IPC allowlist, PDF mock, locales, module metadata
-- CI workflow stubs executable when GitHub remote exists
+- CI workflow present; GitHub remote: https://github.com/Phill1983/CM-Flow-Manager.git
 
 ## Partially implemented features
 

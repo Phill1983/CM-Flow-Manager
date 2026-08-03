@@ -33,10 +33,10 @@
 
 ## Blockers
 
-1. **GitHub CLI (`gh`) still not installed** — no remote repository.
-2. **Corepack enable** cannot write shims under `C:\Program Files\nodejs` without elevation (pnpm works via user install + `packageManager` pin).
-3. **Legacy folder** `D:\Projects\CM Flow Manager` may still exist if locked by Cursor — delete manually after closing old windows.
-4. **Owner approval required** before Phase 2 (qpdf PoC).
+1. **Corepack enable** cannot write shims under `C:\Program Files\nodejs` without elevation (pnpm works via user install + `packageManager` pin).
+2. **Legacy folder** `D:\Projects\CM Flow Manager` may still exist if locked by Cursor — delete manually after closing old windows.
+3. **Owner approval required** before Phase 2 (qpdf PoC).
+4. GitHub CLI (`gh`) still not installed locally — remote was added via `git` URL.
 
 ## Next approved task
 
@@ -69,11 +69,7 @@ pnpm dev → Electron window launched; Vite renderer on http://localhost:5173/
 
 ## GitHub repository
 
-**Not created.** Optional for Phase 2+:
+**Connected and pushed (Phase 1).**
 
-```bash
-gh auth login
-gh repo create cm-flow-manager --private --source=. --remote=origin --description "A modular local-first desktop toolkit for PDF and workflow operations."
-git push -u origin main
-git push -u origin develop
-```
+- Remote: https://github.com/Phill1983/CM-Flow-Manager.git
+- Branches on origin: `main`, `develop` @ `86ccc99`

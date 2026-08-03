@@ -14,7 +14,7 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-03 | Prefer pnpm via Corepack; pin `packageManager`; only `pnpm-lock.yaml` | TECH_STACK.md / Phase 1 |
 | 2026-08-03 | Reject MuPDF for MVP due to AGPL without commercial license | PDF_ENGINE_EVALUATION.md |
 | 2026-08-03 | Reject pdf-lib as primary decrypt engine | PDF_ENGINE_EVALUATION.md |
-| 2026-08-03 | GitHub remote deferred — `gh` CLI not installed | PROJECT_STATUS.md |
+| 2026-08-03 | GitHub remote: https://github.com/Phill1983/CM-Flow-Manager.git | PROJECT_STATUS.md |
 | 2026-08-03 | Workspace path `D:\Projects\cm-flow-manager` (product name remains CM Flow Manager) | PROJECT_STATUS.md |
 | 2026-08-03 | UI: shadcn/ui + dashboard-01 as reference only; productivity layout | docs/UI_DIRECTION.md |
 | 2026-08-03 | Command Palette deferred to post-MVP / v0.2.x | BACKLOG.md / ROADMAP.md |

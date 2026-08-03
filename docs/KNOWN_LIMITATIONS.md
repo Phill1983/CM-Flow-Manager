@@ -9,7 +9,7 @@
 - Command Palette is documented for post-MVP only — not implemented.
 - Corepack cannot enable global shims into `C:\Program Files\nodejs` without elevation on this machine; pnpm `9.15.9` is installed in the user profile and pinned via `packageManager`.
 - Legacy path `D:\Projects\CM Flow Manager` may still exist if Windows/Cursor held a lock during rename — prefer `D:\Projects\cm-flow-manager`.
-- GitHub remote does not exist until `gh` is available and the private repo is created.
+- GitHub CLI (`gh`) is not installed locally; pushes use `git` + remote URL.
 - ESLint reports non-blocking react-refresh warnings for context hook export files.
 
 ## Anticipated product limitations (validate in later phases)
