@@ -1,0 +1,62 @@
+name: Bug report
+description: Report a defect in CM Flow Manager
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not attach confidential customer PDFs. Use synthetic samples when possible.
+        Never include passwords in this report.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps without secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      placeholder: 0.1.0
+  - type: input
+    id: os
+    attributes:
+      label: Windows version
+      placeholder: Windows 11
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - PDF Password Remover
+        - Application shell / navigation
+        - Installer / packaging
+        - Other
+  - type: checkboxes
+    id: security
+    attributes:
+      label: Confirmations
+      options:
+        - label: I did not include passwords or confidential document contents.
+          required: true

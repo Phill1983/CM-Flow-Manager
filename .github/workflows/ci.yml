@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs-guard:
+    name: Phase documentation guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify required Phase 0 documents exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            README.md
+            CHANGELOG.md
+            ROADMAP.md
+            CONTRIBUTING.md
+            SECURITY.md
+            LICENSE
+            docs/PROJECT_VISION.md
+            docs/PRODUCT_REQUIREMENTS.md
+            docs/ARCHITECTURE.md
+            docs/TECH_STACK.md
+            docs/MODULE_SYSTEM.md
+            docs/PDF_ENGINE_EVALUATION.md
+            docs/SECURITY_MODEL.md
+            docs/TESTING_STRATEGY.md
+            docs/RELEASE_PROCESS.md
+            docs/DEVELOPMENT_WORKFLOW.md
+            docs/LOCALIZATION.md
+            docs/DECISIONS.md
+            docs/STATE_REGISTRY.md
+            docs/KNOWN_LIMITATIONS.md
+            docs/PROJECT_STATUS.md
+            docs/adr/ADR-001-desktop-stack.md
+            docs/adr/ADR-002-project-structure.md
+            docs/adr/ADR-003-pdf-engine.md
+            docs/adr/ADR-004-electron-security.md
+            docs/adr/ADR-005-local-only-processing.md
+            docs/adr/ADR-006-git-workflow.md
+          )
+          missing=0
+          for f in "${required[@]}"; do
+            if [[ ! -f "$f" ]]; then
+              echo "MISSING: $f"
+              missing=1
+            fi
+          done
+          if [[ "$missing" -ne 0 ]]; then
+            echo "Required documentation missing."
+            exit 1
+          fi
+          echo "All required Phase 0 documents present."
+
+  validate:
+    name: Typecheck, lint, test, build
+    runs-on: windows-latest
+    needs: docs-guard
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect workspace scaffold
+        id: scaffold
+        shell: bash
+        run: |
+          if [[ -f package.json ]]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "No package.json yet (Phase 0). Skipping install/build jobs."
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.scaffold.outputs.ready == 'true'
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install dependencies
+        if: steps.scaffold.outputs.ready == 'true'
+        run: npm install
+      - name: Typecheck
+        if: steps.scaffold.outputs.ready == 'true'
+        run: npm run typecheck
+      - name: Lint
+        if: steps.scaffold.outputs.ready == 'true'
+        run: npm run lint
+      - name: Unit tests
+        if: steps.scaffold.outputs.ready == 'true'
+        run: npm run test
+      - name: Build
+        if: steps.scaffold.outputs.ready == 'true'
+        run: npm run build
