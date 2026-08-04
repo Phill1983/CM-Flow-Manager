@@ -3,6 +3,7 @@ import { PDF_PASSWORD_REMOVER_ROUTE } from '@cm-flow-manager/pdf-password-remove
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/useI18n';
+import cmMarkUrl from '@/assets/cm-mark.png';
 
 function navClassName({ isActive }: { isActive: boolean }): string {
   return cn(
@@ -17,8 +18,16 @@ export function AppShell() {
   return (
     <div className="grid h-full min-h-full grid-cols-[240px_1fr]">
       <aside className="flex flex-col gap-4 border-r border-border bg-sidebar p-3" aria-label={t('app.name')}>
-        <div className="px-2 py-1 text-base font-bold tracking-tight text-sidebar-foreground">
-          {t('app.name')}
+        <div className="flex items-center gap-2.5 px-2 py-1">
+          <img
+            src={cmMarkUrl}
+            alt=""
+            width={32}
+            height={32}
+            className="size-8 shrink-0 object-contain"
+            aria-hidden="true"
+          />
+          <span className="text-base font-bold tracking-tight text-sidebar-foreground">{t('app.name')}</span>
         </div>
         <nav className="flex flex-col gap-1" aria-label="Primary">
           <NavLink to="/" end className={navClassName}>

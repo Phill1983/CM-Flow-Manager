@@ -1,7 +1,7 @@
 import type { MessageCatalog } from '../types';
 
 export const en: MessageCatalog = {
-  'app.name': 'CM Flow Manager',
+  'app.name': 'Flow Manager',
   'nav.dashboard': 'Dashboard',
   'nav.pdfTools': 'PDF Tools',
   'nav.passwordRemover': 'Password Remover',

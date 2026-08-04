@@ -47,6 +47,7 @@ function createMainWindow(): BrowserWindow {
     show: false,
     title: APP_NAME,
     autoHideMenuBar: true,
+    icon: join(__dirname, '../../resources/icon.ico'),
     webPreferences: {
       preload: join(__dirname, '../preload/index.cjs'),
       contextIsolation: true,

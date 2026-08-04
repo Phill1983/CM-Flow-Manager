@@ -9,7 +9,7 @@ describe('localization catalogs', () => {
 
   it('returns product name for all locales', () => {
     for (const locale of SUPPORTED_LOCALES) {
-      expect(translate(locale, 'app.name')).toBe('CM Flow Manager');
+      expect(translate(locale, 'app.name')).toBe('Flow Manager');
     }
   });
 });
