@@ -13,3 +13,5 @@ Hard rules:
 - Auto-update stays disabled until reviewed.
 
 Implement the smallest secure change, update IPC contracts in `packages/ipc-contracts`, and note security implications for reviewers.
+
+After native Electron changes, drive or assist **Native End-to-End Verification** of the full user journey in the running app. Automated green alone is not enough (`docs/DEVELOPMENT_WORKFLOW.md`).

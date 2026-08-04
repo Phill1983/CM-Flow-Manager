@@ -12,3 +12,5 @@ Responsibilities:
 - Reproduce failures before marking fixed.
 
 Never skip failing tests to force green status. Report exact commands run and results.
+
+When the change touches Electron main, preload, IPC, dialogs, drag/drop, filesystem, shell, or native libraries: insist on **Native End-to-End Verification** in the live app and keep automated vs native evidence separate in the Phase Report (`docs/DEVELOPMENT_WORKFLOW.md`).

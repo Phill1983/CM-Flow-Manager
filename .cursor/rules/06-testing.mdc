@@ -1,5 +1,5 @@
 ---
-description: Testing expectations — unit, integration, UI, E2E
+description: Testing expectations — unit, integration, UI, E2E, native Electron
 globs: "**/*.{test,spec}.{ts,tsx},**/tests/**/*,**/e2e/**/*"
 alwaysApply: false
 ---
@@ -12,3 +12,5 @@ alwaysApply: false
 - Never skip or delete failing tests to force green CI.
 - Use synthetic PDF fixtures only.
 - Do not claim a feature complete without running the relevant validation.
+- Automated tests do **not** replace **Native End-to-End Verification** for Electron main/preload/IPC/dialogs/drag-drop/filesystem/shell/native libs (see `docs/DEVELOPMENT_WORKFLOW.md`).
+- Phase Reports must list automated results separately from native Electron manual results.

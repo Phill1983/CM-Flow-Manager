@@ -10,7 +10,7 @@ alwaysApply: true
 ```text
 Implementation
         ↓
-Validation
+Validation (automated + native E2E when required)
         ↓
 Phase Report
         ↓
@@ -22,10 +22,23 @@ Push
 ```
 
 - Do **not** commit or push phase work before the Phase Report and explicit human approval.
-- Validation must finish before the Phase Report (typecheck, lint, tests, build, and phase-specific checks).
-- The Phase Report must be honest: evidence, blockers, and readiness for the next step.
+- Validation must finish before the Phase Report (typecheck, lint, tests, build, phase-specific checks, **and** native Electron E2E when native surfaces changed).
+- The Phase Report must be honest and must separate:
+  - Automated verification
+  - Native Electron manual verification
+  - Not manually verified
 - After approval: Conventional Commits, then push to the documented branches (`main` / `develop` as applicable).
 - Never force-push unless the user explicitly requires it.
+
+## Native End-to-End Verification (permanent)
+
+When a phase touches Electron main, preload, IPC, dialogs, drag/drop, filesystem, shell, native libraries, qpdf, OCR, or Windows integration:
+
+- Jarvis must run the **complete** user journey in the live Electron app.
+- Automated green results must not be presented as native E2E proof.
+- Do not mark such a phase complete until automated validation **and** native E2E pass.
+
+Details: `docs/DEVELOPMENT_WORKFLOW.md`.
 
 ## Agent sequence (within Implementation → Validation)
 
@@ -36,7 +49,7 @@ strategy-guardian → solution-architect → implementer → testing-agent
 ```
 
 - State scope, affected files, and phase alignment before coding.
-- Do not mark work complete without validation evidence.
+- Do not mark work complete without validation evidence (including native E2E when required).
 - `strategy-guardian` may block out-of-scope work.
 - `code-review-agent` should not be the primary author of code it reviews.
 - Stop on blockers; record them in `PROJECT_STATUS.md`.

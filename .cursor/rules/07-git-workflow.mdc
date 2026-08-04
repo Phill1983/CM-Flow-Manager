@@ -11,4 +11,5 @@ alwaysApply: true
 - Prefer `feature/*`, `fix/*`, `docs/*` branches; keep `main` release-ready.
 - Phase delivery order: **Implementation → Validation → Phase Report → Human approval → Commit → Push**.
 - Do **not** commit or push phase deliverables until the Phase Report is accepted by the user.
+- Do not treat automated CI green alone as approval when the phase changed native Electron surfaces — native E2E must be reported first (see `docs/DEVELOPMENT_WORKFLOW.md`).
 - Never force-push `main` or skip hooks unless the user explicitly requires it.

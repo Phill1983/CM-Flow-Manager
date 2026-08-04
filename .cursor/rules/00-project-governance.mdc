@@ -7,6 +7,9 @@ alwaysApply: true
 
 - Work only in the **approved phase** (`docs/PROJECT_STATUS.md`). Do not start Phase N+1 without explicit user approval.
 - Phase delivery cycle: **Implementation → Validation → Phase Report → Human approval → Commit → Push**.
+- Validation for native desktop work must include **Native End-to-End Verification** in the running Electron app (see `docs/DEVELOPMENT_WORKFLOW.md`). Automated tests alone are not enough for main/preload/IPC/dialogs/drag-drop/filesystem/shell/native libs/qpdf/OCR/Windows integration.
+- Phase Reports must separate **Automated verification**, **Native Electron manual verification**, and **Not manually verified** — never mix them.
+- A phase that changes native desktop functionality is not complete until automated checks **and** the full Electron end-to-end user journey pass.
 - v0.1.0 scope is **PDF Password Remover only**. Do not build merge/split/OCR/Audatex/cloud features early.
 - **Never** implement password cracking, brute force, dictionaries, blank/common guessing, or credential bypass.
 - Read relevant docs before editing. Prefer extending existing utilities over duplicating them.

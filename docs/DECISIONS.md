@@ -23,5 +23,6 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-03 | Phase 2: qpdf 12.3.2 via `--password-file`; DestinationExists on clash | ADR-003 / PDF_ENGINE_EVALUATION.md |
 | 2026-08-03 | Delivery cycle: Implementation → Validation → Phase Report → Human approval → Commit → Push | DEVELOPMENT_WORKFLOW.md / rules |
 | 2026-08-04 | Phase 3A: product Password Remover UI; IPC `pdf:prepareSource` + `shell:openFolder`; Phase 3B contracts only | PRODUCT_REQUIREMENTS.md / BACKLOG.md |
+| 2026-08-04 | Native End-to-End Verification mandatory for Electron/native surfaces; Phase Reports must separate automated vs native vs not verified | DEVELOPMENT_WORKFLOW.md / rules |
 
 Update this file when making durable technical choices.

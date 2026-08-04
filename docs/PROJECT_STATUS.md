@@ -22,7 +22,7 @@
 - Allowlisted IPC: `dialog:openPdf`, `dialog:savePdf`, `pdf:inspect`, `pdf:unlock`.
 - Password via `--password-file` (not argv); documented residual disk exposure.
 
-### Phase 3A (pending commit approval)
+### Phase 3A (complete; approved and pushed)
 - Production Password Remover UI replaces DEV-only PoC panel.
 - Drag-and-drop + file dialog (single PDF).
 - Inspect → password when required → collision-safe `*_unlocked.pdf` suggestion → unlock → open folder.
@@ -32,6 +32,7 @@
 
 ### Governance
 - Delivery cycle locked: **Implementation → Validation → Phase Report → Human approval → Commit → Push**.
+- **Native End-to-End Verification** required for Electron/native surfaces; Phase Reports must separate automated vs native manual vs not verified (`docs/DEVELOPMENT_WORKFLOW.md`).
 
 ## Work in progress
 
