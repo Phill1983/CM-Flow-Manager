@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { access, constants, mkdir, mkdtemp, open, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
@@ -47,20 +48,44 @@ const DEFAULT_LOGGER: PdfEngineLogger = {
   },
 };
 
-function repoVendorQpdfPath(): string {
-  const here = fileURLToPath(new URL('.', import.meta.url));
-  // packages/pdf-engine/src -> ../../../vendor/qpdf/bin/qpdf.exe
-  return resolve(here, '../../../vendor/qpdf/bin/qpdf.exe');
+function qpdfBinaryName(): string {
+  return process.platform === 'win32' ? 'qpdf.exe' : 'qpdf';
+}
+
+/**
+ * Candidate locations for the vendored qpdf binary.
+ * Electron bundles this module into `apps/desktop/out/main`, so a single
+ * relative path from `import.meta.url` is not enough — also try cwd roots.
+ */
+export function listQpdfCandidatePaths(moduleDir = fileURLToPath(new URL('.', import.meta.url))): string[] {
+  const bin = qpdfBinaryName();
+  const rel = join('vendor', 'qpdf', 'bin', bin);
+  return [
+    // packages/pdf-engine/src|dist → repo root
+    resolve(moduleDir, '../../..', rel),
+    // apps/desktop/out/main (electron-vite bundle) → repo root
+    resolve(moduleDir, '../../../..', rel),
+    // pnpm dev / scripts often start with cwd = repo root
+    resolve(process.cwd(), rel),
+    // pnpm --filter desktop may use cwd = apps/desktop
+    resolve(process.cwd(), '../..', rel),
+  ];
 }
 
 export function resolveQpdfExecutable(explicit?: string): string | null {
   if (explicit) {
-    return explicit;
+    return existsSync(explicit) ? explicit : null;
   }
   if (process.env['CMFLOW_QPDF_PATH']) {
-    return process.env['CMFLOW_QPDF_PATH'];
+    const fromEnv = process.env['CMFLOW_QPDF_PATH'];
+    return existsSync(fromEnv) ? fromEnv : null;
   }
-  return repoVendorQpdfPath();
+  for (const candidate of listQpdfCandidatePaths()) {
+    if (existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return null;
 }
 
 async function pathExists(filePath: string): Promise<boolean> {
@@ -105,7 +130,11 @@ function mapUnlockFailure(
 ): PdfUnlockResult {
   const safeStderr = redactSecrets(stderr, secrets).toLowerCase();
 
-  if (safeStderr.includes('invalid password') || safeStderr.includes('incorrect password')) {
+  if (
+    safeStderr.includes('invalid password') ||
+    safeStderr.includes('incorrect password') ||
+    safeStderr.includes('password is incorrect')
+  ) {
     return { status: 'incorrect_password' };
   }
   if (safeStderr.includes('invalid pdf') || safeStderr.includes('not a pdf') || safeStderr.includes('unable to find trailer')) {
@@ -135,6 +164,11 @@ function mapUnlockFailure(
     category: 'PdfProcessing',
     message: `PDF processing failed${exitCode == null ? '' : ` (exit ${exitCode})`}.`,
   };
+}
+
+/** qpdf exit 0 = clean; exit 3 = completed with warnings only. */
+export function isQpdfSuccessfulExit(exitCode: number | null): boolean {
+  return exitCode === 0 || exitCode === 3;
 }
 
 export class QpdfUnlockService implements PdfUnlockService {
@@ -338,7 +372,11 @@ export class QpdfUnlockService implements PdfUnlockService {
         secrets,
       );
 
-      if (result.exitCode !== 0) {
+      // qpdf: 0 = clean success, 3 = success with warnings (e.g. invalid /ID in trailer).
+      const completedWithWarnings = result.exitCode === 3;
+      const failed = !isQpdfSuccessfulExit(result.exitCode);
+
+      if (failed) {
         if (await pathExists(input.destinationPath)) {
           await rm(input.destinationPath, { force: true });
         }
@@ -346,12 +384,28 @@ export class QpdfUnlockService implements PdfUnlockService {
         this.logger.log({
           level: 'warn',
           message: 'PDF unlock failed',
-          category: mapped.status === 'incorrect_password' ? 'IncorrectPassword' : mapped.status === 'failed' ? mapped.category : 'PdfProcessing',
+          category:
+            mapped.status === 'incorrect_password'
+              ? 'IncorrectPassword'
+              : mapped.status === 'failed'
+                ? mapped.category
+                : 'PdfProcessing',
           durationMs: this.now() - started,
           qpdfVersion: version,
           sourceFile: sourceLabel,
         });
         return mapped;
+      }
+
+      if (!(await pathExists(input.destinationPath))) {
+        return {
+          status: 'failed',
+          category: 'PdfProcessing',
+          message:
+            completedWithWarnings
+              ? 'Unlock reported warnings but produced no output file.'
+              : 'Unlock produced no output file.',
+        };
       }
 
       const outStat = await stat(input.destinationPath);
@@ -376,7 +430,9 @@ export class QpdfUnlockService implements PdfUnlockService {
 
       this.logger.log({
         level: 'info',
-        message: 'PDF unlock completed',
+        message: completedWithWarnings
+          ? 'PDF unlock completed with warnings'
+          : 'PDF unlock completed',
         category: 'Unlocked',
         durationMs: this.now() - started,
         qpdfVersion: version,

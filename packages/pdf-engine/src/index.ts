@@ -13,6 +13,8 @@ export { UnavailablePdfUnlockService } from './unavailable-service';
 export {
   QpdfUnlockService,
   resolveQpdfExecutable,
+  listQpdfCandidatePaths,
+  isQpdfSuccessfulExit,
   type PdfEngineLogEvent,
   type PdfEngineLogger,
   type QpdfUnlockServiceOptions,

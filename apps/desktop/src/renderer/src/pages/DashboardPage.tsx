@@ -38,7 +38,7 @@ export function DashboardPage() {
               className="inline-flex items-center gap-2 rounded-full border border-border px-2.5 py-1 text-sm"
               role="status"
             >
-              <span className="size-2 rounded-full bg-amber-500" aria-hidden="true" />
+              <span className="size-2 rounded-full bg-emerald-500" aria-hidden="true" />
               <span>{t('dashboard.localStatusValue')}</span>
             </div>
           </CardContent>

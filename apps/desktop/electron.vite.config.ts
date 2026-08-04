@@ -24,11 +24,17 @@ export default defineConfig({
     },
   },
   preload: {
+    // Sandboxed preload cannot load ESM (`import`). Bundle as a single CJS file.
     plugins: [externalizeDepsPlugin({ exclude: workspacePackages })],
     build: {
       rollupOptions: {
         input: {
           index: resolve('src/preload/index.ts'),
+        },
+        output: {
+          format: 'cjs',
+          entryFileNames: '[name].cjs',
+          inlineDynamicImports: true,
         },
       },
     },
