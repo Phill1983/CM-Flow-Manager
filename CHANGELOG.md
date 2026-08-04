@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Phase 1.5: Tailwind CSS v4 + shadcn/ui (Button, Card, Input, Label, Separator).
 - Phase 2: `QpdfUnlockService` using official qpdf 12.3.2; synthetic fixtures; PDF integration tests.
 - Allowlisted IPC for PDF inspect/unlock PoC and PDF file dialogs.
-- DEV-only unlock panel and `poc:unlock` CLI.
+- **Phase 3A:** production Password Remover UI (single-file drag/drop, inspect, unlock, open folder).
+- IPC: `pdf:prepareSource`, `shell:openFolder`; Phase 3B interface stubs only.
 
 ### Changed
 
@@ -21,10 +22,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Package manager fixed to pnpm `9.15.9` via `packageManager` (lockfile: `pnpm-lock.yaml` only).
 - Shell styles migrated from handcrafted CSS to Tailwind utility classes.
 - Lint policy: zero warnings (`eslint --max-warnings 0`).
+- DEV-only unlock panel replaced by product Password Remover UI.
+- Delivery cycle: Implementation → Validation → Phase Report → Human approval → Commit → Push.
 
 ### Notes
 
-- Product Password Remover UI still Phase 3.
+- Phase 3B (plate → folder) not started.
+- Batch processing still Phase 4 (`0.0.4`).
 - qpdf is not yet bundled into a Windows installer.
 - GitHub remote: https://github.com/Phill1983/CM-Flow-Manager.git
 

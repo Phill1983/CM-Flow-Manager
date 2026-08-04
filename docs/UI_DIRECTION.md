@@ -32,6 +32,17 @@ Visual goals:
 
 Add more components only when a real screen needs them.
 
+## Phase 3A Password Remover screen
+
+Production-oriented single-file unlock UI on `/pdf-tools/password-remover`:
+
+- privacy notice, drag-and-drop zone, select button, selected-file card
+- inspection / encryption status, password field with show/hide (encrypted only)
+- suggested output path + Change destination, Unlock action
+- progress, success/error results, open output folder, reset
+
+Do not redesign unrelated screens while iterating on this module.
+
 ## Layout expectations
 
 - Compact sidebar + content pane

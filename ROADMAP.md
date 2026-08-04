@@ -9,11 +9,13 @@ CM Flow Manager becomes a modular local-first desktop workspace for documents, P
 1. Secure Electron application shell.
 2. Localized UI (Polish, Ukrainian, English).
 3. PDF Password Remover with known-password unlock only.
-4. Single-file and batch processing.
-5. Safe output naming (`*_unlocked.pdf` with collision handling).
-6. Local logging without passwords or document content.
-7. Windows installer + optional portable build.
-8. Automated unit, integration, UI, and smoke tests.
+4. **Phase 3A:** single-file Password Remover product UI (done pending approval).
+5. **Phase 3B:** vehicle plate → configured-root folder resolution (next candidate; not started).
+6. Single-file and batch processing (batch = Phase 4).
+7. Safe output naming (`*_unlocked.pdf` with collision handling).
+8. Local logging without passwords or document content.
+9. Windows installer + optional portable build.
+10. Automated unit, integration, UI, and smoke tests.
 
 ## After v0.1.0 (candidates — not scheduled)
 
