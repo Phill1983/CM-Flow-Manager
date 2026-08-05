@@ -1,0 +1,50 @@
+appId: com.cmflowmanager.desktop
+productName: CM Flow Manager
+copyright: Copyright © CM Flow Manager
+forceCodeSigning: false
+afterPack: ../../scripts/after-pack-win.mjs
+directories:
+  output: ../../release
+  buildResources: resources
+files:
+  - out/**/*
+  - package.json
+  - resources/icon.ico
+extraResources:
+  - from: resources/icon.ico
+    to: icon.ico
+  - from: ../../vendor/qpdf/bin
+    to: qpdf
+    filter:
+      - '**/*'
+  - from: ../../vendor/qpdf/NOTICE
+    to: qpdf/NOTICE
+win:
+  icon: resources/icon.ico
+  # Keep false: enabling also triggers winCodeSign extract (symlink privilege
+  # failures). Icon/VERSIONINFO are applied in afterPack via rcedit instead.
+  signAndEditExecutable: false
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+  executableName: CM Flow Manager
+nsis:
+  oneClick: false
+  perMachine: true
+  allowToChangeInstallationDirectory: true
+  allowElevation: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: CM Flow Manager
+  uninstallDisplayName: CM Flow Manager
+  include: resources/installer.nsh
+  installerIcon: resources/icon.ico
+  uninstallerIcon: resources/icon.ico
+  installerHeaderIcon: resources/icon.ico
+  artifactName: CM Flow Manager Setup ${version}.${ext}
+portable:
+  artifactName: CM Flow Manager ${version}.${ext}

@@ -4,12 +4,14 @@ import { useI18n } from '@/i18n/useI18n';
 export function AboutPage() {
   const { t } = useI18n();
   const [version, setVersion] = useState('…');
+  const [productName, setProductName] = useState('CM Flow Manager');
 
   useEffect(() => {
     let cancelled = false;
     void window.cmFlow.getVersion().then((result) => {
       if (!cancelled) {
         setVersion(result.version);
+        setProductName(result.name);
       }
     });
     return () => {
@@ -22,6 +24,7 @@ export function AboutPage() {
       <h1 id="about-title" className="text-2xl font-semibold tracking-tight">
         {t('about.title')}
       </h1>
+      <p className="text-lg font-medium">{productName}</p>
       <p>
         {t('about.version')}: <strong>{version}</strong>
       </p>

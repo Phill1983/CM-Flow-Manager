@@ -1,6 +1,6 @@
 {
   "name": "cm-flow-manager",
-  "version": "0.0.1",
+  "version": "0.1.0-alpha",
   "private": true,
   "type": "module",
   "description": "A modular local-first desktop toolkit for PDF and workflow operations.",
@@ -21,6 +21,8 @@
     "test:pdf": "vitest run packages/pdf-engine",
     "fetch:qpdf": "node ./scripts/fetch-qpdf-dev.mjs",
     "fixtures:pdf": "pnpm --filter @cm-flow-manager/pdf-engine generate:fixtures",
+    "pack:win": "pnpm fetch:qpdf && pnpm build && pnpm --filter @cm-flow-manager/desktop dist:win && pnpm release:checksums",
+    "release:checksums": "node ./scripts/write-release-checksums.mjs",
     "clean": "pnpm -r exec rimraf dist out coverage"
   },
   "devDependencies": {

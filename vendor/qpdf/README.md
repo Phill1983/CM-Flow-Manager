@@ -21,4 +21,6 @@ The binary under `vendor/qpdf/bin` is **not committed**. Checksums are verified 
 
 ## Future production bundling
 
-Shipping qpdf inside the Windows installer is deferred. Production packaging must include Apache-2.0 attribution and the verified binary/DLLs. Do not treat the Phase 2 vendor folder as the final redistribute layout.
+Phase 3.5 Alpha ships qpdf via electron-builder `extraResources` (`resources/qpdf`) with `NOTICE` (Apache-2.0). Development still uses `pnpm fetch:qpdf` into `vendor/qpdf/bin` (gitignored).
+
+Signed / SmartScreen-hardened redistribution remains a later release goal.

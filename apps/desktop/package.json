@@ -1,8 +1,11 @@
 {
   "name": "@cm-flow-manager/desktop",
-  "version": "0.0.1",
+  "version": "0.1.0-alpha",
   "private": true,
-  "description": "CM Flow Manager Electron desktop shell",
+  "description": "CM Flow Manager — local PDF Password Remover",
+  "author": {
+    "name": "CM Flow Manager"
+  },
   "main": "./out/main/index.js",
   "type": "module",
   "scripts": {
@@ -10,7 +13,8 @@
     "build": "electron-vite build",
     "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
     "preview": "electron-vite preview",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "dist:win": "node ../../scripts/ensure-qpdf-for-pack.mjs && node ../../scripts/run-electron-builder-win.mjs"
   },
   "dependencies": {
     "@cm-flow-manager/file-utils": "workspace:*",
@@ -33,7 +37,9 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
     "electron": "^34.3.0",
+    "electron-builder": "^25.1.8",
     "electron-vite": "^3.0.0",
+    "rcedit": "^5.0.2",
     "typescript": "^5.8.2",
     "vite": "^6.4.3"
   }

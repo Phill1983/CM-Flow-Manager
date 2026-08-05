@@ -5,12 +5,16 @@ node_modules/
 # Build outputs
 dist/
 out/
-release/
 build/
 *.tsbuildinfo
 package-lock.json
 npm-shrinkwrap.json
 yarn.lock
+
+# Release binaries (notes/checksums generated locally; keep folder marker)
+/release/**
+!/release/.gitkeep
+!/release/README.md
 
 # Electron / electron-builder
 apps/desktop/dist/

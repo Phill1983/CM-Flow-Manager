@@ -60,7 +60,7 @@ function qpdfBinaryName(): string {
 export function listQpdfCandidatePaths(moduleDir = fileURLToPath(new URL('.', import.meta.url))): string[] {
   const bin = qpdfBinaryName();
   const rel = join('vendor', 'qpdf', 'bin', bin);
-  return [
+  const candidates = [
     // packages/pdf-engine/src|dist → repo root
     resolve(moduleDir, '../../..', rel),
     // apps/desktop/out/main (electron-vite bundle) → repo root
@@ -70,6 +70,14 @@ export function listQpdfCandidatePaths(moduleDir = fileURLToPath(new URL('.', im
     // pnpm --filter desktop may use cwd = apps/desktop
     resolve(process.cwd(), '../..', rel),
   ];
+
+  // Packaged Electron: extraResources → resources/qpdf/qpdf.exe
+  const resourcesPath = (process as NodeJS.Process & { resourcesPath?: string }).resourcesPath;
+  if (typeof resourcesPath === 'string' && resourcesPath.length > 0) {
+    candidates.unshift(join(resourcesPath, 'qpdf', bin));
+  }
+
+  return candidates;
 }
 
 export function resolveQpdfExecutable(explicit?: string): string | null {

@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import {
@@ -21,8 +22,30 @@ import {
   preparePdfSource,
 } from './pdf-ipc-helpers';
 
+/** Window title (sidebar-aligned). Installer productName remains “CM Flow Manager”. */
 const APP_NAME = 'Flow Manager';
+const PRODUCT_NAME = 'CM Flow Manager';
+const APP_USER_MODEL_ID = 'com.cmflowmanager.desktop';
+
+function resolvePackagedQpdfPath(): string | undefined {
+  if (!app.isPackaged) {
+    return undefined;
+  }
+  const candidate = join(process.resourcesPath, 'qpdf', 'qpdf.exe');
+  return existsSync(candidate) ? candidate : undefined;
+}
+
+function resolveAppIconPath(): string | undefined {
+  const candidates = [
+    join(process.resourcesPath, 'icon.ico'),
+    join(__dirname, '../../resources/icon.ico'),
+    join(app.getAppPath(), 'resources/icon.ico'),
+  ];
+  return candidates.find((candidate) => existsSync(candidate));
+}
+
 const pdfUnlockService = createPdfUnlockService({
+  qpdfPath: resolvePackagedQpdfPath(),
   logger: {
     log: (event) => {
       console.info('[pdf-engine]', JSON.stringify(event));
@@ -35,10 +58,12 @@ console.info(
     level: 'info',
     message: 'PDF unlock service initialized',
     category: pdfUnlockService.constructor.name,
+    packaged: app.isPackaged,
   }),
 );
 
 function createMainWindow(): BrowserWindow {
+  const icon = resolveAppIconPath();
   const window = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -47,7 +72,7 @@ function createMainWindow(): BrowserWindow {
     show: false,
     title: APP_NAME,
     autoHideMenuBar: true,
-    icon: join(__dirname, '../../resources/icon.ico'),
+    ...(icon ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.cjs'),
       contextIsolation: true,
@@ -79,7 +104,7 @@ function registerIpcHandlers(): void {
   ipcMain.removeHandler(IpcChannels.AppGetVersion);
   ipcMain.handle(IpcChannels.AppGetVersion, (): AppGetVersionResult => ({
     version: app.getVersion(),
-    name: APP_NAME,
+    name: PRODUCT_NAME,
   }));
 
   ipcMain.removeHandler(IpcChannels.DialogOpenPdf);
@@ -210,6 +235,8 @@ function registerIpcHandlers(): void {
     },
   );
 }
+
+app.setAppUserModelId(APP_USER_MODEL_ID);
 
 app.whenReady().then(() => {
   registerIpcHandlers();
