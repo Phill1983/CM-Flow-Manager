@@ -21,7 +21,7 @@ import {
   preparePdfSource,
 } from './pdf-ipc-helpers';
 
-const APP_NAME = 'CM Flow Manager';
+const APP_NAME = 'Flow Manager';
 const pdfUnlockService = createPdfUnlockService({
   logger: {
     log: (event) => {
