@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "pnpm --filter @cm-flow-manager/desktop dev",
     "build": "pnpm -r --filter @cm-flow-manager/desktop... build",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "pnpm -r --filter \"./packages/*\" --filter \"./modules/*\" typecheck && pnpm --filter @cm-flow-manager/desktop typecheck",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

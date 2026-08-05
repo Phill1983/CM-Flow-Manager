@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
     "generate:fixtures": "node ./scripts/generate-fixtures.mjs",
     "poc:unlock": "node ./scripts/unlock-poc.mjs"
