@@ -9,7 +9,7 @@
 | Bundler | Vite via electron-vite | Main/preload/renderer |
 | Styling | Tailwind CSS v4 + shadcn/ui | Via `@tailwindcss/vite`; Autoprefixer baked into Tailwind v4 |
 | Client state | Zustand available; minimal use in Phase 1 shell | Queue state in Phase 3+ |
-| Packaging | electron-builder planned Phase 5 | `pnpm build` produces `apps/desktop/out` now |
+| Packaging | electron-builder (NSIS + portable) | `pnpm pack:win` → `release/` |
 | Unit tests | Vitest | |
 | UI tests | React Testing Library | Later phases |
 | E2E | Playwright | Later phases |

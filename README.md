@@ -6,9 +6,9 @@ Modular, local-first Windows desktop toolkit for PDF and office workflow operati
 | --- | --- |
 | Application | CM Flow Manager |
 | Package ID | `com.cmflowmanager.desktop` |
-| Current version | `0.0.1` (shell) |
+| Current version | `0.1.0-alpha` |
 | MVP target | `0.1.0` |
-| Current phase | **Phase 1 complete — awaiting Phase 2 approval** |
+| Current phase | **Phase 3.5 — First Alpha release candidate** |
 | Workspace | `D:\Projects\cm-flow-manager` |
 | Platform focus | Windows 10 / Windows 11 |
 | Processing model | Fully local — no document uploads |
@@ -23,13 +23,13 @@ This application will **never** include password cracking, brute-force attempts,
 
 ## Current status
 
-Phase 1 shell launches: secure Electron preload/IPC, navigation, i18n (pl/uk/en), theme prep, and an unavailable PDF engine mock. **No PDF unlocking yet.**
+Phase 3A Password Remover UI is complete. Phase 3.5 packages the first standalone Windows Alpha (installer + portable) with bundled qpdf. Phase 3B (plate → folder) is deferred.
 
 See:
 
 - [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md)
 - [docs/STATE_REGISTRY.md](docs/STATE_REGISTRY.md)
-- [docs/UI_DIRECTION.md](docs/UI_DIRECTION.md)
+- [docs/DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ## Privacy principles
@@ -42,18 +42,20 @@ See:
 
 ## Stack
 
-Electron · React · TypeScript · Vite (electron-vite) · Zustand · Vitest · ESLint · Prettier · pnpm · GitHub Actions
+Electron · React · TypeScript · Vite (electron-vite) · Zustand · Vitest · ESLint · Prettier · pnpm · electron-builder · GitHub Actions
 
-PDF unlock engine (Phase 2+): **bundled qpdf** (Apache-2.0). Phase 1 ships only the `PdfUnlockService` contract + unavailable mock.
+PDF unlock engine: **bundled qpdf** (Apache-2.0).
 
 ## Repository layout
 
 ```text
 cm-flow-manager/
-├── apps/desktop/                 # Electron main, preload, renderer
+├── apps/desktop/                 # Electron main, preload, renderer, packaging
 ├── packages/ipc-contracts/       # Typed IPC allowlist
-├── packages/pdf-engine/          # PdfUnlockService + unavailable mock
-├── modules/pdf-password-remover/ # Module metadata (UI placeholder in desktop)
+├── packages/pdf-engine/          # PdfUnlockService + qpdf adapter
+├── modules/pdf-password-remover/ # Module domain helpers + Phase 3B contracts
+├── vendor/qpdf/                  # Fetched qpdf (bin gitignored)
+├── release/                      # Local pack output (exe gitignored)
 ├── docs/
 ├── .cursor/
 └── .github/
@@ -65,17 +67,21 @@ cm-flow-manager/
 | --- | --- | --- |
 | 0 | Planning and architecture package | Complete |
 | 1 | Application shell that launches | Complete |
-| 2 | Verified PDF unlock engine | Not started |
-| 3 | Working single-file UI | Not started |
-| 4 | Stable batch-capable MVP | Not started |
-| 5 | v0.1.0 release candidate | Not started |
+| 1.5 | UI foundation (Tailwind/shadcn) | Complete |
+| 2 | Verified PDF unlock engine | Complete |
+| 3A | Working single-file UI | Complete |
+| 3.5 | First Alpha packaging (installer + portable) | In progress |
+| 3B | Plate → folder resolution | Deferred |
+| 4 | Batch-capable MVP | Not started |
+| 5 | Signed / hardened release candidate | Not started |
 
-## Getting started
+## Getting started (developers)
 
 Requires Node.js 22+ and pnpm `9.15.9` (see root `packageManager`).
 
 ```bash
 pnpm install
+pnpm fetch:qpdf
 pnpm dev
 pnpm typecheck
 pnpm lint
@@ -83,16 +89,21 @@ pnpm test
 pnpm build
 ```
 
-Do not use npm/yarn for workspace installs. Only `pnpm-lock.yaml` is the lockfile of record.
+### Windows Alpha packaging
 
-## Contributing
+```bash
+pnpm pack:win
+```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md).
+Produces under `release/`:
 
-## Security
+- `CM Flow Manager Setup 0.1.0-alpha.exe` (NSIS)
+- `CM Flow Manager 0.1.0-alpha.exe` (portable)
+- `SHA256SUMS.txt`
+- Release notes / changelog excerpt
 
-See [SECURITY.md](SECURITY.md) and [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md).
+End users do **not** need Node, npm, pnpm, Git, or Cursor.
 
-## License
+## Verification rule (from Phase 3.5)
 
-Proprietary — see [LICENSE](LICENSE). Third-party components retain their own licenses.
+For user-facing desktop work, verify **both** `pnpm dev` and the **packaged EXE**. The packaged build is the primary target. See [docs/DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md).

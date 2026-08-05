@@ -9,13 +9,14 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 3. ~~Phase 2 qpdf PoC + fixtures + allowlisted IPC.~~
 4. ~~Governance delivery cycle (report → approval → commit → push).~~
 
-## Now (Phase 3A — awaiting commit approval)
+## Now (Phase 3.5 — Alpha packaging)
 
-1. ~~Production single-file Password Remover UI.~~
-2. ~~Drag/drop + dialog selection; collision-safe destination; open folder.~~
-3. ~~pl / uk / en strings for Phase 3A.~~
+1. electron-builder NSIS installer + portable Windows x64.
+2. Bundle qpdf + Apache-2.0 NOTICE into app resources.
+3. `pnpm pack:win` → `release/` + SHA256 + notes.
+4. Packaged EXE as primary verification target (governance).
 
-## Next (Phase 3B — blocked on owner approval)
+## Next (Phase 3B — deferred / blocked on owner approval)
 
 1. Implement `VehiclePlateExtractor` (PDF text layer only; no OCR).
 2. Implement `PlateNormalizer`.
@@ -28,8 +29,8 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 1. Batch unlock with shared password + queue controls.
 2. Cancel in-flight unlock when technically feasible.
 3. Activity history (non-sensitive metadata only).
-4. electron-builder NSIS installer + bundled qpdf + checksums.
-5. Security review + release candidate.
+4. Code signing + hardened release candidate.
+5. Security review for public/signed release.
 
 ## Post-MVP / v0.2.x
 

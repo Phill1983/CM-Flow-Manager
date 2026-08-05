@@ -20,8 +20,9 @@ Living inventory of product and engineering state. Update after every meaningful
 
 - Activity history — empty honest placeholder
 - Shared `packages/ui`, `logging`, `core` — still deferred
-- Windows installer packaging / bundled qpdf — Phase 5
-- Phase 3B plate/folder resolution — interfaces only
+- Windows installer packaging / bundled qpdf — **Phase 3.5 Alpha** (unsigned)
+- Phase 3B plate/folder resolution — interfaces only; implementation deferred
+- Code signing — later
 
 ## Planned features (approved for roadmap, not built)
 

@@ -68,10 +68,12 @@ Select PDF
 Every Phase Report must clearly separate:
 
 1. **Automated verification** — typecheck, lint, unit/integration/UI tests, build, and similar.
-2. **Native Electron manual verification** — workflows actually run in the Electron app, with outcomes.
-3. **Not manually verified** — anything not exercised end-to-end (must be listed explicitly).
+2. **Native Electron manual verification** — workflows actually run in the Electron app (`pnpm dev` and/or packaged EXE).
+3. **Development verification** — `pnpm dev` smoke (when relevant).
+4. **Packaged EXE verification** — standalone installer/portable (required for user-facing desktop phases from Phase 3.5).
+5. **Not manually verified** — anything not exercised end-to-end (must be listed explicitly).
 
-Do not present automated green results as proof that native dialogs, drop, IPC, or shell paths work.
+Do not present automated green results as proof that native dialogs, drop, IPC, shell paths, or packaged qpdf work.
 
 ### Completion rule
 
@@ -84,6 +86,26 @@ A phase that introduces or changes native desktop functionality is **not complet
 ### Scope
 
 This rule is permanent and applies to every future CM Flow Manager module.
+
+## Packaged EXE verification (from Phase 3.5)
+
+Starting with the first Alpha packaging:
+
+**`pnpm dev` is no longer the primary manual verification target** for user-facing desktop functionality.
+
+For every future phase that changes user-facing desktop behavior:
+
+1. **Development verification** — `pnpm dev` (optional smoke / faster iteration).
+2. **Packaged EXE verification** — the standalone installer and/or portable build produced by `pnpm pack:win`.
+
+The **packaged executable is the primary validation target**.
+
+Every Phase Report for such work must clearly separate:
+
+- Development verification
+- Packaged EXE verification
+
+A phase involving desktop functionality is **not complete** until **both** pass (in addition to automated validation and the Native End-to-End rules above when native surfaces are touched).
 
 ## Agent coordination sequence
 

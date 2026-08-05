@@ -22,10 +22,12 @@ Push
 ```
 
 - Do **not** commit or push phase work before the Phase Report and explicit human approval.
-- Validation must finish before the Phase Report (typecheck, lint, tests, build, phase-specific checks, **and** native Electron E2E when native surfaces changed).
+- Validation must finish before the Phase Report (typecheck, lint, tests, build, phase-specific checks, **native Electron E2E when native surfaces changed**, and **packaged EXE verification for user-facing desktop phases from Phase 3.5**).
 - The Phase Report must be honest and must separate:
   - Automated verification
   - Native Electron manual verification
+  - Development verification
+  - Packaged EXE verification
   - Not manually verified
 - After approval: Conventional Commits, then push to the documented branches (`main` / `develop` as applicable).
 - Never force-push unless the user explicitly requires it.

@@ -24,5 +24,8 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-03 | Delivery cycle: Implementation → Validation → Phase Report → Human approval → Commit → Push | DEVELOPMENT_WORKFLOW.md / rules |
 | 2026-08-04 | Phase 3A: product Password Remover UI; IPC `pdf:prepareSource` + `shell:openFolder`; Phase 3B contracts only | PRODUCT_REQUIREMENTS.md / BACKLOG.md |
 | 2026-08-04 | Native End-to-End Verification mandatory for Electron/native surfaces; Phase Reports must separate automated vs native vs not verified | DEVELOPMENT_WORKFLOW.md / rules |
+| 2026-08-05 | Phase 3.5 Alpha packaging (electron-builder NSIS+portable, bundled qpdf); Packaged EXE primary verification | DEVELOPMENT_WORKFLOW.md / RELEASE_PROCESS.md |
+| 2026-08-05 | Keep `signAndEditExecutable: false`; embed Windows icon/VERSIONINFO via afterPack + `rcedit` (avoids winCodeSign symlink failures). Authenticode signing still required to remove “Unknown publisher”. | electron-builder.yml / scripts/after-pack-win.mjs |
+| 2026-08-05 | NSIS shortcuts use `$INSTDIR\\resources\\icon.ico` (not `$appExe,0`) to avoid Windows icon-cache sticking on Electron after upgrades. | apps/desktop/resources/installer.nsh |
 
 Update this file when making durable technical choices.

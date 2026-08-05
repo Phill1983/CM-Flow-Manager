@@ -2,65 +2,60 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 3A — PDF Password Remover UI** (complete; approved) |
-| Application version | `0.0.3` marker (package.json still `0.0.1` until release bump) |
-| Date | 2026-08-04 |
+| Current phase | **Phase 3.5 complete** — next: Phase 3B (deferred) or owner-directed follow-up |
+| Application version | `0.1.0-alpha` |
+| Date | 2026-08-05 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
 | Product display name | CM Flow Manager |
+| Window title | Flow Manager |
 | Package ID | `com.cmflowmanager.desktop` |
 
 ## Completed work
 
-### Phase 0–1.5
-- Planning, shell, Tailwind/shadcn, zero-warning lint, GitHub remote.
+### Phase 0–3A
+- Planning, shell, Tailwind/shadcn, qpdf PoC, Password Remover product UI, governance (native E2E).
 
-### Phase 2
-- Official qpdf **12.3.2** msvc64 fetched with SHA-256 verification (`pnpm fetch:qpdf`).
-- `QpdfUnlockService` + path guards + sanitized logging.
-- `@cm-flow-manager/file-utils` for unlocked naming helpers.
-- Synthetic fixtures + integration tests.
-- Allowlisted IPC: `dialog:openPdf`, `dialog:savePdf`, `pdf:inspect`, `pdf:unlock`.
-- Password via `--password-file` (not argv); documented residual disk exposure.
-
-### Phase 3A (complete; approved and pushed)
-- Production Password Remover UI replaces DEV-only PoC panel.
-- Drag-and-drop + file dialog (single PDF).
-- Inspect → password when required → collision-safe `*_unlocked.pdf` suggestion → unlock → open folder.
-- IPC additions: `pdf:prepareSource`, `shell:openFolder` (+ preload `getPathForFile` for drops).
-- Localization complete for pl / uk / en.
-- Phase 3B contracts only: `VehiclePlateExtractor`, `PlateNormalizer`, `CaseFolderResolver`.
+### Phase 3.5 (approved / published)
+- electron-builder NSIS installer + portable Windows x64.
+- Bundled qpdf under `resources/qpdf` with Apache-2.0 NOTICE.
+- Version `0.1.0-alpha`; About shows product name + version.
+- Packaged EXE is primary verification target for user-facing desktop work.
+- Windows EXE icon/VERSIONINFO via afterPack + `rcedit`; NSIS shortcuts use `resources/icon.ico` (avoids Electron icon-cache on upgrades).
+- Authenticode signing still deferred → SmartScreen/UAC “Unknown publisher” remains.
 
 ### Governance
-- Delivery cycle locked: **Implementation → Validation → Phase Report → Human approval → Commit → Push**.
-- **Native End-to-End Verification** required for Electron/native surfaces; Phase Reports must separate automated vs native manual vs not verified (`docs/DEVELOPMENT_WORKFLOW.md`).
+- Delivery cycle: Implementation → Validation → Phase Report → Human approval → Commit → Push.
+- Native End-to-End Verification + Packaged EXE verification (`docs/DEVELOPMENT_WORKFLOW.md`).
 
 ## Work in progress
 
-- None. Phase 3A complete.
+- None (Phase 3.5 closed). Phase 3B remains deferred until explicit approval.
 
 ## Blockers
 
-1. **Owner approval required** before Phase 3B (plate → folder resolution).
-2. Production qpdf bundling deferred (Phase 5).
+1. **Owner approval required** before Phase 3B (plate → folder).
+2. **Authenticode code-signing certificate** required to remove Windows “Unknown publisher”.
 
 ## Next approved task
 
-Awaiting explicit approval for **Phase 3B** (vehicle plate → configured-root folder resolution). Do not start until approved.
+Awaiting owner direction (Phase 3B or other).
 
 ## Latest test result
 
 ```text
-pnpm test → 9+ files / all passing (incl. pdf-engine exit-code + path tests)
-Manual: encrypted PDF unlock to source folder *_unlocked.pdf succeeded
-```
-
-## Latest build result
-
-```text
 pnpm typecheck → pass
 pnpm lint → pass (0 warnings)
+pnpm test → pass
+```
+
+## Latest build / pack result
+
+```text
 pnpm build → pass
-pnpm dev → CJS sandboxed preload + QpdfUnlockService OK
+pnpm pack:win / dist:win → NSIS + portable produced
+Packaged app log: QpdfUnlockService packaged:true
+Bundled qpdf 12.3.2 decrypt smoke → exit 0
+Desktop/Start Menu shortcuts use resources/icon.ico
 ```
 
 ## GitHub repository
