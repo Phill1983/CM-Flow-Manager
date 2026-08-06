@@ -4,6 +4,7 @@
     { "path": "./packages/file-utils" },
     { "path": "./packages/ipc-contracts" },
     { "path": "./packages/pdf-engine" },
+    { "path": "./packages/app-updater" },
     { "path": "./modules/pdf-password-remover" }
   ]
 }

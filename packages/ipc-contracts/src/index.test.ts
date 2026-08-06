@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { ALLOWED_INVOKE_CHANNELS, IpcChannels, isAllowedInvokeChannel } from './index';
 
 describe('ipc allowlist', () => {
-  it('exposes Phase 3A allowlisted channels', () => {
+  it('exposes Phase 3A + 3.6 allowlisted channels', () => {
     expect(ALLOWED_INVOKE_CHANNELS).toEqual([
       IpcChannels.AppGetVersion,
       IpcChannels.DialogOpenPdf,
@@ -11,6 +11,13 @@ describe('ipc allowlist', () => {
       IpcChannels.PdfUnlock,
       IpcChannels.PdfPrepareSource,
       IpcChannels.ShellOpenFolder,
+      IpcChannels.UpdateGetStatus,
+      IpcChannels.UpdateCheck,
+      IpcChannels.UpdateDownload,
+      IpcChannels.UpdateInstall,
+      IpcChannels.UpdateSetChannel,
+      IpcChannels.UpdateSetAutoCheck,
+      IpcChannels.UpdateOpenReleaseNotes,
     ]);
   });
 
@@ -18,5 +25,6 @@ describe('ipc allowlist', () => {
     expect(isAllowedInvokeChannel('shell:exec')).toBe(false);
     expect(isAllowedInvokeChannel(IpcChannels.ShellOpenFolder)).toBe(true);
     expect(isAllowedInvokeChannel(IpcChannels.PdfPrepareSource)).toBe(true);
+    expect(isAllowedInvokeChannel(IpcChannels.UpdateCheck)).toBe(true);
   });
 });

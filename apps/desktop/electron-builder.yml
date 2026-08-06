@@ -48,3 +48,8 @@ nsis:
   artifactName: CM Flow Manager Setup ${version}.${ext}
 portable:
   artifactName: CM Flow Manager ${version}.${ext}
+publish:
+  - provider: github
+    owner: Phill1983
+    repo: CM-Flow-Manager
+    releaseType: prerelease

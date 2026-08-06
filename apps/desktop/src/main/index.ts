@@ -21,6 +21,7 @@ import {
   openValidatedFolder,
   preparePdfSource,
 } from './pdf-ipc-helpers';
+import { createUpdaterRuntime, maybeAutoCheckUpdates, registerUpdateIpc } from './updater/update-ipc';
 
 /** Window title (sidebar-aligned). Installer productName remains “CM Flow Manager”. */
 const APP_NAME = 'Flow Manager';
@@ -238,9 +239,13 @@ function registerIpcHandlers(): void {
 
 app.setAppUserModelId(APP_USER_MODEL_ID);
 
+const updaterRuntime = createUpdaterRuntime();
+
 app.whenReady().then(() => {
   registerIpcHandlers();
+  registerUpdateIpc(updaterRuntime);
   createMainWindow();
+  void maybeAutoCheckUpdates(updaterRuntime);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

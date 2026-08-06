@@ -7,6 +7,10 @@ import type {
   PdfPrepareSourceResult,
   PdfUnlockRequest,
   ShellOpenFolderResult,
+  UpdateActionResult,
+  UpdateEventPayload,
+  UpdateSetChannelRequest,
+  UpdateStatusSnapshot,
 } from '@cm-flow-manager/ipc-contracts';
 import type { PdfInspectionResult, PdfUnlockResult } from '@cm-flow-manager/pdf-engine';
 
@@ -18,6 +22,14 @@ export type CmFlowApi = {
   unlockPdf: (input: PdfUnlockRequest) => Promise<PdfUnlockResult>;
   preparePdfSource: (filePath: string) => Promise<PdfPrepareSourceResult>;
   openFolder: (targetPath: string) => Promise<ShellOpenFolderResult>;
+  getUpdateStatus: () => Promise<UpdateStatusSnapshot>;
+  checkForUpdates: () => Promise<UpdateActionResult>;
+  downloadUpdate: () => Promise<UpdateActionResult>;
+  installUpdate: () => Promise<UpdateActionResult>;
+  setUpdateChannel: (channel: UpdateSetChannelRequest['channel']) => Promise<UpdateActionResult>;
+  setUpdateAutoCheck: (enabled: boolean) => Promise<UpdateActionResult>;
+  openReleaseNotes: () => Promise<UpdateActionResult>;
+  onUpdateEvent: (listener: (payload: UpdateEventPayload) => void) => () => void;
   getPathForFile: (file: File) => string;
 };
 

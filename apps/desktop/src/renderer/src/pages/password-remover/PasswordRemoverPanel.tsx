@@ -1,4 +1,6 @@
 import { formatFileSizeBytes } from '@cm-flow-manager/pdf-password-remover';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,6 +13,20 @@ import { usePasswordRemoverFlow } from './usePasswordRemoverFlow';
 export function PasswordRemoverPanel() {
   const { t } = useI18n();
   const flow = usePasswordRemoverFlow();
+  const [softBlock, setSoftBlock] = useState(false);
+
+  useEffect(() => {
+    void window.cmFlow.getUpdateStatus().then((status) => {
+      setSoftBlock(status.gate.softBlockWorkSurfaces);
+    });
+    return window.cmFlow.onUpdateEvent((event) => {
+      if (event.type === 'status') {
+        setSoftBlock(event.status.gate.softBlockWorkSurfaces);
+      }
+    });
+  }, []);
+
+  const selectionEnabled = flow.selectionEnabled && !softBlock;
 
   const showResult =
     flow.state === 'success' ||
@@ -32,8 +48,16 @@ export function PasswordRemoverPanel() {
 
   return (
     <div className="flex flex-col gap-4">
+      {softBlock ? (
+        <p className="rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm">
+          {t('updates.softBlockBanner')}{' '}
+          <Link className="underline" to="/settings">
+            {t('nav.settings')}
+          </Link>
+        </p>
+      ) : null}
       <PdfDropZone
-        disabled={!flow.selectionEnabled}
+        disabled={!selectionEnabled}
         onFiles={(files) => void flow.acceptDroppedFiles(files)}
         onSelectClick={() => void flow.selectViaDialog()}
       />
@@ -135,7 +159,7 @@ export function PasswordRemoverPanel() {
               <Button
                 type="button"
                 onClick={() => void flow.unlock()}
-                disabled={!flow.unlockEnabled || flow.busy}
+                disabled={!flow.unlockEnabled || flow.busy || softBlock}
                 aria-busy={flow.state === 'unlocking'}
               >
                 {flow.passwordRequired
@@ -187,7 +211,7 @@ export function PasswordRemoverPanel() {
                   type="button"
                   variant="outline"
                   onClick={() => void flow.unlock()}
-                  disabled={!flow.unlockEnabled || flow.busy || !flow.meta}
+                  disabled={!flow.unlockEnabled || flow.busy || !flow.meta || softBlock}
                 >
                   {flow.passwordRequired
                     ? t('passwordRemover.unlock')

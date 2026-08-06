@@ -17,6 +17,7 @@
     "dist:win": "node ../../scripts/ensure-qpdf-for-pack.mjs && node ../../scripts/run-electron-builder-win.mjs"
   },
   "dependencies": {
+    "@cm-flow-manager/app-updater": "workspace:^",
     "@cm-flow-manager/file-utils": "workspace:*",
     "@cm-flow-manager/ipc-contracts": "workspace:*",
     "@cm-flow-manager/pdf-engine": "workspace:*",
@@ -27,6 +28,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "electron-updater": "^6.8.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.3.0",

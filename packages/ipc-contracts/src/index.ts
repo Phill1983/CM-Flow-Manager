@@ -3,6 +3,19 @@
  * Renderer may only invoke channels listed here via the typed preload API.
  */
 
+export {
+  UpdateIpcChannels,
+  type UpdateActionResult,
+  type UpdateEventPayload,
+  type UpdateIpcChannel,
+  type UpdateSetAutoCheckRequest,
+  type UpdateSetChannelRequest,
+  type UpdateStatusSnapshot,
+  type UpdateUiState,
+} from './update.js';
+
+import { UpdateIpcChannels, type UpdateIpcChannel } from './update.js';
+
 export const IpcChannels = {
   AppGetVersion: 'app:getVersion',
   DialogOpenPdf: 'dialog:openPdf',
@@ -11,6 +24,13 @@ export const IpcChannels = {
   PdfUnlock: 'pdf:unlock',
   PdfPrepareSource: 'pdf:prepareSource',
   ShellOpenFolder: 'shell:openFolder',
+  UpdateGetStatus: UpdateIpcChannels.GetStatus,
+  UpdateCheck: UpdateIpcChannels.Check,
+  UpdateDownload: UpdateIpcChannels.Download,
+  UpdateInstall: UpdateIpcChannels.Install,
+  UpdateSetChannel: UpdateIpcChannels.SetChannel,
+  UpdateSetAutoCheck: UpdateIpcChannels.SetAutoCheck,
+  UpdateOpenReleaseNotes: UpdateIpcChannels.OpenReleaseNotes,
 } as const;
 
 export type IpcChannel = (typeof IpcChannels)[keyof typeof IpcChannels];
@@ -78,7 +98,16 @@ export const ALLOWED_INVOKE_CHANNELS: readonly IpcChannel[] = [
   IpcChannels.PdfUnlock,
   IpcChannels.PdfPrepareSource,
   IpcChannels.ShellOpenFolder,
+  IpcChannels.UpdateGetStatus,
+  IpcChannels.UpdateCheck,
+  IpcChannels.UpdateDownload,
+  IpcChannels.UpdateInstall,
+  IpcChannels.UpdateSetChannel,
+  IpcChannels.UpdateSetAutoCheck,
+  IpcChannels.UpdateOpenReleaseNotes,
 ];
+
+export const ALLOWED_PUSH_CHANNELS: readonly UpdateIpcChannel[] = [UpdateIpcChannels.Event];
 
 export function isAllowedInvokeChannel(channel: string): channel is IpcChannel {
   return (ALLOWED_INVOKE_CHANNELS as readonly string[]).includes(channel);

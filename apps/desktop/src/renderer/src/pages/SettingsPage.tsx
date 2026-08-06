@@ -4,6 +4,7 @@ import { useI18n } from '@/i18n/useI18n';
 import type { LocaleCode } from '@/i18n/types';
 import { useTheme } from '@/theme/useTheme';
 import type { ThemePreference } from '@/theme/theme-context';
+import { UpdatesSection } from './settings/UpdatesSection';
 
 export function SettingsPage() {
   const { t, locale, setLocale, supportedLocales } = useI18n();
@@ -50,6 +51,8 @@ export function SettingsPage() {
           </div>
         </CardContent>
       </Card>
+
+      <UpdatesSection />
     </section>
   );
 }

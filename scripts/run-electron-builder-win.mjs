@@ -8,7 +8,18 @@ process.env.CSC_IDENTITY_AUTO_DISCOVERY = 'false';
 
 const result = spawnSync(
   'pnpm',
-  ['exec', 'electron-builder', '--config', 'electron-builder.yml', '--win', 'nsis', 'portable', '--x64'],
+  [
+    'exec',
+    'electron-builder',
+    '--config',
+    'electron-builder.yml',
+    '--win',
+    'nsis',
+    'portable',
+    '--x64',
+    '--publish',
+    'never',
+  ],
   {
     cwd: desktopRoot,
     env: process.env,
