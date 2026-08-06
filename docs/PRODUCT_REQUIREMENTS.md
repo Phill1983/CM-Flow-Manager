@@ -57,7 +57,11 @@ Unlocked PDF → extract text → detect plate → normalize → search **config
 - Password cracking, guessing, blank/common password attempts
 - Per-file passwords (later version)
 - Other PDF tools (merge, split, OCR, …)
-- Cloud sync, accounts, analytics, auto-update
+- Cloud sync, user accounts, analytics / telemetry
+- Cloud PDF processing or document upload
+- Remote kill switch
+
+**Allowed (Phase 3.6 foundation):** opt-in application updates via GitHub Releases + validated `version-manifest.json` (SHA-256). Settings → Updates only; offline use remains fully supported. See ADR-007 / `SECURITY_MODEL.md`.
 
 ## Non-functional requirements
 

@@ -8,13 +8,16 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 2. ~~Phase 1.5 Tailwind + shadcn foundation.~~
 3. ~~Phase 2 qpdf PoC + fixtures + allowlisted IPC.~~
 4. ~~Governance delivery cycle (report → approval → commit → push).~~
+5. ~~Phase 3A Password Remover product UI.~~
+6. ~~Phase 3.5 Alpha packaging (NSIS + portable, bundled qpdf, pack:win).~~
 
-## Now (Phase 3.5 — Alpha packaging)
+## Now (Phase 3.6 — Update & Version Management Foundation)
 
-1. electron-builder NSIS installer + portable Windows x64.
-2. Bundle qpdf + Apache-2.0 NOTICE into app resources.
-3. `pnpm pack:win` → `release/` + SHA256 + notes.
-4. Packaged EXE as primary verification target (governance).
+1. `@cm-flow-manager/app-updater` (channels, policy, manifest validation, evaluate-update).
+2. GitHub Releases transport (`electron-updater`) + attach `version-manifest.json` (SHA-256).
+3. Allowlisted `update:*` IPC + Settings → Updates UI.
+4. Opt-in check / download / install (NSIS); portable check/notify with limited auto-install.
+5. No kill switch; offline-first; Authenticode stub until signing.
 
 ## Next (Phase 3B — deferred / blocked on owner approval)
 
@@ -29,8 +32,9 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 1. Batch unlock with shared password + queue controls.
 2. Cancel in-flight unlock when technically feasible.
 3. Activity history (non-sensitive metadata only).
-4. Code signing + hardened release candidate.
+4. Code signing + Authenticode update verification + hardened release candidate.
 5. Security review for public/signed release.
+6. CI publish automation for GitHub Releases + manifests (beyond manual Alpha).
 
 ## Post-MVP / v0.2.x
 
@@ -59,5 +63,5 @@ Planned actions:
 
 ## Parking lot (explicitly not scheduled)
 
-- Other PDF tools, OCR, Audatex, ServiceFlow, auto-update, code signing certificates procurement.
+- Other PDF tools, OCR, Audatex, ServiceFlow, code signing certificates procurement.
 - Full-computer filesystem scans for plates (forbidden by product rules).

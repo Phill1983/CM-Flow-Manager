@@ -8,7 +8,7 @@ Modular, local-first Windows desktop toolkit for PDF and office workflow operati
 | Package ID | `com.cmflowmanager.desktop` |
 | Current version | `0.1.0-alpha` |
 | MVP target | `0.1.0` |
-| Current phase | **Phase 3.5 — First Alpha release candidate** |
+| Current phase | **Phase 3.6 — Update & Version Management Foundation** (in progress) |
 | Workspace | `D:\Projects\cm-flow-manager` |
 | Platform focus | Windows 10 / Windows 11 |
 | Processing model | Fully local — no document uploads |
@@ -23,7 +23,7 @@ This application will **never** include password cracking, brute-force attempts,
 
 ## Current status
 
-Phase 3A Password Remover UI is complete. Phase 3.5 packages the first standalone Windows Alpha (installer + portable) with bundled qpdf. Phase 3B (plate → folder) is deferred.
+Phase 3A Password Remover UI is complete. Phase 3.5 packages the first standalone Windows Alpha (installer + portable) with bundled qpdf. Phase 3.6 adds an opt-in GitHub Releases updater foundation (Settings → Updates, `version-manifest.json`, SHA-256). Phase 3B (plate → folder) is deferred.
 
 See:
 
@@ -37,6 +37,7 @@ See:
 - Documents stay on the user’s machine.
 - No analytics or telemetry in v0.1.0.
 - No cloud PDF processing.
+- Optional GitHub Releases updates only (metadata + installer bytes; Settings → Updates) — see ADR-007.
 - Passwords are never logged or persisted.
 - Source PDFs are never overwritten by default; unlocked copies are written beside or to a chosen folder.
 
@@ -53,6 +54,7 @@ cm-flow-manager/
 ├── apps/desktop/                 # Electron main, preload, renderer, packaging
 ├── packages/ipc-contracts/       # Typed IPC allowlist
 ├── packages/pdf-engine/          # PdfUnlockService + qpdf adapter
+├── packages/app-updater/         # Update policy / manifest / version logic (no Electron)
 ├── modules/pdf-password-remover/ # Module domain helpers + Phase 3B contracts
 ├── vendor/qpdf/                  # Fetched qpdf (bin gitignored)
 ├── release/                      # Local pack output (exe gitignored)
@@ -70,7 +72,8 @@ cm-flow-manager/
 | 1.5 | UI foundation (Tailwind/shadcn) | Complete |
 | 2 | Verified PDF unlock engine | Complete |
 | 3A | Working single-file UI | Complete |
-| 3.5 | First Alpha packaging (installer + portable) | In progress |
+| 3.5 | First Alpha packaging (installer + portable) | Complete |
+| 3.6 | Update & version management foundation (GitHub Releases) | In progress |
 | 3B | Plate → folder resolution | Deferred |
 | 4 | Batch-capable MVP | Not started |
 | 5 | Signed / hardened release candidate | Not started |

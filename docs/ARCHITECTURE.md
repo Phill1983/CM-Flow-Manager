@@ -23,7 +23,8 @@ cm-flow-manager/
 │   ├── ipc-contracts/            # Channel names + Zod/TS schemas
 │   ├── file-utils/               # Path safety, output naming
 │   ├── logging/                  # Local rotating logs
-│   └── pdf-engine/               # PdfUnlockService adapter + qpdf impl
+│   ├── pdf-engine/               # PdfUnlockService adapter + qpdf impl
+│   └── app-updater/              # Update policy, channels, manifest validation (no Electron)
 ├── modules/
 │   └── pdf-password-remover/
 │       ├── domain/
@@ -39,6 +40,7 @@ cm-flow-manager/
 ### Structure adjustments vs initial proposal
 
 - Phase 1 scaffolds only packages needed for the shell: `ipc-contracts`, `pdf-engine`, and module `pdf-password-remover`.
+- Phase 3.6 adds `packages/app-updater` (pure domain/application); Electron adapters live under `apps/desktop/src/main/updater/`.
 - `core`, `ui`, `file-utils`, and `logging` remain planned and will be added when first required (avoid empty package noise).
 - Package manager is **pnpm@9.15.9** only (`packageManager` field + `pnpm-lock.yaml`).
 
@@ -57,6 +59,23 @@ PdfUnlockService (packages/pdf-engine)
     │
 qpdf binary (spawn argv array — no shell)
 ```
+
+### Updater flow (Phase 3.6)
+
+```text
+Settings → Updates (renderer)
+    │  update:* IPC
+Main updater adapters
+    │  electron-updater → GitHub Releases (installer bytes)
+    │  fetch version-manifest.json (policy / channel / digests)
+@cm-flow-manager/app-updater
+    │  validate manifest, evaluate policy, compare versions
+SHA-256 integrity (required when digest present)
+    │  Authenticode stub until signing exists
+Install (NSIS) / notify or manual replace (portable)
+```
+
+Documents never leave the machine; network use is limited to GitHub update metadata and installer assets (ADR-005 exception / ADR-007).
 
 ## Key interfaces (conceptual)
 
@@ -79,9 +98,10 @@ Domain and application layers must not import Electron, React, or Node filesyste
 CM Flow Manager
 ├── Dashboard
 ├── PDF Tools
-│   └── Password Remover   ← only functional module in 0.1.0
+│   └── Password Remover   ← only functional PDF module in 0.1.0
 ├── Activity
 ├── Settings
+│   └── Updates            ← Phase 3.6 opt-in GitHub updater
 └── About
 ```
 

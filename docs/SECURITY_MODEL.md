@@ -50,4 +50,18 @@ Forbidden: passwords, PDF bytes, extracted text, full command lines with secrets
 
 ## Updates and network
 
-Auto-update **disabled by default**. Any future updater requires a dedicated ADR and security review.
+Document processing remains **local-only** (ADR-005).
+
+**Narrow exception (Phase 3.6 / ADR-007):** the app may contact **GitHub Releases** only to:
+
+- fetch update metadata (`version-manifest.json` and electron-updater feed data);
+- download installer / update package bytes.
+
+Mitigations:
+
+- Allowlisted `update:*` IPC; no generic network API in the renderer.
+- Validate manifest schema; require **SHA-256** integrity when a digest is present before install.
+- Authenticode verification stubbed until code signing exists (unsigned Alpha).
+- Opt-in / user-driven Updates UI; default channel `alpha`.
+- Offline ⇒ full app continues to work; no remote kill switch.
+- No analytics, accounts, cloud sync, or document upload.

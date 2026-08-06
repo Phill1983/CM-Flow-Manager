@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 3.5 complete** — next: Phase 3B (deferred) or owner-directed follow-up |
+| Current phase | **Phase 3.6** — Update & Version Management Foundation (committed; on-the-fly validation) |
 | Application version | `0.1.0-alpha` |
 | Date | 2026-08-05 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
@@ -29,21 +29,27 @@
 
 ## Work in progress
 
-- None (Phase 3.5 closed). Phase 3B remains deferred until explicit approval.
+### Phase 3.6 — Update & Version Management Foundation
+- `@cm-flow-manager/app-updater` (pure policy/manifest/version logic; no Electron/React).
+- GitHub Releases transport via `electron-updater` + `version-manifest.json` (SHA-256, channels, policy).
+- Settings → Updates UI; allowlisted `update:*` IPC.
+- Opt-in check/download/install for NSIS; portable check/notify with limited auto-install.
+- Offline ⇒ full app works; no remote kill switch; Authenticode stubbed until signing exists.
+- See ADR-007.
 
 ## Blockers
 
 1. **Owner approval required** before Phase 3B (plate → folder).
-2. **Authenticode code-signing certificate** required to remove Windows “Unknown publisher”.
+2. **Authenticode code-signing certificate** required to remove Windows “Unknown publisher” and enable Authenticode update verification.
 
 ## Next approved task
 
-Awaiting owner direction (Phase 3B or other).
+Complete Phase 3.6 validation (automated + packaged EXE / update-path checks) → Phase Report → human approval.
 
 ## Latest test result
 
 ```text
-pnpm typecheck → pass
+pnpm typecheck → pass (pre–3.6 baseline)
 pnpm lint → pass (0 warnings)
 pnpm test → pass
 ```

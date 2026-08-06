@@ -107,6 +107,18 @@ Every Phase Report for such work must clearly separate:
 
 A phase involving desktop functionality is **not complete** until **both** pass (in addition to automated validation and the Native End-to-End rules above when native surfaces are touched).
 
+## Testing releases via the update system (from Phase 3.6)
+
+When practical, validate new builds the way users will receive them:
+
+1. Pack with `pnpm pack:win` (packaged EXE remains **primary**).
+2. Publish (or draft) a **GitHub Release** for the test channel (default **alpha**) with installer/portable artifacts **and** `version-manifest.json` (schema v1, SHA-256 digests).
+3. From a previous packaged install, use **Settings → Updates** to check / download / install (NSIS). Portable: check/notify; in-place auto-install may require manual replace.
+
+Do not treat `pnpm dev` alone as proof that update transport, manifest validation, or integrity checks work.
+
+CI auto-publish of releases remains a later hardening step; early Alpha may use manual GitHub Releases.
+
 ## Agent coordination sequence
 
 Used during Implementation → Validation:

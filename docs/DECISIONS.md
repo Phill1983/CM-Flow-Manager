@@ -27,5 +27,7 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-05 | Phase 3.5 Alpha packaging (electron-builder NSIS+portable, bundled qpdf); Packaged EXE primary verification | DEVELOPMENT_WORKFLOW.md / RELEASE_PROCESS.md |
 | 2026-08-05 | Keep `signAndEditExecutable: false`; embed Windows icon/VERSIONINFO via afterPack + `rcedit` (avoids winCodeSign symlink failures). Authenticode signing still required to remove “Unknown publisher”. | electron-builder.yml / scripts/after-pack-win.mjs |
 | 2026-08-05 | NSIS shortcuts use `$INSTDIR\\resources\\icon.ico` (not `$appExe,0`) to avoid Windows icon-cache sticking on Electron after upgrades. | apps/desktop/resources/installer.nsh |
+| 2026-08-05 | Phase 3.6 updater foundation: GitHub Releases + `version-manifest.json`, `@cm-flow-manager/app-updater`, SHA-256 required, Authenticode stubbed, no kill switch; default channel `alpha` | ADR-007 |
+| 2026-08-05 | Add `electron-updater` dependency for NSIS GitHub Releases transport (portable auto-install limited) | ADR-007 / apps/desktop/package.json |
 
 Update this file when making durable technical choices.
