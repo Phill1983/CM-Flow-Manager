@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 4A.2 complete** — next: Phase 4B (awaiting approval). Do not start 4B until approved. |
+| Current phase | **Updater runtime regression fix complete**. Phase 4B remains local draft — do not resume until explicit approval. |
 | Application version | `0.1.0-alpha` |
 | Date | 2026-08-11 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
@@ -19,18 +19,23 @@
 - Alpha packaging (NSIS + portable, bundled qpdf).
 - Update foundation (GitHub Releases, Settings → Updates, SHA-256, ADR-007).
 
-### Phase 4A.1 (approved)
-- Process A (Estimate QA) vs Process B (Invoice Validation) documented.
-- `docs/BUSINESS_PROCESSES.md` + `docs/knowledge/*` (partitions, Parts Intelligence, AI learning policy).
-- Conceptual engines only; no parsers/OCR/UI/code.
+### Phase 4A.1–4A.2 (approved)
+- Process A vs B docs; discovery field inventory (`docs/discovery/*`).
 
-### Phase 4A.2 (approved)
-- Real-document discovery for Process B (`docs/discovery/*`).
-- Field inventory, difference patterns, parsing risks, open questions, sanitized samples.
-- Audatex `N JC = 1 RBG` = document-local observed fact (10 and 12 seen); not a global constant.
-- Audatex normalia 2% = inferred evidence on these samples only; not a universal rule.
-- CASE-4A2-01 estimate = OCR-required / not field-confirmed.
-- No production parsers, OCR, AI, comparison engine, or UI. Real PDFs not in Git.
+### Updater runtime regression fix (approved 2026-08-11)
+- Root cause: workspace `@cm-flow-manager/app-updater` was externalized while exporting `.ts`; Electron main crashed with `ERR_UNKNOWN_FILE_EXTENSION`.
+- Secondary: ESM named import of CJS `electron-updater` `autoUpdater` failed after bundling.
+- Fix: bundle workspace TS packages in `electron-vite`; load `autoUpdater` via `createRequire`; `app-updater` package exports → `dist/*.js`; post-build `assert-main-bundle.mjs`.
+
+#### Manual / packaged verification (recorded)
+| Check | Result |
+| --- | --- |
+| `pnpm pack:win` | Pass |
+| Installed Setup over previous Program Files build | Pass (`installer_exit=0`; EXE SHA matched new `win-unpacked`) |
+| Installed EXE starts without main-process JS error | Pass |
+| Settings → Updates opens | Pass |
+| Settings → Updates → Check for updates | Pass — status `up-to-date` (`0.1.0-alpha`) |
+| PDF Password Remover unlock (installed app IPC + fixture) | Pass — encrypted → unlocked → output unencrypted |
 
 ### Governance
 - Delivery cycle: Implementation → Validation → Phase Report → Human approval → Commit → Push.
@@ -38,18 +43,18 @@
 
 ## Work in progress
 
-- None. Phase 4A.2 approved; awaiting direction for Phase 4B.
+- Phase 4B canonical model exists as **local uncommitted draft only** — not resumed until explicit owner approval.
 
 ## Blockers
 
-1. **Owner approval required** before Phase **4B** (Canonical Repair Document Model).
+1. **Owner approval required** before resuming / committing Phase **4B** and before Phase **4C**.
 2. **Owner approval required** before Phase 3B (plate → folder).
 3. Authenticode certificate still required for “Unknown publisher” / signed updates.
-4. Scan estimate (CASE-4A2-01) blocks full pair reconciliation until OCR or digital source.
+4. Scan estimate (CASE-4A2-01) remains OCR-required until a later extraction phase.
 
 ## Next approved task
 
-Awaiting owner approval to start **Phase 4B**.
+Awaiting explicit owner approval to resume **Phase 4B** (commit/push of draft) or other direction.
 
 ## Proposed follow-on phases (documented only)
 

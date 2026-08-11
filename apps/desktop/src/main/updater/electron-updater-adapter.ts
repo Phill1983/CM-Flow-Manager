@@ -1,9 +1,19 @@
-import { autoUpdater, type UpdateDownloadedEvent, type UpdateInfo } from 'electron-updater';
+import { createRequire } from 'node:module';
+import type { AppUpdater, UpdateDownloadedEvent, UpdateInfo } from 'electron-updater';
 import type {
   AppUpdateTransportPort,
   UpdateCheckTransportResult,
   UpdateDownloadResult,
 } from '@cm-flow-manager/app-updater';
+
+/**
+ * electron-updater is CommonJS. Load via createRequire so Electron main (ESM)
+ * never depends on fragile named ESM interop for `autoUpdater`.
+ */
+const require = createRequire(import.meta.url);
+const { autoUpdater } = require('electron-updater') as {
+  autoUpdater: AppUpdater;
+};
 
 export type ElectronUpdaterAdapterOptions = {
   channel: string;

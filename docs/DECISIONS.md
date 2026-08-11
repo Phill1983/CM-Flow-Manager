@@ -34,5 +34,6 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-11 | Phase 4A.2 evidence: Process B inventory from three local pairs; scan estimates = OCR-required / not field-confirmed; no field inference from images | docs/discovery/* |
 | 2026-08-11 | Audatex labour prints document-local `N JC = 1 RBG` (observed 10 and 12); **not** a universal rule for all estimate systems; never hardcode a single N | docs/discovery/PHASE_4A2_DOCUMENT_INVENTORY.md |
 | 2026-08-11 | Real customer PDFs / unsanitized extracts stay out of Git; discovery samples must be sanitized | docs/discovery/samples/ |
+| 2026-08-11 | Electron main must **bundle** workspace packages that export `.ts` (`externalizeDepsPlugin` exclude). `electron-updater` is CJS — load `autoUpdater` via `createRequire`, not ESM named import | apps/desktop/electron.vite.config.ts / electron-updater-adapter.ts |
 
 Update this file when making durable technical choices.

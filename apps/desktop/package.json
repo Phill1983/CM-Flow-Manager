@@ -9,8 +9,8 @@
   "main": "./out/main/index.js",
   "type": "module",
   "scripts": {
-    "dev": "electron-vite dev",
-    "build": "electron-vite build",
+    "dev": "pnpm --filter @cm-flow-manager/app-updater build && electron-vite dev",
+    "build": "electron-vite build && node ./scripts/assert-main-bundle.mjs",
     "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
     "preview": "electron-vite preview",
     "test": "vitest run --passWithNoTests",
