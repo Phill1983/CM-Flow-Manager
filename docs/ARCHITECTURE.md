@@ -123,3 +123,32 @@ Future modules register:
 4. optional engine adapters.
 
 No rewrite of the shell should be required for a new module that follows these ports.
+
+## Future repair-document architecture (conceptual — Phase 4A.1)
+
+Documentation only. **Do not implement** these components in 4A.1.
+
+Business separation: [BUSINESS_PROCESSES.md](./BUSINESS_PROCESSES.md)  
+Knowledge: [knowledge/README.md](./knowledge/README.md)
+
+| Component | Responsibility |
+| --- | --- |
+| `EstimateQaEngine` | Process A — advisory completeness / repair-logic findings from approved Estimate QA knowledge |
+| `InvoiceValidationEngine` | Process B — deterministic reconciliation of approved estimate vs invoice |
+| `PartsIntelligenceService` | Classify part-number relationships; never silent equivalence |
+| `RepairKnowledgeRepository` | Local versioned store for approved + candidate knowledge |
+| `KnowledgeCandidateService` | Record AI/observed candidates with evidence and counts |
+| `HumanReviewWorkflow` | Review queue: approve / reject / deprecate; no auto-promotion |
+
+```text
+Estimate doc ──► EstimateQaEngine ──► advisory findings (Process A)
+Approved estimate + Invoice ──► InvoiceValidationEngine ──► diffs (Process B)
+                              ▲
+                 PartsIntelligenceService
+                              ▲
+              RepairKnowledgeRepository ◄── HumanReviewWorkflow
+                              ▲
+                 KnowledgeCandidateService (candidates only)
+```
+
+Password Remover and the updater remain unchanged by this conceptual track.

@@ -11,13 +11,27 @@ CM Flow Manager becomes a modular local-first desktop workspace for documents, P
 3. PDF Password Remover with known-password unlock only.
 4. **Phase 3A:** single-file Password Remover product UI (done).
 5. **Phase 3.5:** first Alpha packaging — installer + portable + bundled qpdf (done).
-6. **Phase 3.6:** Update & Version Management Foundation — GitHub Releases + `version-manifest.json`, Settings → Updates, SHA-256 integrity, opt-in check/install (in progress; ADR-007).
+6. **Phase 3.6:** Update & Version Management Foundation — GitHub Releases + `version-manifest.json`, Settings → Updates, SHA-256 integrity, opt-in check/install (**done / committed**).
 7. **Phase 3B:** vehicle plate → configured-root folder resolution (deferred).
-8. Single-file and batch processing (batch = Phase 4).
+8. Single-file and batch processing (**Password Remover Phase 4** = batch unlock — distinct from repair Phase 4A+).
 9. Safe output naming (`*_unlocked.pdf` with collision handling).
 10. Local logging without passwords or document content.
 11. Windows installer + optional portable build (Alpha in 3.5; signed RC later).
 12. Automated unit, integration, UI, and smoke tests.
+
+## Repair document track (Phase 4A+ — not v0.1.0 Password Remover scope)
+
+Separate from Password Remover “Phase 4” batch work. Owner-gated phases:
+
+| Phase | Intent |
+| --- | --- |
+| **4A.1** | Repair business process foundation (docs) — Process A vs B |
+| **4A.2** | Real document discovery and field inventory |
+| **4B** | Canonical repair document model |
+| **4C** | Estimate and invoice text extraction PoC |
+| **4D** | First deterministic invoice reconciliation engine |
+| **4E** | Parts Intelligence PoC |
+| **4F** | Estimate QA knowledge engine |
 
 ## After v0.1.0 (candidates — not scheduled)
 
@@ -28,8 +42,8 @@ Prioritization requires product owner approval. Candidates:
 - Images ↔ PDF
 - OCR
 - File renaming utilities
-- Document comparison
-- Cost-estimate comparison
+- Document comparison (generic)
+- **Estimate Quality Review** and **Invoice Validation** modules (after 4A–4F foundations)
 - Audatex-related tools
 - Service workflow tools
 - Data extraction tools

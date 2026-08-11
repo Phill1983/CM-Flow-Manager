@@ -10,16 +10,26 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 4. ~~Governance delivery cycle (report → approval → commit → push).~~
 5. ~~Phase 3A Password Remover product UI.~~
 6. ~~Phase 3.5 Alpha packaging (NSIS + portable, bundled qpdf, pack:win).~~
+7. ~~Phase 3.6 Update & Version Management Foundation.~~
+8. ~~Phase 4A.1 Repair Business Process Foundation (docs).~~
 
-## Now (Phase 3.6 — Update & Version Management Foundation)
+## Now (awaiting Phase 4A.2 approval)
 
-1. `@cm-flow-manager/app-updater` (channels, policy, manifest validation, evaluate-update).
-2. GitHub Releases transport (`electron-updater`) + attach `version-manifest.json` (SHA-256).
-3. Allowlisted `update:*` IPC + Settings → Updates UI.
-4. Opt-in check / download / install (NSIS); portable check/notify with limited auto-install.
-5. No kill switch; offline-first; Authenticode stub until signing.
+1. Phase 4A.1 repair business-process docs — **done**.
+2. Do not start parsers / engines until 4A.2+ approved.
 
-## Next (Phase 3B — deferred / blocked on owner approval)
+## Next (proposed — owner gate each phase)
+
+1. **Phase 4A.2** — Real document discovery and field inventory.
+2. **Phase 4B** — Canonical repair document model.
+3. **Phase 4C** — Estimate and invoice text extraction PoC.
+4. **Phase 4D** — First deterministic invoice reconciliation engine.
+5. **Phase 4E** — Parts Intelligence PoC.
+6. **Phase 4F** — Estimate QA knowledge engine.
+
+## Deferred / blocked on owner approval
+
+### Phase 3B — plate → folder
 
 1. Implement `VehiclePlateExtractor` (PDF text layer only; no OCR).
 2. Implement `PlateNormalizer`.
@@ -27,14 +37,17 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 4. Propose destination after unlock; never silent save; multi-match chooser; Save As fallback.
 5. Settings UI for configured root folders.
 
-## Later (Phases 4–5)
+### Password Remover Phase 4 — batch unlock
 
-1. Batch unlock with shared password + queue controls.
-2. Cancel in-flight unlock when technically feasible.
-3. Activity history (non-sensitive metadata only).
-4. Code signing + Authenticode update verification + hardened release candidate.
-5. Security review for public/signed release.
-6. CI publish automation for GitHub Releases + manifests (beyond manual Alpha).
+Distinct numbering from repair **4A+**. Batch unlock with shared password + queue controls.
+
+## Later (release hardening)
+
+1. Cancel in-flight unlock when technically feasible.
+2. Activity history (non-sensitive metadata only).
+3. Code signing + Authenticode update verification + hardened release candidate.
+4. Security review for public/signed release.
+5. CI publish automation for GitHub Releases + manifests (beyond manual Alpha).
 
 ## Post-MVP / v0.2.x
 
@@ -63,5 +76,6 @@ Planned actions:
 
 ## Parking lot (explicitly not scheduled)
 
-- Other PDF tools, OCR, Audatex, ServiceFlow, code signing certificates procurement.
+- Other PDF tools, OCR, Audatex product integrations, ServiceFlow, code signing certificates procurement.
 - Full-computer filesystem scans for plates (forbidden by product rules).
+- Autonomous AI rule promotion (forbidden by AI learning policy).

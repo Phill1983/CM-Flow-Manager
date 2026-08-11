@@ -16,10 +16,10 @@ Living inventory of product and engineering state. Update after every meaningful
 - File naming helpers (`*_unlocked.pdf` with collision-safe resolution)
 - **Phase 3A Password Remover product UI** (single-file; drag/drop; progress; localized errors)
 - **Phase 3.5** Windows Alpha packaging (NSIS + portable, bundled qpdf)
+- **Phase 3.6** Update foundation (GitHub Releases, Settings → Updates, SHA-256)
 
 ## Partially implemented features
 
-- **Phase 3.6 updater foundation** — `@cm-flow-manager/app-updater`; Settings → Updates; `update:*` IPC; GitHub Releases + `version-manifest.json`; SHA-256 integrity; Authenticode stub; portable auto-install limited
 - Activity history — empty honest placeholder
 - Shared `packages/ui`, `logging`, `core` — still deferred
 - Phase 3B plate/folder resolution — interfaces only; implementation deferred
@@ -28,7 +28,8 @@ Living inventory of product and engineering state. Update after every meaningful
 ## Planned features (approved for roadmap, not built)
 
 - Phase 3B: plate extract → normalize → configured-root folder resolve (after confirmation)
-- Batch Password Remover (Phase 4 / 0.0.4)
+- Password Remover Phase 4: batch unlock (distinct from repair 4A+)
+- **Repair track 4A+:** Estimate Quality Review (Process A) and Invoice Validation (Process B) — docs foundation in 4A.1; engines later
 - Global Command Palette (post-MVP / v0.2.x)
 - OCR and additional PDF/workflow modules after v0.1.0
 - Authenticode-signed updates + CI release publish automation
@@ -37,10 +38,18 @@ Living inventory of product and engineering state. Update after every meaningful
 
 | Surface | Status |
 | --- | --- |
-| `packages/app-updater` | In progress (policy, channels, manifest, evaluate-update) |
-| `packages/ipc-contracts` `update:*` | In progress (`getStatus`, `check`, `download`, `install`, `setChannel`, `setAutoCheck`, `openReleaseNotes`, `event`) |
-| `apps/desktop/src/main/updater/*` | In progress (electron-updater adapter, GitHub manifest fetcher, SHA-256, preferences) |
-| Settings → Updates UI | In progress |
+| `packages/app-updater` | Done (Phase 3.6 foundation) |
+| `packages/ipc-contracts` `update:*` | Done |
+| `apps/desktop/src/main/updater/*` | Done |
+| Settings → Updates UI | Done |
+
+## Documentation — repair domain (Phase 4A.1)
+
+| Doc | Status |
+| --- | --- |
+| `docs/BUSINESS_PROCESSES.md` | Done (Phase 4A.1) |
+| `docs/knowledge/*` | Done (Phase 4A.1) |
+| Conceptual engines in `ARCHITECTURE.md` | Documented only — not implemented |
 
 ## Known defects
 

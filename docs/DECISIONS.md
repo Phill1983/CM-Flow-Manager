@@ -29,5 +29,7 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-05 | NSIS shortcuts use `$INSTDIR\\resources\\icon.ico` (not `$appExe,0`) to avoid Windows icon-cache sticking on Electron after upgrades. | apps/desktop/resources/installer.nsh |
 | 2026-08-05 | Phase 3.6 updater foundation: GitHub Releases + `version-manifest.json`, `@cm-flow-manager/app-updater`, SHA-256 required, Authenticode stubbed, no kill switch; default channel `alpha` | ADR-007 |
 | 2026-08-05 | Add `electron-updater` dependency for NSIS GitHub Releases transport (portable auto-install limited) | ADR-007 / apps/desktop/package.json |
+| 2026-08-06 | Repair workflows split: Process A Estimate QA (pre-approval) vs Process B Invoice Validation (post-invoice); knowledge partitions + AI candidate policy (no auto-promotion) | BUSINESS_PROCESSES.md / docs/knowledge/* |
+| 2026-08-06 | Repair track phases labeled **4A.x–4F** to avoid collision with Password Remover “Phase 4” batch unlock | ROADMAP.md / BACKLOG.md |
 
 Update this file when making durable technical choices.
