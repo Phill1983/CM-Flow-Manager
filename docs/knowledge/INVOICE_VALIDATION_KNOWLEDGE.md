@@ -1,8 +1,10 @@
 # Invoice Validation Knowledge (Process B)
 
-Status: Phase 4A.1 category definition  
+Status: Phase 4A.1 category definition (+ Phase 4A.2 evidence cross-link)  
 Process: **Invoice Validation**  
 Timing: **After** approved estimate + completed repair + invoice created
+
+Real-document field inventory (draft): [docs/discovery/](../discovery/README.md).
 
 ## Objective
 

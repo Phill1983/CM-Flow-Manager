@@ -29,7 +29,7 @@ Living inventory of product and engineering state. Update after every meaningful
 
 - Phase 3B: plate extract → normalize → configured-root folder resolve (after confirmation)
 - Password Remover Phase 4: batch unlock (distinct from repair 4A+)
-- **Repair track 4A+:** Estimate Quality Review (Process A) and Invoice Validation (Process B) — docs foundation in 4A.1; engines later
+- **Repair track 4A+:** Estimate Quality Review (Process A) and Invoice Validation (Process B) — docs foundation in 4A.1; real-document field inventory draft in 4A.2; engines later
 - Global Command Palette (post-MVP / v0.2.x)
 - OCR and additional PDF/workflow modules after v0.1.0
 - Authenticode-signed updates + CI release publish automation
@@ -43,13 +43,14 @@ Living inventory of product and engineering state. Update after every meaningful
 | `apps/desktop/src/main/updater/*` | Done |
 | Settings → Updates UI | Done |
 
-## Documentation — repair domain (Phase 4A.1)
+## Documentation — repair domain (Phase 4A.1–4A.2)
 
 | Doc | Status |
 | --- | --- |
 | `docs/BUSINESS_PROCESSES.md` | Done (Phase 4A.1) |
 | `docs/knowledge/*` | Done (Phase 4A.1) |
 | Conceptual engines in `ARCHITECTURE.md` | Documented only — not implemented |
+| `docs/discovery/*` (Phase 4A.2) | **Done (approved)** — field inventory / patterns / risks; sanitized samples; no parsers |
 
 ## Known defects
 

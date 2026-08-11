@@ -84,3 +84,6 @@ tmp-poc-*.pdf
 vendor/qpdf/download/
 vendor/qpdf/extracted/
 vendor/qpdf/bin/
+
+# Local PDF text extracts for discovery (never commit)
+.tmp-discovery/

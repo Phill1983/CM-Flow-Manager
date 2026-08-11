@@ -1,0 +1,90 @@
+{
+  "internalCaseId": "CASE-4A2-03",
+  "sourceSystems": {
+    "estimate": "SYSTEM AUDATEX",
+    "invoice": "shop_vat_invoice_ksef"
+  },
+  "joinKeysObserved": ["plate", "vin", "claimId"],
+  "audatexLabourConversion": {
+    "bodyPrinted": "12 JC = 1 RBG",
+    "jcPerRbgBody": 12,
+    "paintLabelsAlsoSeen": ["10 JC/RBG", "12 JC/RBG"],
+    "confidence": "observed",
+    "scopeNote": "Document-local Audatex fact; N is not constant across jobs; not universal across estimate systems."
+  },
+  "estimate": {
+    "documentRole": "approved_estimate",
+    "textLayer": "yes",
+    "pages": 8,
+    "totals": {
+      "labourBodyNet": 3450.0,
+      "additionalCostsNet": 150.0,
+      "paintLabourNet": 1746.0,
+      "paintMaterialsNet": 2787.07,
+      "partsNetBeforeNormalia": 14707.72,
+      "normaliaPct": 0.02,
+      "normaliaNet": 294.15,
+      "totalNet": 23134.94,
+      "vatRate": 0.23,
+      "vatAmount": 5321.04,
+      "totalGross": 28455.98,
+      "confidence": "observed"
+    },
+    "partNumberFormats": [
+      {
+        "raw": "254 720 1700",
+        "style": "spaced_oem_groups",
+        "confidence": "observed"
+      },
+      {
+        "raw": "000 727 1300",
+        "style": "spaced_oem_groups",
+        "confidence": "observed"
+      }
+    ],
+    "notes": [
+      "Duplicate catalog numbers appear for front/rear analogous parts.",
+      "Supersession marker '>' observed in parts legend."
+    ]
+  },
+  "invoice": {
+    "documentRole": "invoice",
+    "textLayer": "yes",
+    "pages": 2,
+    "invoiceNumber": "FV/BL/****/26",
+    "labourPresentation": "usl_lump",
+    "mppSplitPaymentMark": true,
+    "totals": {
+      "totalNet": 23417.52,
+      "vatAmount": 5386.03,
+      "totalGross": 28803.55,
+      "confidence": "observed"
+    },
+    "samplePartNumberFormats": [
+      {
+        "raw": "A2547201700",
+        "style": "prefixed_compact",
+        "formatOnlyCandidateOf": "254 720 1700",
+        "relationshipStatus": "format_only_candidate",
+        "confidence": "inferred"
+      },
+      {
+        "raw": "A0007271300",
+        "style": "prefixed_compact",
+        "duplicatesOnInvoice": true,
+        "confidence": "observed"
+      }
+    ],
+    "parseRisk": "high_column_bleed"
+  },
+  "residual": {
+    "grossInvoiceMinusEstimate": 347.57,
+    "confidence": "observed",
+    "decompositionStatus": "unknown_pending_reliable_line_rebuild",
+    "structuralNotes": [
+      "Labour category amounts appear aligned at aggregate level.",
+      "Paint materials amount 2787.07 appears on both sides.",
+      "Exact part-line residual unexplained without cleaner table parse."
+    ]
+  }
+}

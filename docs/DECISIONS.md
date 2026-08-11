@@ -31,5 +31,8 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-05 | Add `electron-updater` dependency for NSIS GitHub Releases transport (portable auto-install limited) | ADR-007 / apps/desktop/package.json |
 | 2026-08-06 | Repair workflows split: Process A Estimate QA (pre-approval) vs Process B Invoice Validation (post-invoice); knowledge partitions + AI candidate policy (no auto-promotion) | BUSINESS_PROCESSES.md / docs/knowledge/* |
 | 2026-08-06 | Repair track phases labeled **4A.x–4F** to avoid collision with Password Remover “Phase 4” batch unlock | ROADMAP.md / BACKLOG.md |
+| 2026-08-11 | Phase 4A.2 evidence: Process B inventory from three local pairs; scan estimates = OCR-required / not field-confirmed; no field inference from images | docs/discovery/* |
+| 2026-08-11 | Audatex labour prints document-local `N JC = 1 RBG` (observed 10 and 12); **not** a universal rule for all estimate systems; never hardcode a single N | docs/discovery/PHASE_4A2_DOCUMENT_INVENTORY.md |
+| 2026-08-11 | Real customer PDFs / unsanitized extracts stay out of Git; discovery samples must be sanitized | docs/discovery/samples/ |
 
 Update this file when making durable technical choices.

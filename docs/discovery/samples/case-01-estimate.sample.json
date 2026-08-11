@@ -1,0 +1,18 @@
+{
+  "internalCaseId": "CASE-4A2-01",
+  "documentRole": "approved_estimate",
+  "sourceFamily": "scan_unconfirmed",
+  "textLayer": "no",
+  "language": null,
+  "currency": null,
+  "pages": 5,
+  "fieldInventoryStatus": "ocr_required_not_field_confirmed",
+  "identifiers": {},
+  "lines": [],
+  "totals": null,
+  "confidence": "ocr_required",
+  "notes": [
+    "Do not infer fields from image pixels in Phase 4A.2.",
+    "Filename suggests scanner export; vendor unknown until OCR or digital source."
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "internalCaseId": "CASE-4A2-01",
+  "documentRole": "invoice",
+  "sourceFamily": "shop_vat_invoice",
+  "textLayer": "yes",
+  "language": "pl",
+  "currency": "PLN",
+  "pages": 2,
+  "identifiers": {
+    "invoiceNumber": "FV/BL/****/26",
+    "ksefNumber": "[REDACTED]",
+    "shopCaseId": "BL/***/**/26",
+    "claimId": "[REDACTED]",
+    "plate": "[REDACTED]",
+    "vin": "[REDACTED]",
+    "vehicle": { "make": "Toyota", "model": "Corolla", "year": 2021 }
+  },
+  "lines": [
+    {
+      "lp": 1,
+      "kind": "labour",
+      "description": "Robocizna blacharska",
+      "unit": "rbg",
+      "qty": 4.0,
+      "unitNet": 180.0,
+      "discountPct": 0.0,
+      "lineNet": 720.0,
+      "vatRate": 0.23,
+      "confidence": "observed"
+    },
+    {
+      "lp": 2,
+      "kind": "part",
+      "rawPartNumber": "8430AGACZ",
+      "description": "SZYBA CZOLOWA",
+      "unit": "szt",
+      "qty": 1.0,
+      "unitNet": 882.73,
+      "discountPct": 0.0,
+      "lineNet": 882.73,
+      "vatRate": 0.23,
+      "confidence": "observed"
+    },
+    {
+      "lp": 3,
+      "kind": "normalia",
+      "description": "Normalia",
+      "unit": "szt",
+      "qty": 1.0,
+      "lineNet": 17.65,
+      "vatRate": 0.23,
+      "normaliaPctOnInvoice": null,
+      "confidence": "observed"
+    }
+  ],
+  "totals": {
+    "totalNet": 1620.38,
+    "vatAmount": 372.69,
+    "totalGross": 1993.07,
+    "vatRateObserved": 0.23,
+    "confidence": "observed"
+  },
+  "notes": [
+    "Paired estimate is OCR-required; no estimate↔invoice field confirmation in Phase 4A.2."
+  ]
+}

@@ -26,7 +26,7 @@ Separate from Password Remover “Phase 4” batch work. Owner-gated phases:
 | Phase | Intent |
 | --- | --- |
 | **4A.1** | Repair business process foundation (docs) — Process A vs B |
-| **4A.2** | Real document discovery and field inventory |
+| **4A.2** | Real document discovery and field inventory (**done / approved**) |
 | **4B** | Canonical repair document model |
 | **4C** | Estimate and invoice text extraction PoC |
 | **4D** | First deterministic invoice reconciliation engine |

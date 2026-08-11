@@ -1,0 +1,118 @@
+{
+  "internalCaseId": "CASE-4A2-02",
+  "sourceSystems": {
+    "estimate": "SYSTEM AUDATEX",
+    "invoice": "shop_vat_invoice_ksef"
+  },
+  "joinKeysObserved": ["plate", "vin", "claimId"],
+  "audatexLabourConversion": {
+    "printed": "10 JC = 1 RBG",
+    "jcPerRbg": 10,
+    "confidence": "observed",
+    "scopeNote": "Document-local Audatex fact; not a universal estimate-system rule."
+  },
+  "estimate": {
+    "documentRole": "approved_estimate",
+    "textLayer": "yes",
+    "pages": 6,
+    "calculationNumber": "[REDACTED_CLAIM]",
+    "totals": {
+      "labourBodyNet": 1188.0,
+      "paintLabourNet": 1044.0,
+      "paintMaterialsNet": 1213.95,
+      "partsNetBeforeNormalia": 589.04,
+      "normaliaPct": 0.02,
+      "normaliaNet": 11.78,
+      "totalNet": 4046.77,
+      "vatRate": 0.23,
+      "vatAmount": 930.76,
+      "totalGross": 4977.53,
+      "confidence": "observed"
+    },
+    "normaliaCheck": {
+      "formulaCandidate": "round(partsNetBeforeNormalia * 0.02, 2)",
+      "result": 11.78,
+      "confidence": "inferred"
+    },
+    "sampleParts": [
+      {
+        "rawPartNumber": "96001A2000",
+        "description": "FOLIA KLEJ CZUJ DESZ",
+        "confidence": "observed"
+      },
+      {
+        "rawPartNumber": "86130N7000",
+        "description": "LIST OZD L SZYBY CZ",
+        "confidence": "observed"
+      },
+      {
+        "rawPartNumber": "8112637010",
+        "qtyHint": "14 P",
+        "confidence": "observed"
+      }
+    ]
+  },
+  "invoice": {
+    "documentRole": "invoice",
+    "textLayer": "yes",
+    "pages": 2,
+    "invoiceNumber": "FV/BL/****/26",
+    "labourPresentation": "rbg_hours",
+    "totals": {
+      "totalNet": 3854.65,
+      "vatAmount": 886.57,
+      "totalGross": 4741.22,
+      "confidence": "observed"
+    },
+    "sampleLines": [
+      {
+        "kind": "labour",
+        "description": "Robocizna blacharska",
+        "unit": "rbg",
+        "qty": 6.6,
+        "unitNet": 180.0,
+        "lineNet": 1188.0,
+        "confidence": "observed"
+      },
+      {
+        "kind": "labour",
+        "description": "Robocizna lakiernicza",
+        "unit": "rbg",
+        "qty": 5.8,
+        "unitNet": 180.0,
+        "lineNet": 1044.0,
+        "confidence": "observed"
+      },
+      {
+        "kind": "part",
+        "rawPartNumber": "96001A2000",
+        "description": "WKLADKA CZUJNIKA",
+        "confidence": "observed"
+      },
+      {
+        "kind": "normalia",
+        "lineNet": 8.01,
+        "confidence": "observed"
+      },
+      {
+        "kind": "paint_materials",
+        "lineNet": 1213.95,
+        "confidence": "observed"
+      }
+    ]
+  },
+  "residual": {
+    "grossInvoiceMinusEstimate": -236.31,
+    "confidence": "observed",
+    "primaryDrivers": [
+      {
+        "pattern": "estimate_parts_missing_on_invoice",
+        "confidence": "inferred"
+      },
+      {
+        "pattern": "normalia_changed_with_parts_base",
+        "confidence": "inferred"
+      }
+    ]
+  }
+}
