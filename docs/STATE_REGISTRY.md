@@ -38,10 +38,11 @@ Living inventory of product and engineering state. Update after every meaningful
 
 | Surface | Status |
 | --- | --- |
-| `packages/app-updater` | Done (Phase 3.6 foundation) |
+| `packages/app-updater` | Done (Phase 3.6 foundation); runtime exports → `dist/*.js` |
 | `packages/ipc-contracts` `update:*` | Done |
-| `apps/desktop/src/main/updater/*` | Done |
+| `apps/desktop/src/main/updater/*` | Done — `autoUpdater` via `createRequire` |
 | Settings → Updates UI | Done |
+| Desktop main bundle guard | Done — `assert-main-bundle.mjs`; workspace TS packages bundled |
 
 ## Documentation — repair domain (Phase 4A.1–4A.2)
 
@@ -90,6 +91,7 @@ Living inventory of product and engineering state. Update after every meaningful
 | Phase 2 engine PoC | Done |
 | Phase 3A Password Remover UI | Done |
 | Phase 3.5 Alpha packaging | Done |
-| Phase 3.6 updater foundation | In progress |
+| Phase 3.6 updater foundation | Done |
+| Updater runtime regression (TS external / CJS interop) | Closed (`c55acab` + owner verification 2026-08-12) |
 | Phase 3B–5 MVP | Not started (3B deferred) |
 | v0.1.0 readiness | Not ready |

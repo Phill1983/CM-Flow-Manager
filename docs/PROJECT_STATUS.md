@@ -2,9 +2,9 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Updater runtime regression fix complete**. Phase 4B remains local draft — do not resume until explicit approval. |
+| Current phase | **Updater runtime regression CLOSED.** Next: Phase 4B only after explicit approval (local draft must not be auto-resumed). |
 | Application version | `0.1.0-alpha` |
-| Date | 2026-08-11 |
+| Date | 2026-08-12 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
 | Product display name | CM Flow Manager |
 | Window title | Flow Manager |
@@ -22,10 +22,12 @@
 ### Phase 4A.1–4A.2 (approved)
 - Process A vs B docs; discovery field inventory (`docs/discovery/*`).
 
-### Updater runtime regression fix (approved 2026-08-11)
+### Updater runtime regression fix (approved + closed 2026-08-11/12)
+- Commit: `c55acab` on `main` / `develop`.
 - Root cause: workspace `@cm-flow-manager/app-updater` was externalized while exporting `.ts`; Electron main crashed with `ERR_UNKNOWN_FILE_EXTENSION`.
 - Secondary: ESM named import of CJS `electron-updater` `autoUpdater` failed after bundling.
 - Fix: bundle workspace TS packages in `electron-vite`; load `autoUpdater` via `createRequire`; `app-updater` package exports → `dist/*.js`; post-build `assert-main-bundle.mjs`.
+- Guards remain: `externalizeDepsPlugin` exclude list includes `app-updater`; `createRequire` in updater adapter; `assert-main-bundle.mjs` on desktop build.
 
 #### Manual / packaged verification (recorded)
 | Check | Result |
@@ -36,6 +38,7 @@
 | Settings → Updates opens | Pass |
 | Settings → Updates → Check for updates | Pass — status `up-to-date` (`0.1.0-alpha`) |
 | PDF Password Remover unlock (installed app IPC + fixture) | Pass — encrypted → unlocked → output unencrypted |
+| Owner manual verification reconfirmed | Pass (2026-08-12) — regression closed |
 
 ### Governance
 - Delivery cycle: Implementation → Validation → Phase Report → Human approval → Commit → Push.
