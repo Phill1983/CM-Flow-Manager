@@ -1,0 +1,12 @@
+{
+  "cmNavy": "#0B1F4A",
+  "cmBlue": "#143A7B",
+  "cmYellow": "#FFC107",
+  "cmLightGray": "#F2F4F7",
+  "white": "#FFFFFF",
+  "success": "#28A745",
+  "error": "#DC3545",
+  "warning": "#FF8C00",
+  "muted": "#6C757D",
+  "border": "#E1E5EA"
+}

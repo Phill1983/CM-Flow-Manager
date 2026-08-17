@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useI18n } from '@/i18n/useI18n';
+import { Card, CardContent } from '@/components/ui/card';
 
 export function AboutPage() {
   const { t } = useI18n();
@@ -20,15 +21,19 @@ export function AboutPage() {
   }, []);
 
   return (
-    <section className="mx-auto flex max-w-4xl flex-col gap-4" aria-labelledby="about-title">
-      <h1 id="about-title" className="text-2xl font-semibold tracking-tight">
+    <section className="mx-auto flex max-w-4xl flex-col gap-4 p-5 pb-8" aria-labelledby="about-title">
+      <h1 id="about-title" className="text-cm-navy">
         {t('about.title')}
       </h1>
-      <p className="text-lg font-medium">{productName}</p>
-      <p>
-        {t('about.version')}: <strong>{version}</strong>
-      </p>
-      <p className="text-muted-foreground">{t('about.localOnly')}</p>
+      <Card>
+        <CardContent className="flex flex-col gap-2 pt-4 text-[length:var(--cm-text-body)]">
+          <p className="text-[length:var(--cm-text-h3)] font-semibold text-cm-navy">{productName}</p>
+          <p>
+            {t('about.version')}: <strong>{version}</strong>
+          </p>
+          <p className="text-muted-foreground">{t('about.localOnly')}</p>
+        </CardContent>
+      </Card>
     </section>
   );
 }

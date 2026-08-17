@@ -10,4 +10,5 @@ alwaysApply: false
 - Architectural changes need ADR updates and `docs/DECISIONS.md` entries.
 - After meaningful phases, update `PROJECT_STATUS.md` and `STATE_REGISTRY.md`.
 - Record limitations in `KNOWN_LIMITATIONS.md` instead of hiding them.
+- Record engineering debt in `docs/TECH_DEBT.md` (protocol: `.cursor/rules/11-tech-debt.mdc`). Features stay in `BACKLOG.md`.
 - Prefer concrete project-specific text over generic filler.

@@ -35,5 +35,10 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-11 | Audatex labour prints document-local `N JC = 1 RBG` (observed 10 and 12); **not** a universal rule for all estimate systems; never hardcode a single N | docs/discovery/PHASE_4A2_DOCUMENT_INVENTORY.md |
 | 2026-08-11 | Real customer PDFs / unsanitized extracts stay out of Git; discovery samples must be sanitized | docs/discovery/samples/ |
 | 2026-08-11 | Electron main must **bundle** workspace packages that export `.ts` (`externalizeDepsPlugin` exclude). `electron-updater` is CJS — load `autoUpdater` via `createRequire`, not ESM named import | apps/desktop/electron.vite.config.ts / electron-updater-adapter.ts |
+| 2026-08-12 | UI brand adaptation from chwalibog-motors.pl: Ubuntu + `#3292DC` / `#022662` / `#FCAF17`; local `@fontsource/ubuntu` (CSP-safe); productivity shell only | docs/UI_DIRECTION.md |
+| 2026-08-12 | Shell hybrid: white top bar + navy sidebar + `sl_content_bg.jpg` main surface; cards stay opaque for forms | docs/UI_DIRECTION.md |
+| 2026-08-12 | UI Target: REFERENCE A dashboard + REFERENCE B tokens (`#0B1F4A` / `#143A7B` / `#FFC107`); empty states (no fake data); yellow active-nav rail; Ubuntu keeps scale from B | docs/UI_DIRECTION.md |
+| 2026-08-12 | Exact UI: CM asset pack + `01-dashboard-target.png` are visual source of truth; Inter; module/hero raster assets; remaining fidelity → `docs/TECH_DEBT.md` | docs/UI_DIRECTION.md / TECH_DEBT.md |
+| 2026-08-17 | Technical debt has a dedicated registry (`docs/TECH_DEBT.md`) and an always-on agent rule | `.cursor/rules/11-tech-debt.mdc` |
 
 Update this file when making durable technical choices.

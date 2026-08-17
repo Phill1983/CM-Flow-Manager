@@ -1,0 +1,399 @@
+{
+  "source": "ChatGPT Image 12 серп. 2026 р., 20_35_58.png",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "assets": [
+    {
+      "file": "logo/cm-flow-manager-logo.png",
+      "size": [
+        215,
+        67
+      ],
+      "source_crop": [
+        22,
+        18,
+        260,
+        92
+      ]
+    },
+    {
+      "file": "logo/cm-app-icon.png",
+      "size": [
+        63,
+        56
+      ],
+      "source_crop": [
+        284,
+        22,
+        360,
+        88
+      ]
+    },
+    {
+      "file": "modules/pdf-password-remover.png",
+      "size": [
+        109,
+        110
+      ],
+      "source_crop": [
+        30,
+        110,
+        140,
+        220
+      ]
+    },
+    {
+      "file": "modules/split-merge-pdf.png",
+      "size": [
+        125,
+        110
+      ],
+      "source_crop": [
+        145,
+        110,
+        270,
+        220
+      ]
+    },
+    {
+      "file": "modules/repair-intelligence.png",
+      "size": [
+        96,
+        108
+      ],
+      "source_crop": [
+        282,
+        110,
+        405,
+        220
+      ]
+    },
+    {
+      "file": "modules/comparisons.png",
+      "size": [
+        126,
+        108
+      ],
+      "source_crop": [
+        414,
+        110,
+        540,
+        220
+      ]
+    },
+    {
+      "file": "hero/hero-mechanic.png",
+      "size": [
+        450,
+        149
+      ],
+      "source_crop": [
+        1078,
+        106,
+        1528,
+        255
+      ]
+    },
+    {
+      "file": "hero/hero-background.png",
+      "size": [
+        513,
+        140
+      ],
+      "source_crop": [
+        595,
+        112,
+        1108,
+        252
+      ]
+    },
+    {
+      "file": "hero/cm-watermark.png",
+      "size": [
+        246,
+        95
+      ],
+      "source_crop": [
+        616,
+        4,
+        862,
+        99
+      ]
+    },
+    {
+      "file": "hero/cm-pattern.png",
+      "size": [
+        651,
+        91
+      ],
+      "source_crop": [
+        874,
+        4,
+        1525,
+        95
+      ]
+    },
+    {
+      "file": "filetypes/pdf.png",
+      "size": [
+        50,
+        52
+      ],
+      "source_crop": [
+        378,
+        269,
+        431,
+        327
+      ]
+    },
+    {
+      "file": "filetypes/xlsx.png",
+      "size": [
+        51,
+        52
+      ],
+      "source_crop": [
+        438,
+        269,
+        489,
+        327
+      ]
+    },
+    {
+      "file": "filetypes/docx.png",
+      "size": [
+        49,
+        49
+      ],
+      "source_crop": [
+        499,
+        269,
+        548,
+        327
+      ]
+    },
+    {
+      "file": "filetypes/csv.png",
+      "size": [
+        51,
+        53
+      ],
+      "source_crop": [
+        559,
+        269,
+        610,
+        327
+      ]
+    },
+    {
+      "file": "statistics/documents.png",
+      "size": [
+        65,
+        59
+      ],
+      "source_crop": [
+        27,
+        268,
+        92,
+        327
+      ]
+    },
+    {
+      "file": "statistics/comparisons.png",
+      "size": [
+        52,
+        59
+      ],
+      "source_crop": [
+        101,
+        268,
+        163,
+        327
+      ]
+    },
+    {
+      "file": "statistics/warnings.png",
+      "size": [
+        48,
+        63
+      ],
+      "source_crop": [
+        191,
+        267,
+        257,
+        331
+      ]
+    },
+    {
+      "file": "statistics/reports.png",
+      "size": [
+        55,
+        62
+      ],
+      "source_crop": [
+        282,
+        268,
+        344,
+        331
+      ]
+    },
+    {
+      "file": "status/success.png",
+      "size": [
+        74,
+        76
+      ],
+      "source_crop": [
+        20,
+        868,
+        94,
+        944
+      ]
+    },
+    {
+      "file": "status/warning.png",
+      "size": [
+        71,
+        75
+      ],
+      "source_crop": [
+        107,
+        869,
+        178,
+        944
+      ]
+    },
+    {
+      "file": "status/error.png",
+      "size": [
+        73,
+        76
+      ],
+      "source_crop": [
+        197,
+        868,
+        270,
+        944
+      ]
+    },
+    {
+      "file": "status/info.png",
+      "size": [
+        72,
+        75
+      ],
+      "source_crop": [
+        292,
+        869,
+        364,
+        944
+      ]
+    },
+    {
+      "file": "bottom-bar/location.png",
+      "size": [
+        68,
+        70
+      ],
+      "source_crop": [
+        1056,
+        359,
+        1124,
+        434
+      ]
+    },
+    {
+      "file": "bottom-bar/database.png",
+      "size": [
+        68,
+        64
+      ],
+      "source_crop": [
+        1160,
+        359,
+        1228,
+        434
+      ]
+    },
+    {
+      "file": "bottom-bar/status.png",
+      "size": [
+        72,
+        75
+      ],
+      "source_crop": [
+        1262,
+        359,
+        1334,
+        434
+      ]
+    },
+    {
+      "file": "bottom-bar/clock.png",
+      "size": [
+        68,
+        75
+      ],
+      "source_crop": [
+        1372,
+        359,
+        1440,
+        434
+      ]
+    },
+    {
+      "file": "backgrounds/bg-shape-1.png",
+      "size": [
+        131,
+        116
+      ],
+      "source_crop": [
+        919,
+        604,
+        1050,
+        720
+      ]
+    },
+    {
+      "file": "backgrounds/bg-shape-2.png",
+      "size": [
+        189,
+        116
+      ],
+      "source_crop": [
+        1045,
+        604,
+        1234,
+        720
+      ]
+    },
+    {
+      "file": "backgrounds/dots-pattern.png",
+      "size": [
+        118,
+        114
+      ],
+      "source_crop": [
+        1230,
+        605,
+        1348,
+        719
+      ]
+    },
+    {
+      "file": "backgrounds/card-dot-bg.png",
+      "size": [
+        142,
+        115
+      ],
+      "source_crop": [
+        1341,
+        604,
+        1483,
+        719
+      ]
+    }
+  ]
+}

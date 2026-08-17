@@ -18,5 +18,6 @@ alwaysApply: true
 - Keep changes small and reviewable. Do not mix unrelated tasks in one commit.
 - Do not add dependencies without documenting why, license, maintenance, and Electron fit in `docs/DECISIONS.md`.
 - Update `docs/PROJECT_STATUS.md` and `docs/STATE_REGISTRY.md` after meaningful phases (before the Phase Report).
+- Protocol technical debt in `docs/TECH_DEBT.md` as it appears (see `.cursor/rules/11-tech-debt.mdc`). Do not leave debt only in chat.
 - Stop and ask when a blocker needs a human decision. Never silently bypass failed tests or claim success without verification.
 - Prefer files under ~300 lines unless splitting harms clarity.

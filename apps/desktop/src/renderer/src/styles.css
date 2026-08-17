@@ -1,61 +1,102 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  CM Flow Manager — tokens from assets/cm-ui/brand/colors.json + typography.json
+  Layout from refs/01-dashboard-target.png
+*/
+
 :root {
-  --radius: 0.5rem;
-  --background: oklch(0.985 0.004 247);
-  --foreground: oklch(0.22 0.02 250);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.02 250);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.02 250);
-  --primary: oklch(0.45 0.1 165);
-  --primary-foreground: oklch(0.98 0.01 165);
-  --secondary: oklch(0.95 0.01 250);
-  --secondary-foreground: oklch(0.3 0.02 250);
-  --muted: oklch(0.95 0.01 250);
-  --muted-foreground: oklch(0.5 0.02 250);
-  --accent: oklch(0.94 0.02 165);
-  --accent-foreground: oklch(0.3 0.05 165);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.98 0.01 25);
-  --border: oklch(0.88 0.01 250);
-  --input: oklch(0.88 0.01 250);
-  --ring: oklch(0.45 0.1 165);
-  --sidebar: oklch(0.96 0.006 250);
-  --sidebar-foreground: oklch(0.35 0.02 250);
+  --cm-navy: #0b1f4a;
+  --cm-blue: #143a7b;
+  --cm-yellow: #ffc107;
+  --cm-light-gray: #f2f4f7;
+  --cm-white: #ffffff;
+  --cm-success: #28a745;
+  --cm-error: #dc3545;
+  --cm-warning: #ff8c00;
+  --cm-muted: #6c757d;
+  --cm-border: #e1e5ea;
+
+  --brand-navy: var(--cm-navy);
+  --brand-blue: var(--cm-blue);
+  --brand-gold: var(--cm-yellow);
+
+  --cm-text-h1: 1.75rem;
+  --cm-text-h2: 1.375rem;
+  --cm-text-h3: 1rem;
+  --cm-text-body: 0.875rem;
+  --cm-text-small: 0.75rem;
+
+  --radius: 0.625rem;
+  --sidebar-width: 17.5%;
+
+  --background: var(--cm-light-gray);
+  --foreground: var(--cm-navy);
+  --card: var(--cm-white);
+  --card-foreground: var(--cm-navy);
+  --popover: var(--cm-white);
+  --popover-foreground: var(--cm-navy);
+  --primary: var(--cm-blue);
+  --primary-foreground: var(--cm-white);
+  --secondary: var(--cm-light-gray);
+  --secondary-foreground: var(--cm-navy);
+  --muted: #e8edf3;
+  --muted-foreground: var(--cm-muted);
+  --accent: #e8eef8;
+  --accent-foreground: var(--cm-navy);
+  --destructive: var(--cm-error);
+  --destructive-foreground: var(--cm-white);
+  --border: var(--cm-border);
+  --input: var(--cm-border);
+  --ring: var(--cm-blue);
+  --sidebar: var(--cm-navy);
+  --sidebar-foreground: var(--cm-white);
+  --sidebar-muted: #9eb0c8;
+  --sidebar-hover: rgb(255 255 255 / 0.08);
+  --sidebar-active: #1a4a96;
+  --success: var(--cm-success);
+  --warning: var(--cm-warning);
+  --info: var(--cm-blue);
 }
 
 .dark {
-  --background: oklch(0.18 0.015 250);
-  --foreground: oklch(0.95 0.01 250);
-  --card: oklch(0.22 0.015 250);
-  --card-foreground: oklch(0.95 0.01 250);
-  --popover: oklch(0.22 0.015 250);
-  --popover-foreground: oklch(0.95 0.01 250);
-  --primary: oklch(0.72 0.12 165);
-  --primary-foreground: oklch(0.2 0.04 165);
-  --secondary: oklch(0.28 0.015 250);
-  --secondary-foreground: oklch(0.95 0.01 250);
-  --muted: oklch(0.28 0.015 250);
-  --muted-foreground: oklch(0.7 0.02 250);
-  --accent: oklch(0.3 0.03 165);
-  --accent-foreground: oklch(0.92 0.02 165);
-  --destructive: oklch(0.65 0.18 25);
-  --destructive-foreground: oklch(0.98 0.01 25);
-  --border: oklch(0.32 0.015 250);
-  --input: oklch(0.32 0.015 250);
-  --ring: oklch(0.72 0.12 165);
-  --sidebar: oklch(0.16 0.015 250);
-  --sidebar-foreground: oklch(0.78 0.015 250);
+  --background: #071222;
+  --foreground: #eef2f8;
+  --card: #0f1c33;
+  --card-foreground: #eef2f8;
+  --popover: #0f1c33;
+  --popover-foreground: #eef2f8;
+  --primary: #3d6ec4;
+  --primary-foreground: #ffffff;
+  --secondary: #15253f;
+  --secondary-foreground: #eef2f8;
+  --muted: #15253f;
+  --muted-foreground: #9aa8bd;
+  --accent: #15253f;
+  --accent-foreground: #eef2f8;
+  --destructive: #e57373;
+  --destructive-foreground: #1a0505;
+  --border: #243552;
+  --input: #243552;
+  --ring: #3d6ec4;
+  --sidebar: #061530;
+  --sidebar-foreground: #eef2f8;
+  --sidebar-muted: #8b99ae;
+  --sidebar-hover: rgb(255 255 255 / 0.08);
+  --sidebar-active: #1a4a96;
 }
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -77,7 +118,14 @@
   --color-ring: var(--ring);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
-  --font-sans: 'Segoe UI', 'Candara', 'Trebuchet MS', ui-sans-serif, system-ui, sans-serif;
+  --color-cm-navy: var(--cm-navy);
+  --color-cm-blue: var(--cm-blue);
+  --color-cm-yellow: var(--cm-yellow);
+  --color-cm-light-gray: var(--cm-light-gray);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -89,9 +137,32 @@
   body,
   #root {
     @apply m-0 h-full min-h-full bg-background text-foreground font-sans antialiased;
+    font-size: 14px;
   }
 
   a {
     @apply text-inherit no-underline;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--cm-blue) 28%, transparent);
+  }
+
+  h1 {
+    font-size: var(--cm-text-h1);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: var(--cm-text-h2);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  h3 {
+    font-size: var(--cm-text-h3);
+    font-weight: 600;
+    line-height: 1.3;
   }
 }

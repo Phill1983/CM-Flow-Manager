@@ -54,7 +54,7 @@ export function UpdatesSection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">{t('settings.updates.title')}</CardTitle>
+        <CardTitle className="text-[length:var(--cm-text-h3)]">{t('settings.updates.title')}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <dl className="grid gap-2 text-sm sm:grid-cols-2">

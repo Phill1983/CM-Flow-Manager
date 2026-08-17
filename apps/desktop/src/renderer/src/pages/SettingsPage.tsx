@@ -11,20 +11,20 @@ export function SettingsPage() {
   const { preference, setPreference } = useTheme();
 
   return (
-    <section className="mx-auto flex max-w-4xl flex-col gap-4" aria-labelledby="settings-title">
-      <h1 id="settings-title" className="text-2xl font-semibold tracking-tight">
+    <section className="mx-auto flex max-w-4xl flex-col gap-4 p-5 pb-8" aria-labelledby="settings-title">
+      <h1 id="settings-title" className="text-cm-navy">
         {t('settings.title')}
       </h1>
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">{t('settings.title')}</CardTitle>
+          <CardTitle className="text-[length:var(--cm-text-h3)]">{t('settings.title')}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-wrap items-end gap-4">
           <div className="flex min-w-40 flex-col gap-2">
             <Label htmlFor="language-select">{t('settings.language')}</Label>
             <select
               id="language-select"
-              className="flex h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="flex h-9 rounded-md border border-input bg-background px-3 text-[length:var(--cm-text-body)] shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={locale}
               onChange={(event) => setLocale(event.target.value as LocaleCode)}
             >
@@ -35,12 +35,11 @@ export function SettingsPage() {
               ))}
             </select>
           </div>
-
           <div className="flex min-w-40 flex-col gap-2">
             <Label htmlFor="theme-select">{t('settings.theme')}</Label>
             <select
               id="theme-select"
-              className="flex h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="flex h-9 rounded-md border border-input bg-background px-3 text-[length:var(--cm-text-body)] shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               value={preference}
               onChange={(event) => setPreference(event.target.value as ThemePreference)}
             >
@@ -51,7 +50,6 @@ export function SettingsPage() {
           </div>
         </CardContent>
       </Card>
-
       <UpdatesSection />
     </section>
   );

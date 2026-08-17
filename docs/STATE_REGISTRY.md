@@ -17,6 +17,7 @@ Living inventory of product and engineering state. Update after every meaningful
 - **Phase 3A Password Remover product UI** (single-file; drag/drop; progress; localized errors)
 - **Phase 3.5** Windows Alpha packaging (NSIS + portable, bundled qpdf)
 - **Phase 3.6** Update foundation (GitHub Releases, Settings → Updates, SHA-256)
+- **Exact UI asset-pack** (Inter, CM tokens, module/hero rasters; remaining polish in TECH_DEBT)
 
 ## Partially implemented features
 
@@ -59,10 +60,13 @@ Living inventory of product and engineering state. Update after every meaningful
 
 ## Technical debt
 
-- Corepack global enable blocked without elevation on this machine
-- qpdf vendor binary must be fetched per machine (`pnpm fetch:qpdf`)
-- React Testing Library / Playwright UI automation not yet installed (Phase 3A uses domain/unit tests)
-- Unsigned Alpha: `verifyUpdateCodeSignature=false` until Authenticode available
+Canonical registry: **`docs/TECH_DEBT.md`**. Keep that file current; this section is an index only.
+
+- TD-001–TD-007 — UI fidelity; unused fuller pack `cm-flow-manager-ui-assets/`; leftover extracts / unused Ubuntu
+- TD-008 — qpdf `incorrect_password` integration assertion
+- TD-009 — no Playwright / RTL UI automation
+- TD-010 — Corepack elevation on this machine
+- TD-011–TD-012 — unsigned Alpha / portable update limits
 
 ## Security decisions
 
@@ -93,5 +97,6 @@ Living inventory of product and engineering state. Update after every meaningful
 | Phase 3.5 Alpha packaging | Done |
 | Phase 3.6 updater foundation | Done |
 | Updater runtime regression (TS external / CJS interop) | Closed (`c55acab` + owner verification 2026-08-12) |
-| Phase 3B–5 MVP | Not started (3B deferred) |
+| Exact UI asset-pack | Accepted for commit 2026-08-17; polish in TECH_DEBT |
+| Phase 3B–5 MVP | Not started (3B deferred; 4B next) |
 | v0.1.0 readiness | Not ready |

@@ -1,0 +1,15 @@
+---
+description: Keep docs/TECH_DEBT.md current; do not hide debt in chat-only notes
+alwaysApply: true
+---
+
+# Technical debt protocol
+
+Canonical registry: `docs/TECH_DEBT.md`.
+
+- When you ship a workaround, visual approximation, skipped test, leftover asset, unused dependency, or known defect: **add or update a `TD-NNN` row in the same phase** — before the Phase Report.
+- When you fully fix an item: mark it `paid` with date/commit. Do not delete history.
+- Do **not** start paying debt unless it is in the approved phase or the owner explicitly asks.
+- Do **not** put roadmap features here (`BACKLOG.md`) or product limits here (`KNOWN_LIMITATIONS.md`).
+- `docs/STATE_REGISTRY.md` “Technical debt” is a short index only — details live in `TECH_DEBT.md`.
+- Chat summaries are not a substitute for the registry.

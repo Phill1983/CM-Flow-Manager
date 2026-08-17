@@ -80,6 +80,9 @@ tmp-poc-*.pdf
 # Local agent / personal notes (not project docs)
 .local/
 
+# Working crops from asset sheets (canonical pack is assets/cm-ui/)
+**/assets/_extract/
+
 # Packaged vendor binaries downloaded for local Phase 2+ development
 vendor/qpdf/download/
 vendor/qpdf/extracted/

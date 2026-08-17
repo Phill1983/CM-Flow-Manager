@@ -1,51 +1,51 @@
 # UI Direction
 
-Status: Accepted (Phase 1.5 design system established)
+Status: Accepted — exact CM Flow Manager asset-pack UI, 2026-08-17
 
-## Philosophy
+## Source of truth (priority order)
 
-CM Flow Manager is a **professional desktop productivity tool**, not a web analytics dashboard.
+1. `assets/cm-ui/refs/01-dashboard-target.png` — layout and composition
+2. `assets/cm-ui/` production pack (see `INVENTORY.md`)
+3. `assets/cm-ui/refs/02-design-system.png` — tokens / icon language
+4. Existing functional behaviour (Password Remover, updater, i18n)
+5. Current code
 
-Visual goals:
+Do **not** use chwalibog-motors.pl as a layout reference.
 
-- clean, modern, minimal, compact
-- keyboard-friendly
-- left navigation
-- dark and light themes supported (system default remains valid)
-- Dashboard with Quick Actions, Recent Activity, and local-processing status
-- module-oriented cards/navigation
-- **no** unnecessary charts, fake analytics, or decorative widgets
+## Rules
 
-## Design system
+- Do **not** redesign the dashboard or invent a competing visual language
+- Desktop productivity app — not a marketing site
+- Text, nav, buttons, cards, inputs stay real React UI (not screenshots)
+- No fabricated recent files / statistics
+- Future modules: visually complete cards + “Wkrótce” / Coming soon
+- Brand/module graphics: supplied rasters only (no Lucide substitutes)
+- Ordinary UI icons: one thin-line family until pack mono exports exist (TD-003)
+- Remaining pixel fidelity: `docs/TECH_DEBT.md` TD-001–TD-007
 
-- **Tailwind CSS v4** via `@tailwindcss/vite` (built-in vendor prefixing; classic PostCSS + Autoprefixer not required separately)
-- **shadcn/ui** (New York style) as the component system
-- Official shadcn **`dashboard-01`** is inspiration only — do not copy wholesale
+## Tokens
 
-## Installed shadcn primitives (Phase 1.5)
+| Token | Value |
+| --- | --- |
+| CM Navy | `#0B1F4A` |
+| CM Blue | `#143A7B` |
+| CM Yellow | `#FFC107` |
+| CM Light Gray | `#F2F4F7` |
+| Border | `#E1E5EA` |
+| Success / Error / Warning / Muted | `#28A745` / `#DC3545` / `#FF8C00` / `#6C757D` |
 
-- Button
-- Card
-- Input
-- Label
-- Separator
+Typography: Inter. Scale H1 28/700, H2 22/600, H3 16/600, Body 14/400, Small 12/400.
 
-Add more components only when a real screen needs them.
+## Shell
 
-## Phase 3A Password Remover screen
+- Navy sidebar (~17.5% at reference width), yellow left rail on active item, CM watermark, contact footer
+- Compact light top bar (theme, language, user placeholder)
+- Hero: supplied workshop + navy composition; localized React copy
+- Quick access: four equal cards, pack module graphics, divider + CTA
+- Lower panels: recent-files structure (empty until real data); stats 2×2 with zeros
+- Status strip: address, real engine status, version, clock
 
-Production-oriented single-file unlock UI on `/pdf-tools/password-remover`:
+## Shared components
 
-- privacy notice, drag-and-drop zone, select button, selected-file card
-- inspection / encryption status, password field with show/hide (encrypted only)
-- suggested output path + Change destination, Unlock action
-- progress, success/error results, open output folder, reset
-
-Do not redesign unrelated screens while iterating on this module.
-
-## Layout expectations
-
-- Compact sidebar + content pane
-- Honest empty states (no fabricated activity)
-- Local-processing status visible on Dashboard
-- Avoid redesign churn while implementing PDF workflows
+Under `apps/desktop/src/renderer/src/components/cm/`:
+icons, SidebarItem, DashboardHero, ToolCard, SectionHeader, EmptyState, StatusBadge, StatCell, DashboardPanel

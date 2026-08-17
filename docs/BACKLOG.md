@@ -12,20 +12,19 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 6. ~~Phase 3.5 Alpha packaging (NSIS + portable, bundled qpdf, pack:win).~~
 7. ~~Phase 3.6 Update & Version Management Foundation.~~
 8. ~~Phase 4A.1 Repair Business Process Foundation (docs).~~
+9. ~~Phase 4A.2 Real document discovery / field inventory.~~
+10. ~~Exact UI asset-pack (visual polish remaining → `docs/TECH_DEBT.md`).~~
 
-## Now (awaiting Phase 4A.2 approval)
+## Now
 
-1. Phase 4A.1 repair business-process docs — **done**.
-2. Do not start parsers / engines until 4A.2+ approved.
+1. **Phase 4B** — Canonical repair document model.
 
 ## Next (proposed — owner gate each phase)
 
-1. **Phase 4A.2** — Real document discovery and field inventory.
-2. **Phase 4B** — Canonical repair document model.
-3. **Phase 4C** — Estimate and invoice text extraction PoC.
-4. **Phase 4D** — First deterministic invoice reconciliation engine.
-5. **Phase 4E** — Parts Intelligence PoC.
-6. **Phase 4F** — Estimate QA knowledge engine.
+1. **Phase 4C** — Estimate and invoice text extraction PoC.
+2. **Phase 4D** — First deterministic invoice reconciliation engine.
+3. **Phase 4E** — Parts Intelligence PoC.
+4. **Phase 4F** — Estimate QA knowledge engine.
 
 ## Deferred / blocked on owner approval
 

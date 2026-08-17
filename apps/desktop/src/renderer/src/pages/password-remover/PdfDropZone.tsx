@@ -44,8 +44,8 @@ export function PdfDropZone({ disabled, onFiles, onSelectClick }: PdfDropZonePro
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       className={cn(
-        'flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-muted/30 px-6 py-10 text-center transition-colors',
-        active && !disabled && 'border-primary bg-primary/5',
+        'flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-card px-6 py-10 text-center transition-colors',
+        active && !disabled && 'border-cm-blue bg-accent',
         disabled && 'opacity-60',
       )}
     >

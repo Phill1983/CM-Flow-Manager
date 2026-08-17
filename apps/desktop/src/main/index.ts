@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
+import { writeFileSync } from 'node:fs';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import {
   IpcChannels,
@@ -65,9 +66,10 @@ console.info(
 
 function createMainWindow(): BrowserWindow {
   const icon = resolveAppIconPath();
+  const captureOut = process.env['CM_CAPTURE_OUT'];
   const window = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: captureOut ? 1600 : 1200,
+    height: captureOut ? 1000 : 800,
     minWidth: 960,
     minHeight: 640,
     show: false,
@@ -90,6 +92,16 @@ function createMainWindow(): BrowserWindow {
 
   window.once('ready-to-show', () => {
     window.show();
+    if (captureOut) {
+      void window.webContents
+        .executeJavaScript('new Promise((r) => requestAnimationFrame(() => setTimeout(r, 700)))')
+        .then(async () => {
+          const image = await window.capturePage();
+          writeFileSync(captureOut, image.toPNG());
+          console.info(`[capture] wrote ${captureOut}`);
+          app.quit();
+        });
+    }
   });
 
   if (process.env['ELECTRON_RENDERER_URL']) {
