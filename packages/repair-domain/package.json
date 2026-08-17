@@ -1,0 +1,22 @@
+{
+  "name": "@cm-flow-manager/repair-domain",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
+}

@@ -40,5 +40,6 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-12 | UI Target: REFERENCE A dashboard + REFERENCE B tokens (`#0B1F4A` / `#143A7B` / `#FFC107`); empty states (no fake data); yellow active-nav rail; Ubuntu keeps scale from B | docs/UI_DIRECTION.md |
 | 2026-08-12 | Exact UI: CM asset pack + `01-dashboard-target.png` are visual source of truth; Inter; module/hero raster assets; remaining fidelity → `docs/TECH_DEBT.md` | docs/UI_DIRECTION.md / TECH_DEBT.md |
 | 2026-08-17 | Technical debt has a dedicated registry (`docs/TECH_DEBT.md`) and an always-on agent rule | `.cursor/rules/11-tech-debt.mdc` |
+| 2026-08-17 | Phase 4B: canonical repair document in `packages/repair-domain`; money = bigint minor units; JC/RBG conversion is document-local; documentType ≠ sourceFormat | docs/CANONICAL_REPAIR_DOCUMENT_MODEL.md |
 
 Update this file when making durable technical choices.

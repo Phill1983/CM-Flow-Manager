@@ -14,10 +14,11 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 8. ~~Phase 4A.1 Repair Business Process Foundation (docs).~~
 9. ~~Phase 4A.2 Real document discovery / field inventory.~~
 10. ~~Exact UI asset-pack (visual polish remaining → `docs/TECH_DEBT.md`).~~
+11. ~~Phase 4B Canonical repair document model.~~
 
 ## Now
 
-1. **Phase 4B** — Canonical repair document model.
+1. Wait for owner to open **Phase 4C**.
 
 ## Next (proposed — owner gate each phase)
 

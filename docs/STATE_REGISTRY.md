@@ -18,6 +18,7 @@ Living inventory of product and engineering state. Update after every meaningful
 - **Phase 3.5** Windows Alpha packaging (NSIS + portable, bundled qpdf)
 - **Phase 3.6** Update foundation (GitHub Releases, Settings → Updates, SHA-256)
 - **Exact UI asset-pack** (Inter, CM tokens, module/hero rasters; remaining polish in TECH_DEBT)
+- **Phase 4B canonical repair document** (`packages/repair-domain`) — approved 2026-08-17
 
 ## Partially implemented features
 
@@ -97,6 +98,7 @@ Canonical registry: **`docs/TECH_DEBT.md`**. Keep that file current; this sectio
 | Phase 3.5 Alpha packaging | Done |
 | Phase 3.6 updater foundation | Done |
 | Updater runtime regression (TS external / CJS interop) | Closed (`c55acab` + owner verification 2026-08-12) |
-| Exact UI asset-pack | Accepted for commit 2026-08-17; polish in TECH_DEBT |
-| Phase 3B–5 MVP | Not started (3B deferred; 4B next) |
+| Exact UI asset-pack | Committed `e54e4e8`; polish in TECH_DEBT |
+| Phase 4B canonical model | Approved 2026-08-17 |
+| Phase 3B–5 MVP | 3B deferred; 4C not started |
 | v0.1.0 readiness | Not ready |

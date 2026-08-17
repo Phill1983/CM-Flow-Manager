@@ -42,6 +42,7 @@ cm-flow-manager/
 - Phase 1 scaffolds only packages needed for the shell: `ipc-contracts`, `pdf-engine`, and module `pdf-password-remover`.
 - Phase 3.6 adds `packages/app-updater` (pure domain/application); Electron adapters live under `apps/desktop/src/main/updater/`.
 - `core`, `ui`, `file-utils`, and `logging` remain planned and will be added when first required (avoid empty package noise).
+- Phase 4B adds `packages/repair-domain` — pure canonical repair-document types (no Electron/React/FS/parsers).
 - Package manager is **pnpm@9.15.9** only (`packageManager` field + `pnpm-lock.yaml`).
 
 ## Process boundaries
@@ -124,21 +125,17 @@ Future modules register:
 
 No rewrite of the shell should be required for a new module that follows these ports.
 
-## Future repair-document architecture (conceptual — Phase 4A.1)
+## Future repair-document architecture
 
-Documentation only. **Do not implement** these components in 4A.1.
+Phase **4B** implements `@cm-flow-manager/repair-domain` (`CanonicalRepairDocument`).  
+Parsers and engines remain later phases and **must depend on** this package — never the reverse.
 
-Business separation: [BUSINESS_PROCESSES.md](./BUSINESS_PROCESSES.md)  
-Knowledge: [knowledge/README.md](./knowledge/README.md)
-
-| Component | Responsibility |
+| Component | Status |
 | --- | --- |
-| `EstimateQaEngine` | Process A — advisory completeness / repair-logic findings from approved Estimate QA knowledge |
-| `InvoiceValidationEngine` | Process B — deterministic reconciliation of approved estimate vs invoice |
-| `PartsIntelligenceService` | Classify part-number relationships; never silent equivalence |
-| `RepairKnowledgeRepository` | Local versioned store for approved + candidate knowledge |
-| `KnowledgeCandidateService` | Record AI/observed candidates with evidence and counts |
-| `HumanReviewWorkflow` | Review queue: approve / reject / deprecate; no auto-promotion |
+| `CanonicalRepairDocument` | **4B** — approved |
+| `EstimateQaEngine` | Process A — later (4F) |
+| `InvoiceValidationEngine` | Process B — later (4D) |
+| `PartsIntelligenceService` | later (4E) |
 
 ```text
 Estimate doc ──► EstimateQaEngine ──► advisory findings (Process A)

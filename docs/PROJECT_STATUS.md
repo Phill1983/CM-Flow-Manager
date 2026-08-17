@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 4B — Canonical repair document model** (next on plan; local draft may exist). UI asset-pack landed; remaining UI polish is tech debt. |
+| Current phase | **Phase 4B approved** (canonical repair document model). Next gated: 4C. UI frozen. |
 | Application version | `0.1.0-alpha` |
 | Date | 2026-08-17 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
@@ -22,33 +22,27 @@
 ### Phase 4A.1–4A.2 (approved)
 - Process A vs B docs; discovery field inventory (`docs/discovery/*`).
 
-### Updater runtime regression fix (approved + closed 2026-08-11/12)
-- Commit: `c55acab` on `main` / `develop`.
+### Exact UI asset-pack (committed 2026-08-17, `e54e4e8`)
+- Remaining visual fidelity: `docs/TECH_DEBT.md` TD-001–TD-007 (UI frozen).
 
-### Exact UI asset-pack (accepted for commit 2026-08-17)
-- Inventory: `assets/cm-ui/INVENTORY.md`.
-- Tokens: Inter + CM navy/blue/yellow. Shell, hero, module PNGs, empty recent-files, stats zeros, status strip.
-- Remaining visual fidelity: `docs/TECH_DEBT.md` TD-001–TD-007. Do not treat as a blocker for 4B.
+### Phase 4B (approved 2026-08-17)
+- `@cm-flow-manager/repair-domain` — canonical model, money/provenance, sanitized fixtures, unit tests.
+- Doc: `docs/CANONICAL_REPAIR_DOCUMENT_MODEL.md`.
 
 ## Work in progress
 
-- **Phase 4B** canonical model — resume per plan after this UI commit. Do not mix 4B files into the UI commit.
+- None in this commit. **Do not start Phase 4C** until explicit owner approval.
 
 ## Blockers
 
-1. **Owner approval required** before Phase **4C** and before Phase 3B (plate → folder).
-2. Authenticode certificate still required for “Unknown publisher” / signed updates (TD-011).
-3. Scan estimate (CASE-4A2-01) remains OCR-required until a later extraction phase.
-4. qpdf integration: `incorrect_password` mapping (TD-008).
+1. **Owner approval required** before Phase **4C** (extraction PoC).
+2. **Owner approval required** before Phase 3B (plate → folder).
+3. Authenticode certificate still required (TD-011).
+4. **TD-008 (not 4B):** qpdf integration `incorrect_password` received `unlocked`. Do not mix a PDF-engine fix into repair-domain work.
 
 ## Next approved task
 
-1. **Phase 4B** — Canonical repair document model.
-2. UI polish only when owner pulls TD-001–TD-007 into an approved UI pass.
-
-## Proposed follow-on phases (documented only)
-
-4C Extraction PoC → 4D Invoice reconciliation engine → 4E Parts Intelligence PoC → 4F Estimate QA engine.
+Wait for owner to open **Phase 4C**. Do not start parsers, comparison, AI, or PDF Split/Merge.
 
 ## GitHub repository
 
