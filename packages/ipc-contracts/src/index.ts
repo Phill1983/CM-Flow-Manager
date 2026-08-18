@@ -19,10 +19,17 @@ import { UpdateIpcChannels, type UpdateIpcChannel } from './update.js';
 export const IpcChannels = {
   AppGetVersion: 'app:getVersion',
   DialogOpenPdf: 'dialog:openPdf',
+  DialogOpenPdfs: 'dialog:openPdfs',
   DialogSavePdf: 'dialog:savePdf',
   PdfInspect: 'pdf:inspect',
   PdfUnlock: 'pdf:unlock',
   PdfPrepareSource: 'pdf:prepareSource',
+  PdfPrepareExtractSource: 'pdf:prepareExtractSource',
+  PdfPrepareMergeFile: 'pdf:prepareMergeFile',
+  PdfExtractPages: 'pdf:extractPages',
+  PdfMerge: 'pdf:merge',
+  PdfGrantPreview: 'pdf:grantPreview',
+  PdfRevokePreview: 'pdf:revokePreview',
   ShellOpenFolder: 'shell:openFolder',
   UpdateGetStatus: UpdateIpcChannels.GetStatus,
   UpdateCheck: UpdateIpcChannels.Check,
@@ -45,9 +52,19 @@ export type DialogOpenPdfResult = {
   filePath?: string;
 };
 
+export type DialogOpenPdfsResult = {
+  canceled: boolean;
+  filePaths?: string[];
+};
+
 export type DialogSavePdfResult = {
   canceled: boolean;
   filePath?: string;
+};
+
+export type DialogSavePdfRequest = {
+  defaultPath?: string;
+  title?: string;
 };
 
 export type PdfInspectRequest = {
@@ -81,6 +98,86 @@ export type PdfPrepareSourceResult =
       reason?: string;
     };
 
+export type PdfPrepareExtractSourceRequest = {
+  filePath: string;
+  pageSelection?: string;
+  destinationDirectory?: string;
+};
+
+export type PdfPrepareExtractSourceResult =
+  | {
+      ok: true;
+      filePath: string;
+      fileName: string;
+      fileSizeBytes: number;
+      sourceDirectory: string;
+      suggestedDestinationPath: string;
+      encryptionStatus: 'encrypted' | 'unencrypted';
+      pageCount?: number;
+    }
+  | {
+      ok: false;
+      code: 'invalid_pdf' | 'unavailable' | 'not_found' | 'bad_path' | 'destination_error';
+      reason?: string;
+    };
+
+export type PdfPrepareMergeFileRequest = {
+  filePath: string;
+};
+
+export type PdfPrepareMergeFileResult =
+  | {
+      ok: true;
+      filePath: string;
+      fileName: string;
+      fileSizeBytes: number;
+      sourceDirectory: string;
+      suggestedDestinationPath: string;
+      encryptionStatus: 'encrypted' | 'unencrypted';
+      pageCount?: number;
+    }
+  | {
+      ok: false;
+      code: 'invalid_pdf' | 'unavailable' | 'not_found' | 'bad_path' | 'encrypted_pdf' | 'destination_error';
+      reason?: string;
+      fileName?: string;
+    };
+
+export type PdfExtractPagesRequest = {
+  sourcePath: string;
+  destinationPath: string;
+  pageSelection: string;
+};
+
+export type PdfMergeRequest = {
+  sourcePaths: string[];
+  destinationPath: string;
+};
+
+export type PdfGrantPreviewRequest = {
+  filePath: string;
+};
+
+export type PdfGrantPreviewResult =
+  | { ok: true; token: string }
+  | {
+      ok: false;
+      code: 'invalid_pdf' | 'unavailable' | 'not_found' | 'bad_path' | 'encrypted_pdf';
+    };
+
+export type PdfRevokePreviewRequest = {
+  token: string;
+};
+
+export type PdfRevokePreviewResult = { ok: true };
+
+const PREVIEW_TOKEN_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function isPdfPreviewToken(value: string): boolean {
+  return PREVIEW_TOKEN_RE.test(value);
+}
+
 export type ShellOpenFolderRequest = {
   targetPath: string;
 };
@@ -93,10 +190,17 @@ export type ShellOpenFolderResult =
 export const ALLOWED_INVOKE_CHANNELS: readonly IpcChannel[] = [
   IpcChannels.AppGetVersion,
   IpcChannels.DialogOpenPdf,
+  IpcChannels.DialogOpenPdfs,
   IpcChannels.DialogSavePdf,
   IpcChannels.PdfInspect,
   IpcChannels.PdfUnlock,
   IpcChannels.PdfPrepareSource,
+  IpcChannels.PdfPrepareExtractSource,
+  IpcChannels.PdfPrepareMergeFile,
+  IpcChannels.PdfExtractPages,
+  IpcChannels.PdfMerge,
+  IpcChannels.PdfGrantPreview,
+  IpcChannels.PdfRevokePreview,
   IpcChannels.ShellOpenFolder,
   IpcChannels.UpdateGetStatus,
   IpcChannels.UpdateCheck,

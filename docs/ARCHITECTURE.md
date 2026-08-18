@@ -20,11 +20,12 @@ cm-flow-manager/
 ├── packages/
 │   ├── ipc-contracts/            # Channel names + payloads
 │   ├── file-utils/               # Path safety, output naming
-│   ├── pdf-engine/               # PdfUnlockService adapter + qpdf impl
+│   ├── pdf-engine/               # PdfEngineService + qpdf adapter
 │   ├── app-updater/              # Update policy / manifest (no Electron)
 │   └── repair-domain/            # Phase 4B canonical model (desktop unused until 4C)
 ├── modules/
-│   └── pdf-password-remover/     # flat src helpers; UI in desktop
+│   ├── pdf-password-remover/     # flat src helpers; UI in desktop
+│   └── pdf-split-merge/          # flat src helpers; UI in desktop
 ├── docs/
 ├── scripts/
 └── assets/
@@ -36,21 +37,23 @@ cm-flow-manager/
 - Phase 3.6 adds `packages/app-updater` (pure domain/application); Electron adapters live under `apps/desktop/src/main/updater/`.
 - `core`, `ui`, and `logging` remain **uncreated** until a second real consumer exists (avoid empty package noise). `file-utils` already exists.
 - Phase 4B adds `packages/repair-domain` — pure canonical repair-document types (no Electron/React/FS/parsers).
+- Phase 3.7 extends `pdf-engine` with `extractPages` / `mergePdfs` and adds module `pdf-split-merge`. Password Remover remains on the same qpdf binary. Page thumbnails use PDF.js in the renderer via an opaque `cmflow-pdf://` token protocol (qpdf is not used for rendering).
 - Package manager is **pnpm@9.15.9** only (`packageManager` field + `pnpm-lock.yaml`).
 
 ## Process boundaries
 
 ```text
-Renderer (React)
-    │  typed API only
+Renderer (React + PDF.js thumbnails)
+    │  typed API only (preview tokens, never filesystem)
 Preload (contextBridge)
     │  allowlisted IPC
 Main process
-    │  validates paths & requests
+    │  validates paths & requests; preview token registry
+    │  cmflow-pdf:// serves allowlisted files to PDF.js
 Application use cases (modules/*/application)
     │
-PdfUnlockService (packages/pdf-engine)
-    │
+PdfEngineService (packages/pdf-engine)
+    │  inspect / unlock / extractPages / mergePdfs
 qpdf binary (spawn argv array — no shell)
 ```
 
@@ -74,13 +77,11 @@ Documents never leave the machine; network use is limited to GitHub update metad
 ## Key interfaces (conceptual)
 
 ```ts
-interface PdfUnlockService {
+interface PdfEngineService {
   inspect(filePath: string): Promise<PdfInspectionResult>;
-  unlock(input: {
-    sourcePath: string;
-    destinationPath: string;
-    password: string;
-  }): Promise<PdfUnlockResult>;
+  unlock(input: { sourcePath: string; destinationPath: string; password: string }): Promise<PdfUnlockResult>;
+  extractPages(input: { sourcePath: string; destinationPath: string; pageSelection: string }): Promise<PdfExtractPagesResult>;
+  mergePdfs(input: { sourcePaths: readonly string[]; destinationPath: string }): Promise<PdfMergeResult>;
 }
 ```
 
@@ -92,7 +93,8 @@ Domain and application layers must not import Electron, React, or Node filesyste
 CM Flow Manager
 ├── Dashboard
 ├── PDF Tools
-│   └── Password Remover   ← only functional PDF module in 0.1.0
+│   ├── Password Remover
+│   └── Split / Merge PDF
 ├── Activity
 ├── Settings
 │   └── Updates            ← Phase 3.6 opt-in GitHub updater
@@ -120,7 +122,7 @@ No rewrite of the shell should be required for a new module that follows these p
 
 ## Minimum necessary change
 
-Prefer **REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION** (`.cursor/rules/12-minimal-change.mdc`). The IPC path renderer → preload → main → PDF engine → qpdf is the justified security chain; extra facades need a present-day reason. Do not create `packages/ui`, `packages/core`, or `packages/logging` until something actually needs them.
+Prefer **REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION** (`.cursor/rules/12-minimal-change.mdc`). The IPC path renderer → preload → main → `PdfEngineService` → qpdf is the justified security chain; extra facades need a present-day reason. Do not create `packages/ui`, `packages/core`, or `packages/logging` until something actually needs them.
 
 ## Future repair-document architecture
 

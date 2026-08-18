@@ -4,6 +4,7 @@ import {
   PDF_PASSWORD_REMOVER_ROUTE,
   getPdfPasswordRemoverModuleInfo,
 } from '@cm-flow-manager/pdf-password-remover';
+import { PDF_SPLIT_MERGE_ROUTE } from '@cm-flow-manager/pdf-split-merge';
 import { useI18n } from '@/i18n/useI18n';
 import { DashboardHero } from '@/components/cm/DashboardHero';
 import {
@@ -83,10 +84,10 @@ export function DashboardPage() {
               graphicAlt={t('dashboard.qa.passwordTitle')}
             />
             <ToolCard
-              disabled
+              href={PDF_SPLIT_MERGE_ROUTE}
               title={t('dashboard.qa.splitTitle')}
               description={t('dashboard.qa.splitDesc')}
-              actionLabel={t('common.comingSoon')}
+              actionLabel={t('dashboard.openArrow')}
               graphicSrc={moduleSplitUrl}
               graphicAlt={t('dashboard.qa.splitTitle')}
             />

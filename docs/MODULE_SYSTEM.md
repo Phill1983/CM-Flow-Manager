@@ -6,7 +6,7 @@ Feature capabilities live in `modules/*` with hexagonal boundaries. Shared platf
 
 ## Current layout (as shipped)
 
-Password Remover uses a **flat `src/`** of domain helpers. UI lives in `apps/desktop`. Do **not** scaffold empty `domain/` / `application/` / `infrastructure/` / `ui/` folders until those layers have real code.
+Password Remover and Split/Merge use a **flat `src/`** of domain helpers. UI lives in `apps/desktop`. Do **not** scaffold empty `domain/` / `application/` / `infrastructure/` / `ui/` folders until those layers have real code.
 
 ## Full hexagonal anatomy (when a module actually needs it)
 
@@ -30,4 +30,4 @@ modules/<module-name>/
 
 ## Current modules
 
-`modules/pdf-password-remover` — only module enabled for v0.1.0 on `main`. Future modules remain uncreated until approved.
+`modules/pdf-password-remover` and `modules/pdf-split-merge` are the current modules. Future modules (OCR, …) remain uncreated until approved.

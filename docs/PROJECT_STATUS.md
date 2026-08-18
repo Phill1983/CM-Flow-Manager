@@ -2,9 +2,9 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 4B approved** (canonical repair document model). Next gated: 4C. UI frozen. |
+| Current phase | **Phase 3.7 complete** (PDF Split / Merge). Next gate: owner must open **Phase 4C**. Do **not** start 4C until then. |
 | Application version | `0.1.0-alpha` |
-| Date | 2026-08-17 |
+| Date | 2026-08-18 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
 | Product display name | CM Flow Manager |
 | Window title | Flow Manager |
@@ -29,20 +29,27 @@
 - `@cm-flow-manager/repair-domain` — canonical model, money/provenance, sanitized fixtures, unit tests.
 - Doc: `docs/CANONICAL_REPAIR_DOCUMENT_MODEL.md`.
 
+### Phase 3.7 (approved 2026-08-18)
+- Local Split (extract selected pages into one PDF) and Merge, reusing bundled qpdf.
+- Local page thumbnails (PDF.js in renderer; token protocol in main). Split/Merge loaded views use a visual page/file workspace (checkboxes, order badges, HTML5 drag reorder, inspect dialog).
+- Combined PDF Tools UI; Password Remover unchanged.
+- Doc: `docs/PDF_SPLIT_MERGE.md`. Owner verified Split and Merge in the running app.
+
 ## Work in progress
 
-- None in this commit. **Do not start Phase 4C** until explicit owner approval.
+- None. Waiting for the owner to open **Phase 4C**.
 
 ## Blockers
 
 1. **Owner approval required** before Phase **4C** (extraction PoC).
 2. **Owner approval required** before Phase 3B (plate → folder).
 3. Authenticode certificate still required (TD-011).
-4. **TD-008 (not 4B):** qpdf integration `incorrect_password` received `unlocked`. Do not mix a PDF-engine fix into repair-domain work.
 
 ## Next approved task
 
-Wait for owner to open **Phase 4C**. Do not start parsers, comparison, AI, or PDF Split/Merge.
+Wait for the owner to open **Phase 4C**.
+
+**Do not start** Emergency PDF Password Recovery (future / unnumbered; spec only: `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`).
 
 ## GitHub repository
 

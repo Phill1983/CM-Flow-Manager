@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "lib": ["ES2022"],
+    "paths": {
+      "@cm-flow-manager/pdf-engine": ["../../packages/pdf-engine/src/index.ts"],
+      "@cm-flow-manager/pdf-engine/page-range": ["../../packages/pdf-engine/src/page-range.ts"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "references": [{ "path": "../../packages/pdf-engine" }]
+}

@@ -9,6 +9,11 @@
       "types": "./src/index.ts",
       "import": "./src/index.ts",
       "default": "./src/index.ts"
+    },
+    "./page-range": {
+      "types": "./src/page-range.ts",
+      "import": "./src/page-range.ts",
+      "default": "./src/page-range.ts"
     }
   },
   "scripts": {

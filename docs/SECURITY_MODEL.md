@@ -37,11 +37,13 @@ Expose only a minimal typed API, e.g. file dialogs, queue job submit, cancel, op
 
 ## File safety
 
-- Default naming helper: `<name>_unlocked.pdf` (then `_2`, `_3`, …) in `@cm-flow-manager/file-utils`.
-- Phase 2 engine refuses to overwrite an existing destination (`DestinationExists`).
+- Default naming helpers: `<name>_unlocked.pdf`, `<name>_pages_<selection>.pdf`, `merged.pdf` (then `_2`, `_3`, …) in `@cm-flow-manager/file-utils`.
+- Engine refuses to overwrite an existing destination (`DestinationExists`).
 - Never replace source unless a future, explicit, confirmed overwrite mode is designed.
-- Validate `.pdf` extension and absolute paths in main before unlock/inspect.
-- Enforce sensible max file size in a later phase; not enforced yet.
+- Validate `.pdf` extension and absolute paths in main before inspect/unlock/extract/merge.
+- Page selection is parsed to integers in `pdf-engine`; only a digit/comma spec is passed as a qpdf argv element. No shell interpolation.
+- Split/Merge do not accept passwords and do not attempt decryption.
+- Page thumbnails: renderer receives only opaque preview tokens. Main serves the allowlisted file over `cmflow-pdf://`. No Node in the renderer. Encrypted/invalid files are not granted a token. PDF.js never talks to qpdf. Renderer CSP allows `blob:` in `script-src` / `worker-src` only so Chromium can run the bundled PDF.js worker (remote scripts remain blocked).
 
 ## Logging
 
@@ -65,3 +67,9 @@ Mitigations:
 - Opt-in / user-driven Updates UI; default channel `alpha`.
 - Offline ⇒ full app continues to work; no remote kill switch.
 - No analytics, accounts, cloud sync, or document upload.
+
+## Future: Emergency PDF Password Recovery (not implemented)
+
+Documented only in `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`. Not scheduled; does not change current IPC, sandbox, or the known-password unlock path.
+
+If that phase is ever opened: PDF bytes stay local by default; approval may exchange **metadata only** (identity, reason, SHA-256, request ID); recovery must not start before an explicit grant; reuse existing qpdf unlock after a password is obtained; no anonymous/generic cracker UI; no password logging. Any approval network path would need a new allowlisted exception (today the only network exception is GitHub Releases — ADR-007).

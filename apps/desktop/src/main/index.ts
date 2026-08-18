@@ -1,15 +1,23 @@
 import { existsSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { writeFileSync } from 'node:fs';
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, session } from 'electron';
 import {
   IpcChannels,
   type AppGetVersionResult,
   type DialogOpenPdfResult,
+  type DialogOpenPdfsResult,
+  type DialogSavePdfRequest,
   type DialogSavePdfResult,
+  type PdfExtractPagesRequest,
+  type PdfGrantPreviewRequest,
   type PdfInspectRequest,
+  type PdfMergeRequest,
+  type PdfPrepareExtractSourceRequest,
+  type PdfPrepareMergeFileRequest,
   type PdfPrepareSourceRequest,
   type PdfPrepareSourceResult,
+  type PdfRevokePreviewRequest,
   type PdfUnlockRequest,
   type ShellOpenFolderRequest,
   type ShellOpenFolderResult,
@@ -20,8 +28,13 @@ import {
   isSafeAbsolutePath,
   isSafePdfAbsolutePath,
   openValidatedFolder,
+  prepareExtractSource,
+  prepareMergeFile,
   preparePdfSource,
 } from './pdf-ipc-helpers';
+import { grantPdfPreview } from './preview-grant';
+import { attachPdfPreviewProtocol, registerPdfPreviewScheme } from './preview-protocol';
+import { isPreviewToken, pdfPreviewRegistry } from './preview-registry';
 import { createUpdaterRuntime, maybeAutoCheckUpdates, registerUpdateIpc } from './updater/update-ipc';
 
 /** Window title (sidebar-aligned). Installer productName remains “CM Flow Manager”. */
@@ -145,17 +158,42 @@ function registerIpcHandlers(): void {
     return { canceled: false, filePath };
   });
 
+  ipcMain.removeHandler(IpcChannels.DialogOpenPdfs);
+  ipcMain.handle(IpcChannels.DialogOpenPdfs, async (event): Promise<DialogOpenPdfsResult> => {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    const options = {
+      title: 'Select PDFs',
+      properties: ['openFile' as const, 'multiSelections' as const],
+      filters: [{ name: 'PDF', extensions: ['pdf'] }],
+    };
+    const result = window
+      ? await dialog.showOpenDialog(window, options)
+      : await dialog.showOpenDialog(options);
+    if (result.canceled || result.filePaths.length === 0) {
+      return { canceled: true };
+    }
+    const filePaths = result.filePaths.filter((filePath) => isSafePdfAbsolutePath(filePath));
+    if (filePaths.length === 0) {
+      return { canceled: true };
+    }
+    return { canceled: false, filePaths };
+  });
+
   ipcMain.removeHandler(IpcChannels.DialogSavePdf);
   ipcMain.handle(
     IpcChannels.DialogSavePdf,
-    async (event, payload: { defaultPath?: string }): Promise<DialogSavePdfResult> => {
+    async (event, payload: DialogSavePdfRequest): Promise<DialogSavePdfResult> => {
       const window = BrowserWindow.fromWebContents(event.sender);
       const defaultPath =
         typeof payload?.defaultPath === 'string' && payload.defaultPath.length > 0
           ? payload.defaultPath
           : undefined;
+      const title =
+        typeof payload?.title === 'string' && payload.title.trim().length > 0 && payload.title.length <= 120
+          ? payload.title.replace(/[\r\n]/g, ' ').trim()
+          : 'Save PDF';
       const options = {
-        title: 'Save unlocked PDF',
+        title,
         defaultPath,
         filters: [{ name: 'PDF', extensions: ['pdf'] as string[] }],
       };
@@ -237,6 +275,130 @@ function registerIpcHandlers(): void {
     },
   );
 
+  ipcMain.removeHandler(IpcChannels.PdfPrepareExtractSource);
+  ipcMain.handle(
+    IpcChannels.PdfPrepareExtractSource,
+    async (_event, payload: PdfPrepareExtractSourceRequest) => {
+      try {
+        if (!payload || !isSafePdfAbsolutePath(payload.filePath)) {
+          return { ok: false, code: 'bad_path' };
+        }
+        const pageSelection =
+          typeof payload.pageSelection === 'string' && payload.pageSelection.length <= 500
+            ? payload.pageSelection
+            : undefined;
+        const destinationDirectory =
+          typeof payload.destinationDirectory === 'string' && isSafeAbsolutePath(payload.destinationDirectory)
+            ? payload.destinationDirectory
+            : undefined;
+        return await prepareExtractSource(
+          payload.filePath,
+          pdfUnlockService,
+          pageSelection,
+          destinationDirectory,
+        );
+      } catch {
+        return { ok: false, code: 'not_found' };
+      }
+    },
+  );
+
+  ipcMain.removeHandler(IpcChannels.PdfPrepareMergeFile);
+  ipcMain.handle(
+    IpcChannels.PdfPrepareMergeFile,
+    async (_event, payload: PdfPrepareMergeFileRequest) => {
+      try {
+        if (!payload || !isSafePdfAbsolutePath(payload.filePath)) {
+          return { ok: false, code: 'bad_path' };
+        }
+        return await prepareMergeFile(payload.filePath, pdfUnlockService);
+      } catch {
+        return { ok: false, code: 'not_found' };
+      }
+    },
+  );
+
+  ipcMain.removeHandler(IpcChannels.PdfExtractPages);
+  ipcMain.handle(IpcChannels.PdfExtractPages, async (_event, payload: PdfExtractPagesRequest) => {
+    try {
+      if (
+        !payload ||
+        !isSafePdfAbsolutePath(payload.sourcePath) ||
+        !isSafePdfAbsolutePath(payload.destinationPath) ||
+        typeof payload.pageSelection !== 'string' ||
+        payload.pageSelection.length === 0 ||
+        payload.pageSelection.length > 500
+      ) {
+        return {
+          status: 'failed',
+          category: 'Internal',
+          message: 'Invalid extract request.',
+        };
+      }
+      return await pdfUnlockService.extractPages({
+        sourcePath: payload.sourcePath,
+        destinationPath: payload.destinationPath,
+        pageSelection: payload.pageSelection,
+      });
+    } catch {
+      return {
+        status: 'failed',
+        category: 'Internal',
+        message: 'Unexpected extract failure.',
+      };
+    }
+  });
+
+  ipcMain.removeHandler(IpcChannels.PdfMerge);
+  ipcMain.handle(IpcChannels.PdfMerge, async (_event, payload: PdfMergeRequest) => {
+    try {
+      if (
+        !payload ||
+        !Array.isArray(payload.sourcePaths) ||
+        payload.sourcePaths.length < 2 ||
+        payload.sourcePaths.length > 50 ||
+        !payload.sourcePaths.every((filePath) => isSafePdfAbsolutePath(filePath)) ||
+        !isSafePdfAbsolutePath(payload.destinationPath)
+      ) {
+        return {
+          status: 'failed',
+          category: 'Internal',
+          message: 'Invalid merge request.',
+        };
+      }
+      return await pdfUnlockService.mergePdfs({
+        sourcePaths: payload.sourcePaths,
+        destinationPath: payload.destinationPath,
+      });
+    } catch {
+      return {
+        status: 'failed',
+        category: 'Internal',
+        message: 'Unexpected merge failure.',
+      };
+    }
+  });
+
+  ipcMain.removeHandler(IpcChannels.PdfGrantPreview);
+  ipcMain.handle(IpcChannels.PdfGrantPreview, async (_event, payload: PdfGrantPreviewRequest) => {
+    try {
+      if (!payload || !isSafePdfAbsolutePath(payload.filePath)) {
+        return { ok: false, code: 'bad_path' };
+      }
+      return await grantPdfPreview(payload.filePath, pdfUnlockService);
+    } catch {
+      return { ok: false, code: 'not_found' };
+    }
+  });
+
+  ipcMain.removeHandler(IpcChannels.PdfRevokePreview);
+  ipcMain.handle(IpcChannels.PdfRevokePreview, (_event, payload: PdfRevokePreviewRequest) => {
+    if (payload && typeof payload.token === 'string' && isPreviewToken(payload.token)) {
+      pdfPreviewRegistry.revoke(payload.token);
+    }
+    return { ok: true };
+  });
+
   ipcMain.removeHandler(IpcChannels.ShellOpenFolder);
   ipcMain.handle(
     IpcChannels.ShellOpenFolder,
@@ -250,10 +412,12 @@ function registerIpcHandlers(): void {
 }
 
 app.setAppUserModelId(APP_USER_MODEL_ID);
+registerPdfPreviewScheme();
 
 const updaterRuntime = createUpdaterRuntime();
 
 app.whenReady().then(() => {
+  attachPdfPreviewProtocol(session.defaultSession);
   registerIpcHandlers();
   registerUpdateIpc(updaterRuntime);
   createMainWindow();
@@ -267,6 +431,7 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
+  pdfPreviewRegistry.revokeAll();
   if (process.platform !== 'darwin') {
     app.quit();
   }

@@ -7,18 +7,19 @@ Living inventory of product and engineering state. Update after every meaningful
 - Monorepo workspace with pnpm
 - Electron application shell (secure defaults)
 - Tailwind CSS v4 + shadcn primitives
-- Typed preload API + IPC allowlist (PDF dialogs, inspect, unlock, prepareSource, openFolder)
+- Typed preload API + IPC allowlist (PDF dialogs including multi-select, inspect, unlock, prepareSource, extract, merge, grant/revoke preview, openFolder)
 - Localization catalogs for pl / uk / en (Phase 3A Password Remover strings)
 - Theme preference: light / dark / system
 - `PdfUnlockService` + **`QpdfUnlockService`** (local qpdf 12.3.2)
 - Unavailable fallback when qpdf binary is missing
 - Synthetic PDF fixtures + PDF integration tests
-- File naming helpers (`*_unlocked.pdf` with collision-safe resolution)
+- File naming helpers (`*_unlocked.pdf`, `*_pages.pdf` / `*_pages_<selection>.pdf`, `merged.pdf` with collision-safe resolution)
 - **Phase 3A Password Remover product UI** (single-file; drag/drop; progress; localized errors)
 - **Phase 3.5** Windows Alpha packaging (NSIS + portable, bundled qpdf)
 - **Phase 3.6** Update foundation (GitHub Releases, Settings → Updates, SHA-256)
 - **Exact UI asset-pack** (Inter, CM tokens, module/hero rasters; remaining polish in TECH_DEBT)
 - **Phase 4B canonical repair document** (`packages/repair-domain`) — approved 2026-08-17
+- **Phase 3.7 PDF Split / Merge** (`modules/pdf-split-merge` + `pdf-engine` extract/merge + PDF.js page preview + Split/Merge workspace UX) — approved 2026-08-18
 - **MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI** — permanent agent rule (`.cursor/rules/12-minimal-change.mdc`)
 
 ## Partially implemented features
@@ -34,7 +35,8 @@ Living inventory of product and engineering state. Update after every meaningful
 - Password Remover Phase 4: batch unlock (distinct from repair 4A+)
 - **Repair track 4A+:** Estimate Quality Review (Process A) and Invoice Validation (Process B) — docs foundation in 4A.1; real-document field inventory draft in 4A.2; engines later
 - Global Command Palette (post-MVP / v0.2.x)
-- OCR and additional PDF/workflow modules after v0.1.0
+- **Emergency PDF Password Recovery (future, not scheduled)** — authorized recovery when a known password is unavailable; not a generic cracker. Spec: `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`. Does **not** block 3.7 or 4C.
+- OCR and additional PDF/workflow modules after v0.1.0 (Split/Merge delivered in 3.7)
 - Authenticode-signed updates + CI release publish automation
 
 ## Packages / IPC (updater)
@@ -65,7 +67,8 @@ Living inventory of product and engineering state. Update after every meaningful
 Canonical registry: **`docs/TECH_DEBT.md`**. Keep that file current; this section is an index only.
 
 - TD-001–TD-007 — UI fidelity; unused fuller pack `cm-flow-manager-ui-assets/`; leftover extracts / unused Ubuntu
-- TD-008 — qpdf `incorrect_password` integration assertion
+- TD-008 — qpdf `incorrect_password` integration assertion (**paid** in 3.7 via fixture regeneration)
+- TD-013 — Split does not emit one PDF per selected page
 - TD-009 — no Playwright / RTL UI automation
 - TD-010 — Corepack elevation on this machine
 - TD-011–TD-012 — unsigned Alpha / portable update limits
@@ -74,7 +77,7 @@ Canonical registry: **`docs/TECH_DEBT.md`**. Keep that file current; this sectio
 
 - Hardened Electron defaults enforced
 - No Node in renderer; sandbox + contextIsolation
-- PDF unlock only via allowlisted IPC; no arbitrary process API
+- PDF unlock/extract/merge only via allowlisted IPC; no arbitrary process API
 - `shell:openFolder` opens only validated existing folders (or parent of existing file)
 - Passwords not logged; unlock uses `--password-file` temp files; UI clears password after success/reset/file change
 - No telemetry; local-only document processing
@@ -83,7 +86,7 @@ Canonical registry: **`docs/TECH_DEBT.md`**. Keep that file current; this sectio
 ## Dependency decisions
 
 - pnpm@9.15.9 only
-- qpdf 12.3.2 Apache-2.0 for unlock engine
+- qpdf 12.3.2 Apache-2.0 for unlock / extract / merge
 - Phase 3.6: `electron-updater` for GitHub Releases transport (ADR-007)
 - No new npm dependencies added in Phase 3A
 
@@ -101,5 +104,6 @@ Canonical registry: **`docs/TECH_DEBT.md`**. Keep that file current; this sectio
 | Updater runtime regression (TS external / CJS interop) | Closed (`c55acab` + owner verification 2026-08-12) |
 | Exact UI asset-pack | Committed `e54e4e8`; polish in TECH_DEBT |
 | Phase 4B canonical model | Approved 2026-08-17 |
+| Phase 3.7 Split / Merge | Approved 2026-08-18 |
 | Phase 3B–5 MVP | 3B deferred; 4C not started |
 | v0.1.0 readiness | Not ready |

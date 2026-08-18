@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { PDF_PASSWORD_REMOVER_ROUTE } from '@cm-flow-manager/pdf-password-remover';
+import { PDF_SPLIT_MERGE_ROUTE } from '@cm-flow-manager/pdf-split-merge';
 import { useI18n } from '@/i18n/useI18n';
 import type { LocaleCode } from '@/i18n/types';
 import { useTheme } from '@/theme/useTheme';
@@ -61,6 +62,7 @@ export function AppShell() {
         <nav className="relative z-10 mt-10 flex flex-col gap-1.5" aria-label="Primary">
           <SidebarItem to="/" end icon={<IconDashboard />} label={t('nav.dashboard')} />
           <SidebarItem to={PDF_PASSWORD_REMOVER_ROUTE} icon={<IconPdf />} label={t('nav.pdfTools')} />
+          <SidebarItem to={PDF_SPLIT_MERGE_ROUTE} icon={<IconPdf />} label={t('nav.splitMerge')} />
           <SidebarItem disabled icon={<IconWrench />} label={t('nav.repairIntelligence')} title={t('common.comingLater')} />
           <SidebarItem disabled icon={<IconScales />} label={t('nav.comparisons')} title={t('common.comingLater')} />
           <SidebarItem disabled icon={<IconChart />} label={t('nav.reports')} title={t('common.comingLater')} />

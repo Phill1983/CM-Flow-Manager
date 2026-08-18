@@ -2,7 +2,7 @@
 
 ## Scope
 
-Only the **PDF Password Remover** module is functional. Navigation may include Dashboard, PDF Tools → Password Remover, Activity, Settings, and About. Future tools must not appear as broken destinations; Dashboard may note that more tools are coming later.
+Only the **PDF Password Remover** and **PDF Split / Merge** modules are functional. Repair Intelligence and Comparisons remain coming-soon destinations.
 
 ## User workflow
 
@@ -17,6 +17,10 @@ Only the **PDF Password Remover** module is functional. Navigation may include D
 7. Optionally choose another destination via Save As.
 8. Unlock / create verified copy; observe progress.
 9. Review success or localized error; open output folder; process another file.
+
+### Phase 3.7 Split / Merge
+
+See `docs/PDF_SPLIT_MERGE.md`. Extract selected pages into one new PDF, or merge two or more PDFs in explicit list order. Local qpdf only. Split shows local page thumbnails synchronized with the page-range field.
 
 ### Phase 3B (planned — not implemented)
 
@@ -47,6 +51,8 @@ Unlocked PDF → extract text → detect plate → normalize → search **config
 | FR-07 | Never modify source PDF by default | Phase 2/3A done |
 | FR-08 | Progress indicator; cancel when technically feasible | Progress in 3A; cancel later |
 | FR-09 | Per-file statuses: Queued, Validating, Processing, Completed, Incorrect password, Invalid PDF, Unsupported encryption, Cancelled, Failed | Phase 3A single-file states |
+| FR-10 | Split: extract selected pages into one new PDF; local thumbnails stay in sync with the page-range field | Phase 3.7 |
+| FR-11 | Merge: two or more PDFs in explicit UI order | Phase 3.7 |
 | FR-10 | Remove item from queue; clear queue | Phase 4 |
 | FR-11 | Open output folder | Phase 3A done |
 | FR-12 | Clear, localized user-facing errors | Phase 3A done |
@@ -54,7 +60,7 @@ Unlocked PDF → extract text → detect plate → normalize → search **config
 
 ## Explicit exclusions
 
-- Password cracking, guessing, blank/common password attempts
+- Password cracking, guessing, blank/common password attempts (v0.1.0). Future **Emergency PDF Password Recovery** is specified in `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md` and is **not** in this version.
 - Per-file passwords (later version)
 - Other PDF tools (merge, split, OCR, …)
 - Cloud sync, user accounts, analytics / telemetry

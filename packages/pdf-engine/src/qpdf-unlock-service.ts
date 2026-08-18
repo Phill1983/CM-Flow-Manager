@@ -11,11 +11,16 @@ import {
   sanitizePathForLogs,
 } from '@cm-flow-manager/file-utils';
 import type {
+  PdfEngineService,
+  PdfExtractPagesInput,
+  PdfExtractPagesResult,
   PdfInspectionResult,
+  PdfMergeInput,
+  PdfMergeResult,
   PdfUnlockInput,
   PdfUnlockResult,
-  PdfUnlockService,
 } from './types';
+import { extractPdfPages, mergePdfFiles } from './qpdf-page-ops';
 
 export type PdfEngineLogEvent = {
   level: 'info' | 'warn' | 'error';
@@ -179,7 +184,7 @@ export function isQpdfSuccessfulExit(exitCode: number | null): boolean {
   return exitCode === 0 || exitCode === 3;
 }
 
-export class QpdfUnlockService implements PdfUnlockService {
+export class QpdfUnlockService implements PdfEngineService {
   private readonly qpdfPath: string;
   private readonly logger: PdfEngineLogger;
   private readonly now: () => number;
@@ -242,8 +247,8 @@ export class QpdfUnlockService implements PdfUnlockService {
       return { status: 'encrypted' };
     }
     if (encryptedCheck.exitCode === 2) {
-      // Do not require `qpdf --check` success: empty/minimal PDFs may warn while still usable.
-      return { status: 'unencrypted' };
+      const pageCount = await this.readPageCount(filePath);
+      return pageCount === undefined ? { status: 'unencrypted' } : { status: 'unencrypted', pageCount };
     }
 
     return {
@@ -470,6 +475,42 @@ export class QpdfUnlockService implements PdfUnlockService {
       await rm(passwordFile, { force: true });
       await rm(dirname(passwordFile), { recursive: true, force: true });
     }
+  }
+
+  async extractPages(input: PdfExtractPagesInput): Promise<PdfExtractPagesResult> {
+    return extractPdfPages(
+      {
+        inspect: (filePath) => this.inspect(filePath),
+        exec: (args) => this.runQpdf(args, []),
+        now: this.now,
+        logger: this.logger,
+      },
+      input,
+    );
+  }
+
+  async mergePdfs(input: PdfMergeInput): Promise<PdfMergeResult> {
+    return mergePdfFiles(
+      {
+        inspect: (filePath) => this.inspect(filePath),
+        exec: (args) => this.runQpdf(args, []),
+        now: this.now,
+        logger: this.logger,
+      },
+      input,
+    );
+  }
+
+  private async readPageCount(filePath: string): Promise<number | undefined> {
+    const result = await this.runQpdf(['--show-npages', filePath], []);
+    if (!isQpdfSuccessfulExit(result.exitCode)) {
+      return undefined;
+    }
+    const parsed = Number.parseInt(result.stdout.trim(), 10);
+    if (!Number.isInteger(parsed) || parsed < 0) {
+      return undefined;
+    }
+    return parsed;
   }
 
   private async writePasswordFile(password: string): Promise<string> {

@@ -8,7 +8,7 @@ Modular, local-first Windows desktop toolkit for PDF and office workflow operati
 | Package ID | `com.cmflowmanager.desktop` |
 | Current version | `0.1.0-alpha` |
 | MVP target | `0.1.0` |
-| Current phase | **Phase 3.6 — Update & Version Management Foundation** (in progress) |
+| Current phase | **Phase 3.7 — PDF Split / Merge** (awaiting approval; 4B remains complete) |
 | Workspace | `D:\Projects\cm-flow-manager` |
 | Platform focus | Windows 10 / Windows 11 |
 | Processing model | Fully local — no document uploads |
@@ -23,7 +23,7 @@ This application will **never** include password cracking, brute-force attempts,
 
 ## Current status
 
-Phase 3A Password Remover UI is complete. Phase 3.5 packages the first standalone Windows Alpha (installer + portable) with bundled qpdf. Phase 3.6 adds an opt-in GitHub Releases updater foundation (Settings → Updates, `version-manifest.json`, SHA-256). Phase 3B (plate → folder) is deferred.
+Phase 3A Password Remover UI is complete. Phase 3.5 packages the first standalone Windows Alpha (installer + portable) with bundled qpdf. Phase 3.6 adds an opt-in GitHub Releases updater foundation. Phase **3.7** adds local PDF Split (extract selected pages) and Merge, plus local page thumbnails. Phase 4B canonical repair-domain is complete. Phase 4C (extraction) is **not** started. Phase 3B (plate → folder) is deferred.
 
 See:
 
@@ -53,9 +53,10 @@ PDF unlock engine: **bundled qpdf** (Apache-2.0).
 cm-flow-manager/
 ├── apps/desktop/                 # Electron main, preload, renderer, packaging
 ├── packages/ipc-contracts/       # Typed IPC allowlist
-├── packages/pdf-engine/          # PdfUnlockService + qpdf adapter
+├── packages/pdf-engine/          # PdfUnlockService + qpdf adapter (unlock, extract, merge)
 ├── packages/app-updater/         # Update policy / manifest / version logic (no Electron)
 ├── modules/pdf-password-remover/ # Module domain helpers + Phase 3B contracts
+├── modules/pdf-split-merge/      # Split/Merge domain helpers
 ├── vendor/qpdf/                  # Fetched qpdf (bin gitignored)
 ├── release/                      # Local pack output (exe gitignored)
 ├── docs/
@@ -73,7 +74,8 @@ cm-flow-manager/
 | 2 | Verified PDF unlock engine | Complete |
 | 3A | Working single-file UI | Complete |
 | 3.5 | First Alpha packaging (installer + portable) | Complete |
-| 3.6 | Update & version management foundation (GitHub Releases) | In progress |
+| 3.6 | Update & version management foundation (GitHub Releases) | Complete |
+| 3.7 | PDF Split / Merge (local extract + merge + page preview) | Awaiting approval |
 | 3B | Plate → folder resolution | Deferred |
 | 4 | Batch-capable MVP | Not started |
 | 5 | Signed / hardened release candidate | Not started |

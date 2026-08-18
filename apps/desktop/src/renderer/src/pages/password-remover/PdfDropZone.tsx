@@ -1,15 +1,28 @@
 import { useState, type DragEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/i18n/useI18n';
+import type { MessageKey } from '@/i18n/types';
 import { cn } from '@/lib/utils';
 
 type PdfDropZoneProps = {
   disabled: boolean;
   onFiles: (files: File[]) => void;
   onSelectClick: () => void;
+  titleKey?: MessageKey;
+  hintKey?: MessageKey;
+  activeKey?: MessageKey;
+  selectKey?: MessageKey;
 };
 
-export function PdfDropZone({ disabled, onFiles, onSelectClick }: PdfDropZoneProps) {
+export function PdfDropZone({
+  disabled,
+  onFiles,
+  onSelectClick,
+  titleKey = 'passwordRemover.dropzone.title',
+  hintKey = 'passwordRemover.dropzone.hint',
+  activeKey = 'passwordRemover.dropzone.active',
+  selectKey = 'passwordRemover.selectPdf',
+}: PdfDropZoneProps) {
   const { t } = useI18n();
   const [active, setActive] = useState(false);
 
@@ -38,7 +51,7 @@ export function PdfDropZone({ disabled, onFiles, onSelectClick }: PdfDropZonePro
   return (
     <div
       role="region"
-      aria-label={t('passwordRemover.dropzone.title')}
+      aria-label={t(titleKey)}
       onDragOver={handleDragOver}
       onDragEnter={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -49,12 +62,10 @@ export function PdfDropZone({ disabled, onFiles, onSelectClick }: PdfDropZonePro
         disabled && 'opacity-60',
       )}
     >
-      <p className="text-base font-medium">
-        {active && !disabled ? t('passwordRemover.dropzone.active') : t('passwordRemover.dropzone.title')}
-      </p>
-      <p className="max-w-md text-sm text-muted-foreground">{t('passwordRemover.dropzone.hint')}</p>
+      <p className="text-base font-medium">{active && !disabled ? t(activeKey) : t(titleKey)}</p>
+      <p className="max-w-md text-sm text-muted-foreground">{t(hintKey)}</p>
       <Button type="button" onClick={onSelectClick} disabled={disabled}>
-        {t('passwordRemover.selectPdf')}
+        {t(selectKey)}
       </Button>
     </div>
   );

@@ -1,14 +1,25 @@
-import type { PdfInspectionResult, PdfUnlockInput, PdfUnlockResult, PdfUnlockService } from './types';
+import type {
+  PdfEngineService,
+  PdfExtractPagesInput,
+  PdfExtractPagesResult,
+  PdfInspectionResult,
+  PdfMergeInput,
+  PdfMergeResult,
+  PdfUnlockInput,
+  PdfUnlockResult,
+} from './types';
+
+const UNAVAILABLE_REASON =
+  'PDF engine is not available. qpdf was not found on this computer.';
 
 /**
- * PHASE 1 MOCK — deliberately unavailable.
- * Real qpdf adapter arrives in Phase 2. Do not treat this as a working unlocker.
+ * Fallback when the bundled/vendored qpdf binary cannot be resolved.
  */
-export class UnavailablePdfUnlockService implements PdfUnlockService {
+export class UnavailablePdfUnlockService implements PdfEngineService {
   async inspect(_filePath: string): Promise<PdfInspectionResult> {
     return {
       status: 'unavailable',
-      reason: 'PDF unlock engine is not available in Phase 1. qpdf arrives in Phase 2.',
+      reason: UNAVAILABLE_REASON,
     };
   }
 
@@ -16,11 +27,27 @@ export class UnavailablePdfUnlockService implements PdfUnlockService {
     return {
       status: 'failed',
       category: 'EngineUnavailable',
-      message: 'PDF unlock engine is not available in Phase 1. qpdf arrives in Phase 2.',
+      message: UNAVAILABLE_REASON,
+    };
+  }
+
+  async extractPages(_input: PdfExtractPagesInput): Promise<PdfExtractPagesResult> {
+    return {
+      status: 'failed',
+      category: 'EngineUnavailable',
+      message: UNAVAILABLE_REASON,
+    };
+  }
+
+  async mergePdfs(_input: PdfMergeInput): Promise<PdfMergeResult> {
+    return {
+      status: 'failed',
+      category: 'EngineUnavailable',
+      message: UNAVAILABLE_REASON,
     };
   }
 }
 
-export function createPdfUnlockService(): PdfUnlockService {
+export function createPdfUnlockService(): PdfEngineService {
   return new UnavailablePdfUnlockService();
 }

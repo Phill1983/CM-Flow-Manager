@@ -21,4 +21,25 @@ describe('UnavailablePdfUnlockService', () => {
       expect(JSON.stringify(result)).not.toContain('secret-must-not-leak');
     }
   });
+
+  it('fails extract and merge with EngineUnavailable', async () => {
+    const service = new UnavailablePdfUnlockService();
+    const extracted = await service.extractPages({
+      sourcePath: 'C:/tmp/sample.pdf',
+      destinationPath: 'C:/tmp/sample_pages_1.pdf',
+      pageSelection: '1',
+    });
+    expect(extracted.status).toBe('failed');
+    if (extracted.status === 'failed') {
+      expect(extracted.category).toBe('EngineUnavailable');
+    }
+    const merged = await service.mergePdfs({
+      sourcePaths: ['C:/tmp/a.pdf', 'C:/tmp/b.pdf'],
+      destinationPath: 'C:/tmp/merged.pdf',
+    });
+    expect(merged.status).toBe('failed');
+    if (merged.status === 'failed') {
+      expect(merged.category).toBe('EngineUnavailable');
+    }
+  });
 });

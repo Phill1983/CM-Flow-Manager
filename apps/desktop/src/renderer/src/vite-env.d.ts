@@ -3,8 +3,15 @@
 import type {
   AppGetVersionResult,
   DialogOpenPdfResult,
+  DialogOpenPdfsResult,
   DialogSavePdfResult,
+  PdfExtractPagesRequest,
+  PdfGrantPreviewResult,
+  PdfMergeRequest,
+  PdfPrepareExtractSourceResult,
+  PdfPrepareMergeFileResult,
   PdfPrepareSourceResult,
+  PdfRevokePreviewResult,
   PdfUnlockRequest,
   ShellOpenFolderResult,
   UpdateActionResult,
@@ -12,15 +19,32 @@ import type {
   UpdateSetChannelRequest,
   UpdateStatusSnapshot,
 } from '@cm-flow-manager/ipc-contracts';
-import type { PdfInspectionResult, PdfUnlockResult } from '@cm-flow-manager/pdf-engine';
+import type {
+  PdfExtractPagesResult,
+  PdfInspectionResult,
+  PdfMergeResult,
+  PdfUnlockResult,
+} from '@cm-flow-manager/pdf-engine';
 
 export type CmFlowApi = {
   getVersion: () => Promise<AppGetVersionResult>;
   openPdfDialog: () => Promise<DialogOpenPdfResult>;
-  savePdfDialog: (defaultPath?: string) => Promise<DialogSavePdfResult>;
+  openPdfsDialog: () => Promise<DialogOpenPdfsResult>;
+  savePdfDialog: (defaultPath?: string, title?: string) => Promise<DialogSavePdfResult>;
   inspectPdf: (filePath: string) => Promise<PdfInspectionResult>;
   unlockPdf: (input: PdfUnlockRequest) => Promise<PdfUnlockResult>;
   preparePdfSource: (filePath: string) => Promise<PdfPrepareSourceResult>;
+  prepareExtractSource: (
+    filePath: string,
+    pageSelection?: string,
+    destinationDirectory?: string,
+  ) => Promise<PdfPrepareExtractSourceResult>;
+  prepareMergeFile: (filePath: string) => Promise<PdfPrepareMergeFileResult>;
+  extractPdfPages: (input: PdfExtractPagesRequest) => Promise<PdfExtractPagesResult>;
+  mergePdfs: (input: PdfMergeRequest) => Promise<PdfMergeResult>;
+  grantPdfPreview: (filePath: string) => Promise<PdfGrantPreviewResult>;
+  revokePdfPreview: (token: string) => Promise<PdfRevokePreviewResult>;
+  previewUrlForToken: (token: string) => string | null;
   openFolder: (targetPath: string) => Promise<ShellOpenFolderResult>;
   getUpdateStatus: () => Promise<UpdateStatusSnapshot>;
   checkForUpdates: () => Promise<UpdateActionResult>;

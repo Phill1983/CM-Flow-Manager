@@ -15,6 +15,7 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 9. ~~Phase 4A.2 Real document discovery / field inventory.~~
 10. ~~Exact UI asset-pack (visual polish remaining → `docs/TECH_DEBT.md`).~~
 11. ~~Phase 4B Canonical repair document model.~~
+12. ~~Phase 3.7 PDF Split / Merge (approved 2026-08-18).~~
 
 ## Now
 
@@ -48,6 +49,15 @@ Distinct numbering from repair **4A+**. Batch unlock with shared password + queu
 3. Code signing + Authenticode update verification + hardened release candidate.
 4. Security review for public/signed release.
 5. CI publish automation for GitHub Releases + manifests (beyond manual Alpha).
+
+## Future (owner-gated, not scheduled)
+
+### Emergency PDF Password Recovery
+
+- **Not** the next phase after 3.7. **Does not block** 3.7 or 4C.
+- Authorized emergency workflow when the Password Remover known-password path fails or the password is unavailable.
+- Not a generic PDF cracker. No implementation until governance/legal/security questions are answered.
+- Canonical spec: [`docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`](EMERGENCY_PDF_PASSWORD_RECOVERY.md).
 
 ## Post-MVP / v0.2.x
 

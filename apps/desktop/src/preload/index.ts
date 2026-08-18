@@ -4,11 +4,23 @@ import {
   UpdateIpcChannels,
   type AppGetVersionResult,
   type DialogOpenPdfResult,
+  type DialogOpenPdfsResult,
   type DialogSavePdfResult,
+  type PdfExtractPagesRequest,
+  type PdfGrantPreviewRequest,
+  type PdfGrantPreviewResult,
   type PdfInspectRequest,
+  type PdfMergeRequest,
+  type PdfPrepareExtractSourceRequest,
+  type PdfPrepareExtractSourceResult,
+  type PdfPrepareMergeFileRequest,
+  type PdfPrepareMergeFileResult,
   type PdfPrepareSourceRequest,
   type PdfPrepareSourceResult,
+  type PdfRevokePreviewRequest,
+  type PdfRevokePreviewResult,
   type PdfUnlockRequest,
+  isPdfPreviewToken,
   type ShellOpenFolderRequest,
   type ShellOpenFolderResult,
   type UpdateActionResult,
@@ -17,7 +29,12 @@ import {
   type UpdateSetChannelRequest,
   type UpdateStatusSnapshot,
 } from '@cm-flow-manager/ipc-contracts';
-import type { PdfInspectionResult, PdfUnlockResult } from '@cm-flow-manager/pdf-engine';
+import type {
+  PdfExtractPagesResult,
+  PdfInspectionResult,
+  PdfMergeResult,
+  PdfUnlockResult,
+} from '@cm-flow-manager/pdf-engine';
 
 /**
  * Minimal typed bridge. Do not expose ipcRenderer, fs, or shell.
@@ -29,8 +46,11 @@ const cmFlowApi = {
   openPdfDialog(): Promise<DialogOpenPdfResult> {
     return ipcRenderer.invoke(IpcChannels.DialogOpenPdf) as Promise<DialogOpenPdfResult>;
   },
-  savePdfDialog(defaultPath?: string): Promise<DialogSavePdfResult> {
-    return ipcRenderer.invoke(IpcChannels.DialogSavePdf, { defaultPath }) as Promise<DialogSavePdfResult>;
+  openPdfsDialog(): Promise<DialogOpenPdfsResult> {
+    return ipcRenderer.invoke(IpcChannels.DialogOpenPdfs) as Promise<DialogOpenPdfsResult>;
+  },
+  savePdfDialog(defaultPath?: string, title?: string): Promise<DialogSavePdfResult> {
+    return ipcRenderer.invoke(IpcChannels.DialogSavePdf, { defaultPath, title }) as Promise<DialogSavePdfResult>;
   },
   inspectPdf(filePath: string): Promise<PdfInspectionResult> {
     const payload: PdfInspectRequest = { filePath };
@@ -42,6 +62,38 @@ const cmFlowApi = {
   preparePdfSource(filePath: string): Promise<PdfPrepareSourceResult> {
     const payload: PdfPrepareSourceRequest = { filePath };
     return ipcRenderer.invoke(IpcChannels.PdfPrepareSource, payload) as Promise<PdfPrepareSourceResult>;
+  },
+  prepareExtractSource(
+    filePath: string,
+    pageSelection?: string,
+    destinationDirectory?: string,
+  ): Promise<PdfPrepareExtractSourceResult> {
+    const payload: PdfPrepareExtractSourceRequest = { filePath, pageSelection, destinationDirectory };
+    return ipcRenderer.invoke(IpcChannels.PdfPrepareExtractSource, payload) as Promise<PdfPrepareExtractSourceResult>;
+  },
+  prepareMergeFile(filePath: string): Promise<PdfPrepareMergeFileResult> {
+    const payload: PdfPrepareMergeFileRequest = { filePath };
+    return ipcRenderer.invoke(IpcChannels.PdfPrepareMergeFile, payload) as Promise<PdfPrepareMergeFileResult>;
+  },
+  extractPdfPages(input: PdfExtractPagesRequest): Promise<PdfExtractPagesResult> {
+    return ipcRenderer.invoke(IpcChannels.PdfExtractPages, input) as Promise<PdfExtractPagesResult>;
+  },
+  mergePdfs(input: PdfMergeRequest): Promise<PdfMergeResult> {
+    return ipcRenderer.invoke(IpcChannels.PdfMerge, input) as Promise<PdfMergeResult>;
+  },
+  grantPdfPreview(filePath: string): Promise<PdfGrantPreviewResult> {
+    const payload: PdfGrantPreviewRequest = { filePath };
+    return ipcRenderer.invoke(IpcChannels.PdfGrantPreview, payload) as Promise<PdfGrantPreviewResult>;
+  },
+  revokePdfPreview(token: string): Promise<PdfRevokePreviewResult> {
+    const payload: PdfRevokePreviewRequest = { token };
+    return ipcRenderer.invoke(IpcChannels.PdfRevokePreview, payload) as Promise<PdfRevokePreviewResult>;
+  },
+  previewUrlForToken(token: string): string | null {
+    if (!isPdfPreviewToken(token)) {
+      return null;
+    }
+    return `cmflow-pdf://preview/${token}`;
   },
   openFolder(targetPath: string): Promise<ShellOpenFolderResult> {
     const payload: ShellOpenFolderRequest = { targetPath };

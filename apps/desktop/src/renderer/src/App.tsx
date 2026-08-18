@@ -1,11 +1,13 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { PDF_PASSWORD_REMOVER_ROUTE } from '@cm-flow-manager/pdf-password-remover';
+import { PDF_SPLIT_MERGE_ROUTE } from '@cm-flow-manager/pdf-split-merge';
 import { AppShell } from './layout/AppShell';
 import { AboutPage } from './pages/AboutPage';
 import { ActivityPage } from './pages/ActivityPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { PasswordRemoverPage } from './pages/PasswordRemoverPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { SplitMergePage } from './pages/SplitMergePage';
 
 export function App() {
   return (
@@ -14,6 +16,7 @@ export function App() {
         <Route element={<AppShell />}>
           <Route index element={<DashboardPage />} />
           <Route path={PDF_PASSWORD_REMOVER_ROUTE.replace(/^\//, '')} element={<PasswordRemoverPage />} />
+          <Route path={PDF_SPLIT_MERGE_ROUTE.replace(/^\//, '')} element={<SplitMergePage />} />
           <Route path="activity" element={<ActivityPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="about" element={<AboutPage />} />

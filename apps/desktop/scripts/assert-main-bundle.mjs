@@ -19,6 +19,7 @@ const forbidden = [
   '@cm-flow-manager/app-updater',
   '@cm-flow-manager/pdf-engine',
   '@cm-flow-manager/pdf-password-remover',
+  '@cm-flow-manager/pdf-split-merge',
   '@cm-flow-manager/file-utils',
   '@cm-flow-manager/ipc-contracts',
   'packages/app-updater/src/',
