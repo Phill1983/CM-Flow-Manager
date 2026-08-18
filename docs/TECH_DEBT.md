@@ -8,7 +8,7 @@ Jarwis must keep this file current (see `.cursor/rules/11-tech-debt.mdc`).
 
 1. New row with the next `TD-NNN` id.
 2. Status: `open` | `accepted` (known, not blocking) | `parked` (needs owner) | `paid`.
-3. Point to files or tests. Do not hide debt in chat-only notes.
+3. Include **Description**, **Reason** (Why it exists), **Impact**, **Risk**, **When to resolve** (Next action). Point to files or tests. Do not hide debt in chat-only notes.
 4. Do not treat an open item as a license to start unpaid work in the current phase.
 
 ## Open

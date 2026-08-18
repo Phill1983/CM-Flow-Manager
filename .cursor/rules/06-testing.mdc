@@ -8,6 +8,7 @@ alwaysApply: false
 
 - Behavior changes require test updates in the same change.
 - Prefer verifying behavior over asserting implementation details.
+- Do not build test-helper frameworks larger than the code under test. Prefer fixtures and small helpers.
 - Cover filename collision, path validation, error mapping, and unlock success/failure paths.
 - Never skip or delete failing tests to force green CI.
 - Use synthetic PDF fixtures only.

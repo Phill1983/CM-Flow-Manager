@@ -9,5 +9,6 @@ alwaysApply: false
 - Strict compiler options; no ignored TS errors; no `any` without a short justified comment.
 - Prefer explicit names, small functions, immutable data where practical.
 - Share types via `packages/*` or `ipc-contracts` — do not duplicate DTOs.
+- Do not add extra type/wrapper layers for a single call site.
 - Exhaustive handling for status/error unions where feasible.
 - Do not disable lint rules without documenting why adjacent to the disable comment.

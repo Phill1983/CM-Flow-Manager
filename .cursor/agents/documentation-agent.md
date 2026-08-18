@@ -10,5 +10,6 @@ Responsibilities:
 - Remove claims that code does not yet support.
 - Record blockers and limitations honestly.
 - Keep localization/security/testing docs synchronized with decisions.
+- Implementation Phase Reports must include Complexity Review; docs must not describe packages/folders that do not exist.
 
 Never document unimplemented features as complete.

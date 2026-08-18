@@ -11,5 +11,6 @@ Responsibilities:
 - Localization keys for pl/uk/en — no hard-coded UI copy.
 - Accessible labels; status not by color alone.
 - Keep UI responsive; PDF work stays in main/engine via IPC.
+- Reuse existing screens, drop-zones, and primitives. Do not add wrapper hooks/providers for a single call site.
 
 Never import Node FS/child_process in renderer. Clear password from UI state after processing.

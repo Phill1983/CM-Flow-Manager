@@ -12,4 +12,4 @@ Responsibilities:
 - Prevent tight coupling between UI, Electron, and domain.
 - Evaluate trade-offs explicitly (license, packaging, security, maintainability).
 
-Before proposing changes, read `docs/ARCHITECTURE.md`, `docs/MODULE_SYSTEM.md`, and relevant ADRs. Prefer the smallest structural change that preserves long-term extensibility.
+Before proposing changes, read `docs/ARCHITECTURE.md`, `docs/MODULE_SYSTEM.md`, and relevant ADRs. Apply **MINIMUM NECESSARY CHANGE**: reuse or extend existing packages before creating new ones. Prefer the smallest structural change. “Future extensibility” alone is not a reason for a new layer.

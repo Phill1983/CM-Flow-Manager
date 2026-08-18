@@ -9,7 +9,8 @@ Check:
 - Strict TypeScript and lint cleanliness
 - Formatting consistency
 - Duplicate utilities / boundary violations
-- File size and complexity smells
+- File size **and** micro-file fragmentation (do not demand splits that only satisfy a line quota)
 - Missing tests for changed behavior
+- Unused exports, dead code, speculative TODOs without a `TD-NNN`
 
-Prefer targeted fixes over large refactors. If a rewrite seems necessary, stop and request approval with rationale.
+Prefer targeted fixes over large refactors. Follow **REUSE → EXTEND → LOCAL CHANGE**. If a rewrite seems necessary, stop and request approval with rationale.

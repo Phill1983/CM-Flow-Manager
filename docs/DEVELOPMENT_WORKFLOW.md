@@ -148,15 +148,15 @@ Native Electron manual verification is part of Validation whenever the native tr
 ## Per-task checklist
 
 1. Read relevant docs.
-2. Inspect existing code.
-3. State scope and affected files.
+2. Inspect existing code (reuse / extend / local change before new abstraction).
+3. State scope, affected files, phase alignment, and reused vs new code.
 4. Implement smallest coherent change.
 5. Add/update tests.
 6. Run automated validation.
 7. When native surfaces changed: run the full Electron end-to-end user journey.
 8. Review security implications.
 9. Update status/registry docs.
-10. Produce Phase Report (automated / native manual / not verified) and wait for human approval.
+10. Anti-spaghetti code review + Complexity Review in the Phase Report; wait for human approval.
 11. Commit and push only after approval.
 
 ## Definition of done
@@ -166,6 +166,51 @@ Code exists **and** tests/docs/status reflect reality. Generating code alone is 
 For native desktop work: automated green **plus** successful native Electron end-to-end verification.
 
 Phase work is not finished until the approved Commit → Push steps complete (when the user approves publishing).
+
+## MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI
+
+Permanent. Details: `.cursor/rules/12-minimal-change.mdc`.
+
+Before coding: inspect existing code. Preferred order: **REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION**.
+
+The phase plan (and Phase Report) must state what was reused, extended, and newly created. Do not invent packages, interfaces, or wrapper layers for hypothetical futures.
+
+If a small feature needs more than ~5 new production files, ~2 new abstraction layers, or a new service+interface pair: complexity-review before proceeding.
+
+If the request requires architecture expansion outside approved scope: **STOP** and wait for human approval.
+
+Before the Phase Report, `code-review-agent` runs an ANTI-SPAGHETTI REVIEW. If the implementation could be simpler, simplify before requesting approval unless the owner accepts the debt.
+
+### Complexity Review (required in every implementation Phase Report)
+
+```text
+## Complexity Review
+
+Production files added:
+Production files removed:
+
+New packages:
+New modules:
+New services:
+New interfaces:
+New dependencies:
+
+Existing code reused:
+Existing code extended:
+
+Duplicate logic introduced: YES / NO
+If YES — justification:
+
+Dead / unused code added: YES / NO
+Speculative future code added: YES / NO
+Unnecessary abstraction found: YES / NO
+Could the implementation be simpler: YES / NO
+
+If NO: brief explanation why current complexity is necessary.
+If YES: simplify BEFORE requesting approval unless human explicitly approves the debt.
+```
+
+New production dependencies must be justified in the Phase Report (why existing deps / platform APIs are insufficient).
 
 ## Conventional commits
 

@@ -12,12 +12,12 @@ alwaysApply: true
 - From Phase 3.5: for user-facing desktop changes, **packaged EXE verification** is mandatory and primary; `pnpm dev` alone is not enough. Phase Reports must separate Development vs Packaged EXE results.
 - Phase Reports must separate **Automated verification**, **Native Electron manual verification**, **Development verification**, **Packaged EXE verification**, and **Not manually verified** — never mix them.
 - A phase that changes native desktop functionality is not complete until automated checks **and** the full Electron end-to-end user journey pass.
-- v0.1.0 scope is **PDF Password Remover only**. Do not build merge/split/OCR/Audatex/cloud features early.
+- v0.1.0 Password Remover remains the original MVP. Split/Merge is **Phase 3.7 only**. Do not build OCR, Audatex, cloud, or other unapproved tools early.
 - **Never** implement password cracking, brute force, dictionaries, blank/common guessing, or credential bypass.
-- Read relevant docs before editing. Prefer extending existing utilities over duplicating them.
+- Read relevant docs before editing. Follow **MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI** (`.cursor/rules/12-minimal-change.mdc`): REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION.
 - Keep changes small and reviewable. Do not mix unrelated tasks in one commit.
 - Do not add dependencies without documenting why, license, maintenance, and Electron fit in `docs/DECISIONS.md`.
 - Update `docs/PROJECT_STATUS.md` and `docs/STATE_REGISTRY.md` after meaningful phases (before the Phase Report).
 - Protocol technical debt in `docs/TECH_DEBT.md` as it appears (see `.cursor/rules/11-tech-debt.mdc`). Do not leave debt only in chat.
 - Stop and ask when a blocker needs a human decision. Never silently bypass failed tests or claim success without verification.
-- Prefer files under ~300 lines unless splitting harms clarity.
+- Prefer cohesive files. The ~300-line hint is a smell check, not a reason to split one-use trivia into micro-files.

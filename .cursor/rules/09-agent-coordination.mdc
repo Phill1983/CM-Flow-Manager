@@ -52,6 +52,6 @@ strategy-guardian → solution-architect → implementer → testing-agent
 
 - State scope, affected files, and phase alignment before coding.
 - Do not mark work complete without validation evidence (including native E2E when required).
-- `strategy-guardian` may block out-of-scope work.
-- `code-review-agent` should not be the primary author of code it reviews.
+- `strategy-guardian` may block out-of-scope work **and** unapproved architecture expansion.
+- `code-review-agent` should not be the primary author of code it reviews. Before every implementation Phase Report it must run an **ANTI-SPAGHETTI REVIEW** (see `.cursor/rules/12-minimal-change.mdc`).
 - Stop on blockers; record them in `PROJECT_STATUS.md`.

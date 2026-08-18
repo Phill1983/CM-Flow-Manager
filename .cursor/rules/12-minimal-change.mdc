@@ -1,0 +1,79 @@
+---
+description: MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI — reuse first; no speculative architecture
+alwaysApply: true
+---
+
+# MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI PRINCIPLE
+
+Permanent. Not limited to the current phase. Build only what is necessary.
+
+## Order of work
+
+Before new code, inspect existing modules, utilities, components, packages, IPC, and tests.
+
+```text
+REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION
+```
+
+Never reverse this without a present-day reason. Phase plans must state:
+
+- Existing code reused
+- Existing code extended
+- New code required
+
+## Minimum necessary change
+
+Smallest coherent change that fully satisfies the **approved** requirement.
+
+Do not: architecture for hypothetical futures; generic frameworks for one use case; factories/strategies/providers when one implementation exists; wrapper layers around working APIs; one-use utility modules; interfaces with a single implementation unless testing/security/architecture requires the boundary; dead code; unused extension points; speculative config; placeholders for unapproved features.
+
+## New abstraction gate
+
+Every new production service, interface, adapter, package, shared utility, hook, context, domain layer, or IPC channel family needs:
+
+- Why it must exist **now**
+- Who uses it **now**
+- Why extending the existing structure is worse
+- What duplication or boundary it solves
+
+“Future extensibility” alone is not enough.
+
+A new package/module is justified only for a real boundary (independent domain, security/runtime, reusable engine, independently testable capability, dependency isolation). A new feature name is not a new package.
+
+## Complexity warning (not a hard ban)
+
+If a relatively small feature needs more than ~5 new production files, ~2 new abstraction layers, or a new service+interface pair: stop, review, and explain why the extra structure is required.
+
+If the feature needs architecture expansion not anticipated by approved scope: **STOP**, report why / proposed architecture / complexity / simpler alternatives, wait for human approval.
+
+## Size, wrappers, generalization
+
+Avoid giant files **and** micro-files of one-use trivia. Extract when there is a distinct responsibility, reuse, independent tests, or a real readability gain — not to hit a line quota.
+
+Do not build wrapper chains (UI → facade → service → adapter → provider → engine) unless each hop has a concrete reason. Acceptable when security requires it: renderer → typed IPC → service → engine/native tool.
+
+Do not generalize from one case (one renderer, one DB, one PDF engine, one future AI vendor).
+
+## Duplication
+
+Small temporary duplication can beat a wrong abstraction. Rule of Three: first implement clearly; second observe; third consider extracting.
+
+Centralize earlier: security-sensitive logic, money, domain rules, path validation, IPC validation.
+
+## Comments, tests, deps, refactors
+
+Comments explain **why**, not obvious **what**.
+
+Test helpers must not outgrow the code under test. Prefer fixtures and direct tests. Do not add a dependency for trivial helpers; justify each new production dependency in the Phase Report.
+
+No unrelated refactoring during a feature. Record extra debt; do not “clean the whole area” without approval. When replacing an implementation, delete the old one — no zombie dual stacks.
+
+TODO comments must reference a `TD-NNN` / backlog item, or be removed.
+
+## Phase Report
+
+Every implementation Phase Report must include **Complexity Review** (template: `docs/DEVELOPMENT_WORKFLOW.md`). If the implementation could be simpler, simplify **before** asking approval unless the owner accepts the debt.
+
+Before the Phase Report, run `code-review-agent` for an **ANTI-SPAGHETTI REVIEW** (unnecessary abstraction, duplication, dead code, fragmentation, giant units, circular deps, wrappers, unused deps). Do not restyle for preference.
+
+Full workflow: `docs/DEVELOPMENT_WORKFLOW.md`. Architecture: `docs/ARCHITECTURE.md`.

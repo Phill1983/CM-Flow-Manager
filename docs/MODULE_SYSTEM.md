@@ -4,7 +4,11 @@
 
 Feature capabilities live in `modules/*` with hexagonal boundaries. Shared platform code lives in `packages/*`. The Electron app in `apps/desktop` composes modules and wires adapters.
 
-## Module anatomy
+## Current layout (as shipped)
+
+Password Remover uses a **flat `src/`** of domain helpers. UI lives in `apps/desktop`. Do **not** scaffold empty `domain/` / `application/` / `infrastructure/` / `ui/` folders until those layers have real code.
+
+## Full hexagonal anatomy (when a module actually needs it)
 
 ```text
 modules/<module-name>/
@@ -22,9 +26,8 @@ modules/<module-name>/
 3. Cross-module imports go through published package APIs, not deep relative paths into another module’s internals.
 4. IPC channel names and payloads are defined in `packages/ipc-contracts`.
 5. A module is “registered” when it contributes navigation + routes + any main-process handlers.
+6. Follow **MINIMUM NECESSARY CHANGE**: extend an existing module/package when the feature belongs there. A new module name is not automatically a new package.
 
-## First module
+## Current modules
 
-`modules/pdf-password-remover` — only module enabled for v0.1.0.
-
-Future modules (merge, OCR, …) follow the same template and remain uncreated until approved.
+`modules/pdf-password-remover` — only module enabled for v0.1.0 on `main`. Future modules remain uncreated until approved.

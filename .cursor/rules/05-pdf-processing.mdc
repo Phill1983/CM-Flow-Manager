@@ -1,6 +1,6 @@
 ---
 description: PDF unlock processing — qpdf adapter and password safety
-globs: "**/pdf-engine/**/*,**/pdf-password-remover/**/*"
+globs: "**/pdf-engine/**/*,**/pdf-password-remover/**/*,**/pdf-split-merge/**/*"
 alwaysApply: false
 ---
 
@@ -11,5 +11,5 @@ alwaysApply: false
 - Never log passwords, PDF contents, or command lines that include secrets.
 - Clear password from UI state after processing.
 - Map engine failures to typed errors (`IncorrectPasswordError`, `InvalidPdfError`, …).
-- Keep qpdf behind `PdfUnlockService`; swapping engines must not require UI rewrites.
+- Keep qpdf behind `PdfEngineService`; swapping engines must not require UI rewrites.
 - Generate synthetic fixtures for tests — never commit confidential documents.

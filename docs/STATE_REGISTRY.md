@@ -19,6 +19,7 @@ Living inventory of product and engineering state. Update after every meaningful
 - **Phase 3.6** Update foundation (GitHub Releases, Settings → Updates, SHA-256)
 - **Exact UI asset-pack** (Inter, CM tokens, module/hero rasters; remaining polish in TECH_DEBT)
 - **Phase 4B canonical repair document** (`packages/repair-domain`) — approved 2026-08-17
+- **MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI** — permanent agent rule (`.cursor/rules/12-minimal-change.mdc`)
 
 ## Partially implemented features
 

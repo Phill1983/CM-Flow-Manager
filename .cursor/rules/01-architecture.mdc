@@ -6,9 +6,10 @@ alwaysApply: true
 # Architecture
 
 - Structure: `apps/desktop`, `packages/*`, `modules/*` per ADR-002.
+- Apply **MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI**: REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION. Do not create a package/module because the feature has a new name.
 - Module domain/application layers must **not** import React, Electron, or Node FS APIs.
-- PDF engine is accessed only via `PdfUnlockService` (or successor port). UI never calls qpdf directly.
+- PDF engine is accessed only via `PdfEngineService` (unlock + page tools). UI never calls qpdf directly.
 - Put IPC channel names and payloads in `packages/ipc-contracts` — do not invent ad-hoc channels in UI code.
-- Use dependency injection / adapters at infrastructure boundaries.
+- Use adapters at real infrastructure boundaries (Electron, qpdf, filesystem). Do not add extra facades/providers “for later”.
 - Do not rewrite working systems without an ADR or documented justification.
 - Cross-module imports use package public APIs only.

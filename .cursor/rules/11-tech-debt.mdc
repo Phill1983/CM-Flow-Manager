@@ -13,3 +13,5 @@ Canonical registry: `docs/TECH_DEBT.md`.
 - Do **not** put roadmap features here (`BACKLOG.md`) or product limits here (`KNOWN_LIMITATIONS.md`).
 - `docs/STATE_REGISTRY.md` “Technical debt” is a short index only — details live in `TECH_DEBT.md`.
 - Chat summaries are not a substitute for the registry.
+- New `TD-NNN` rows should include Description, Reason, Impact, Risk, and When to resolve.
+- TODO comments must reference a `TD-NNN` / backlog item, or be removed. Do not hide unfinished architecture in comments.

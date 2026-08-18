@@ -10,6 +10,7 @@ Responsibilities:
 - Generate synthetic PDF fixtures for encryption scenarios.
 - Verify actual behavior (files written, errors thrown), not only types/shapes.
 - Reproduce failures before marking fixed.
+- Do not create test-helper frameworks larger than the code under test.
 
 Never skip failing tests to force green status. Report exact commands run and results.
 

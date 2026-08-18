@@ -5,7 +5,7 @@
 - Secure Electron desktop shell for Windows-first delivery.
 - Replaceable PDF engine behind an adapter interface.
 - Module isolation so PDF Password Remover (and future tools) do not couple domain logic to React/Electron.
-- Clear packages for IPC contracts, logging, file utilities, and shared UI.
+- Clear packages for IPC contracts, file utilities, and the PDF engine. Add `core` / `ui` / `logging` only when a second real consumer exists.
 
 ## High-level structure
 
@@ -18,20 +18,13 @@ cm-flow-manager/
 │       ├── renderer/             # React UI
 │       └── shared/               # Types shared within the app shell
 ├── packages/
-│   ├── core/                     # Shared domain primitives / result types
-│   ├── ui/                       # Design-system components
-│   ├── ipc-contracts/            # Channel names + Zod/TS schemas
+│   ├── ipc-contracts/            # Channel names + payloads
 │   ├── file-utils/               # Path safety, output naming
-│   ├── logging/                  # Local rotating logs
 │   ├── pdf-engine/               # PdfUnlockService adapter + qpdf impl
-│   └── app-updater/              # Update policy, channels, manifest validation (no Electron)
+│   ├── app-updater/              # Update policy / manifest (no Electron)
+│   └── repair-domain/            # Phase 4B canonical model (desktop unused until 4C)
 ├── modules/
-│   └── pdf-password-remover/
-│       ├── domain/
-│       ├── application/
-│       ├── infrastructure/
-│       ├── ui/
-│       └── tests/
+│   └── pdf-password-remover/     # flat src helpers; UI in desktop
 ├── docs/
 ├── scripts/
 └── assets/
@@ -41,7 +34,7 @@ cm-flow-manager/
 
 - Phase 1 scaffolds only packages needed for the shell: `ipc-contracts`, `pdf-engine`, and module `pdf-password-remover`.
 - Phase 3.6 adds `packages/app-updater` (pure domain/application); Electron adapters live under `apps/desktop/src/main/updater/`.
-- `core`, `ui`, `file-utils`, and `logging` remain planned and will be added when first required (avoid empty package noise).
+- `core`, `ui`, and `logging` remain **uncreated** until a second real consumer exists (avoid empty package noise). `file-utils` already exists.
 - Phase 4B adds `packages/repair-domain` — pure canonical repair-document types (no Electron/React/FS/parsers).
 - Package manager is **pnpm@9.15.9** only (`packageManager` field + `pnpm-lock.yaml`).
 
@@ -124,6 +117,10 @@ Future modules register:
 4. optional engine adapters.
 
 No rewrite of the shell should be required for a new module that follows these ports.
+
+## Minimum necessary change
+
+Prefer **REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION** (`.cursor/rules/12-minimal-change.mdc`). The IPC path renderer → preload → main → PDF engine → qpdf is the justified security chain; extra facades need a present-day reason. Do not create `packages/ui`, `packages/core`, or `packages/logging` until something actually needs them.
 
 ## Future repair-document architecture
 

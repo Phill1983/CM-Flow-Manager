@@ -10,5 +10,6 @@ alwaysApply: false
 - No hard-coded user-visible strings; use localization keys (pl/uk/en).
 - Every control needs an accessible label; do not communicate status by color alone.
 - Keep the Password Remover screen focused: queue, password, output, progress, results.
-- Prefer existing `packages/ui` components before inventing new primitives.
+- Prefer existing design-system / `components/ui` primitives before inventing new ones. There is no `packages/ui` yet — do not scaffold it for a single screen.
 - Long work stays off the renderer thread (main/engine handles PDF work).
+- Do not add wrapper hooks/providers unless they are reused or hide a real boundary.
