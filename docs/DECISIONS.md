@@ -45,5 +45,6 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-17 | Page thumbnails: `pdfjs-dist` 4.x (Apache-2.0) in the renderer only; privileged `cmflow-pdf://` token protocol in main; qpdf is not used for rendering | docs/PDF_SPLIT_MERGE.md / SECURITY_MODEL.md |
 | 2026-08-17 | **MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI PRINCIPLE** is permanent governance: reuse/extend first; Complexity Review in every implementation Phase Report | `.cursor/rules/12-minimal-change.mdc` / DEVELOPMENT_WORKFLOW.md |
 | 2026-08-18 | **Emergency PDF Password Recovery** recorded as an unnumbered **future** phase (authorized workflow, not a generic cracker). Not v0.1.0; not next after 3.7; does not block 4C. No engine chosen. Governance/legal questions remain open. Do not implement. | `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md` |
+| 2026-08-18 | Phase **4C.1**: `@cm-flow-manager/repair-extraction` over extracted text (qpdf is not a text extractor; pdfjs-dist not added to Node to avoid worker/canvas). Two concrete parsers, no plugin registry. JC/RBG is document-local. | docs/REPAIR_DOCUMENT_EXTRACTION.md |
 
 Update this file when making durable technical choices.

@@ -18,6 +18,7 @@
 - Fixture generation encrypt step still passes passwords on the qpdf argv (developer machine only).
 - No Playwright E2E suite yet; packaged EXE and update-path verification are manual.
 - Corepack global enable may still require elevation on Windows; pnpm `9.15.9` remains pinned.
+- **Phase 4C.1 extraction PoC** parses sanitized text-layer extracts, not live customer PDFs. Real `pdftotext` column bleed can still leave invoice amounts unresolved. Image-only PDFs return `OCR_REQUIRED` (no OCR engine). PDF bytes → text is not implemented in the Node package (qpdf cannot extract text; PDF.js stays renderer-only for now).
 
 ## Anticipated product limitations (later phases)
 

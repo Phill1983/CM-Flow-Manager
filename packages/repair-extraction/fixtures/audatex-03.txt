@@ -1,0 +1,41 @@
+SYSTEM AUDATEX
+KALKULACJA NAPRAWY NR SAN-CLAIM-03
+Data kalkulacji: 2026-04-02
+Nr rejestracyjny: TESTPL03
+VIN: REDACTEDVIN0000003
+Marka: Mercedes
+Model: GLC
+PLN
+PLN/RBG 180.00
+AZT Lack
+
+--- ROBOCIZNA ---
+12 JC = 1 RBG
+Robocizna blacharska    230 JC    3450.00
+Robocizna lakiernicza    116 JC    1746.00
+
+--- LAKIEROWANIE (AZT) ---
+10 JC/RBG
+12 JC/RBG
+KOSZTY MATERIALU  2787.07
+
+--- CZESCI ZAMIENNE ---
+NUMER KATALOGOWY
+254 720 1700  DRZWI PRZ L                    1       4601.30
+000 727 1300  USZCZELKA DRZWI P L            1
+000 727 1300  USZCZELKA DRZWI T L            1
+A 000 727 13 00  USZCZELKA (FORMAT SAMPLE)   1
+
+--- KALKULACJA KONCOWA ---
+Robocizna blacharska     3450.00
+Lakierowanie             1746.00
+KOSZTY DODATKOWE          150.00
+KOSZTY MATERIALU         2787.07
+CZESCI                  14707.72
+NORMALIA ( 2.0% )         294.15
+RAZEM NETTO             23134.94
+VAT 23.00 %              5321.04
+RAZEM BRUTTO            28455.98
+
+STRONA KONTROLNA
+12 JC = 1 RBG

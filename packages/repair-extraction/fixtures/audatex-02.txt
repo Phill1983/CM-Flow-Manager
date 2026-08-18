@@ -1,0 +1,39 @@
+SYSTEM AUDATEX
+KALKULACJA NAPRAWY NR SAN-CLAIM-02
+Data kalkulacji: 2026-03-15
+Nr rejestracyjny: TESTPL02
+VIN: REDACTEDVIN0000001
+Marka: Hyundai
+Model: Tucson
+PLN
+PLN/RBG 180.00
+AZT Lack
+
+--- ROBOCIZNA ---
+10 JC = 1 RBG
+Robocizna blacharska    66 JC    1188.00
+Robocizna lakiernicza    58 JC    1044.00
+
+--- LAKIEROWANIE (AZT) ---
+KOSZTY MATERIALU  1213.95
+
+--- CZESCI ZAMIENNE ---
+NUMER KATALOGOWY
+96001A2000  FOLIA KLEJ CZUJ DESZ           1       177.22
+86130N7000  LIST OZD L SZYBY CZ            1       178.24
+8112637010  KLIPS MOCOWANIA               14 P     45.22
+UNPRICED1  CZESC BEZ CENY                  1
+
+--- KALKULACJA KONCOWA ---
+Robocizna blacharska     1188.00
+Lakierowanie             1044.00
+KOSZTY MATERIALU         1213.95
+CZESCI                    589.04
+NORMALIA ( 2.0% )          11.78
+RAZEM NETTO              4046.77
+VAT 23.00 %               930.76
+RAZEM BRUTTO             4977.53
+1 EURO = 4.28720 PLN
+
+STRONA KONTROLNA
+10 JC = 1 RBG

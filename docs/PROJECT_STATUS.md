@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 3.7 complete** (PDF Split / Merge). Next gate: owner must open **Phase 4C**. Do **not** start 4C until then. |
+| Current phase | **Phase 4C.1 complete** (repair document text-extraction PoC). Do **not** start 4D, OCR, or AI until the owner opens them. |
 | Application version | `0.1.0-alpha` |
 | Date | 2026-08-18 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
@@ -35,19 +35,24 @@
 - Combined PDF Tools UI; Password Remover unchanged.
 - Doc: `docs/PDF_SPLIT_MERGE.md`. Owner verified Split and Merge in the running app.
 
+### Phase 4C.1 (approved 2026-08-18)
+- `@cm-flow-manager/repair-extraction` — deterministic Audatex + shop Faktura VAT parsers over extracted text; `OCR_REQUIRED` for image-only scans.
+- No desktop UI, no OCR engine, no AI, no estimate↔invoice comparison, no PDF-bytes extractor in Node.
+- Doc: `docs/REPAIR_DOCUMENT_EXTRACTION.md`.
+
 ## Work in progress
 
-- None. Waiting for the owner to open **Phase 4C**.
+- None. Waiting for the owner to open **Phase 4D** or a further 4C slice (for example PDF bytes → text in Electron).
 
 ## Blockers
 
-1. **Owner approval required** before Phase **4C** (extraction PoC).
+1. **Owner approval required** before Phase **4D** (reconciliation).
 2. **Owner approval required** before Phase 3B (plate → folder).
 3. Authenticode certificate still required (TD-011).
 
 ## Next approved task
 
-Wait for the owner to open **Phase 4C**.
+Wait for the owner to open the next phase. Do not start 4D / OCR / AI.
 
 **Do not start** Emergency PDF Password Recovery (future / unnumbered; spec only: `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`).
 

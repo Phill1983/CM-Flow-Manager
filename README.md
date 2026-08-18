@@ -8,7 +8,7 @@ Modular, local-first Windows desktop toolkit for PDF and office workflow operati
 | Package ID | `com.cmflowmanager.desktop` |
 | Current version | `0.1.0-alpha` |
 | MVP target | `0.1.0` |
-| Current phase | **Phase 3.7 — PDF Split / Merge** (awaiting approval; 4B remains complete) |
+| Current phase | **Phase 4C.1 — repair document text extraction** (approved) |
 | Workspace | `D:\Projects\cm-flow-manager` |
 | Platform focus | Windows 10 / Windows 11 |
 | Processing model | Fully local — no document uploads |
@@ -23,7 +23,7 @@ This application will **never** include password cracking, brute-force attempts,
 
 ## Current status
 
-Phase 3A Password Remover UI is complete. Phase 3.5 packages the first standalone Windows Alpha (installer + portable) with bundled qpdf. Phase 3.6 adds an opt-in GitHub Releases updater foundation. Phase **3.7** adds local PDF Split (extract selected pages) and Merge, plus local page thumbnails. Phase 4B canonical repair-domain is complete. Phase 4C (extraction) is **not** started. Phase 3B (plate → folder) is deferred.
+Phase 3A Password Remover UI is complete. Phase 3.5 packages the first standalone Windows Alpha (installer + portable) with bundled qpdf. Phase 3.6 adds an opt-in GitHub Releases updater foundation. Phase **3.7** adds local PDF Split (extract selected pages) and Merge, plus local page thumbnails. Phase 4B canonical repair-domain is complete. Phase **4C.1** extraction PoC is complete (text → `CanonicalRepairDocument`; no UI/OCR/AI). Phase 3B (plate → folder) is deferred.
 
 See:
 

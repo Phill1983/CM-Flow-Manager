@@ -1,0 +1,30 @@
+Faktura VAT
+FV/BL/0003/26
+Numer KSeF: 0000000000-20260402-BBBBBBBBBB-BB
+Data wystawienia: 02.04.2026
+Data sprzedazy: 02.04.2026
+Numer sprawy: BL/0003/04/26
+Numer szkody: SAN-CLAIM-03
+Nr rejestracyjny: TESTPL03
+VIN: REDACTEDVIN0000003
+Marka: Mercedes
+Model: GLC
+PLN
+Mechanizm podzielonej platnosci MPP
+
+Lp  Nazwa                              Ilosc  JM    Cena     Rabat  Netto     VAT  Brutto
+1   ROBOCIZNA BLACHARSKA               1,00   usl   3 450,00  0,0%  3 450,00  23%  4 243,50
+2   ROBOCIZNA LAKIERNICZA              1,00   usl   1 746,00  0,0%  1 746,00  23%  2 147,58
+3   A2547201700 DRZWI PRZ L            1,00   szt   4 601,30  0,0%  4 601,30  23%  5 659,60
+4   A0007271300 USZCZELKA DRZWI P      1,00   szt   45,00    0,0%   45,00     23%  55,35
+5   A0007271300 USZCZELKA DRZWI T      1,00   szt   45,00    0,0%   45,00     23%  55,35
+6   Materialy lakiernicze              1,00   szt   2 787,07  0,0%  2 787,07  23%  3 428,10
+7   Normalia                           1,00   szt   294,15          12,00  23%
+8   8112637010 KLIPS                   14,00  szt   45,22    3,23    23%
+
+Razem netto: 23 417,52
+VAT: 5 386,03
+VAT 23 %
+Razem brutto: 28 803,55
+Razem do zaplaty: 28 803,55
+Strona 1/2

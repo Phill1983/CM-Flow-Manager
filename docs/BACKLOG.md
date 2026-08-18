@@ -16,14 +16,15 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 10. ~~Exact UI asset-pack (visual polish remaining → `docs/TECH_DEBT.md`).~~
 11. ~~Phase 4B Canonical repair document model.~~
 12. ~~Phase 3.7 PDF Split / Merge (approved 2026-08-18).~~
+13. ~~Phase 4C.1 repair document text-extraction PoC (approved 2026-08-18).~~
 
 ## Now
 
-1. Wait for owner to open **Phase 4C**.
+1. Wait for the owner to open **Phase 4D** or a further 4C slice. Do not start 4D unprompted.
 
 ## Next (proposed — owner gate each phase)
 
-1. **Phase 4C** — Estimate and invoice text extraction PoC.
+1. **Phase 4C.2** (optional) — PDF bytes → text in Electron, reusing renderer PDF.js; still no OCR/AI.
 2. **Phase 4D** — First deterministic invoice reconciliation engine.
 3. **Phase 4E** — Parts Intelligence PoC.
 4. **Phase 4F** — Estimate QA knowledge engine.

@@ -11,11 +11,11 @@ Schema version: **1**
 ```text
 Source Document
       ↓
-Source-specific Parser   (Phase 4C+ — not in 4B)
+Source-specific Parser   (Phase 4C.1 — `@cm-flow-manager/repair-extraction`)
       ↓
 CanonicalRepairDocument
       ↓
-InvoiceValidationEngine / EstimateQaEngine  (later — not in 4B)
+InvoiceValidationEngine / EstimateQaEngine  (later — not in 4C)
 ```
 
 The comparison engine must **not** know whether the source was Audatex, Faktura VAT, KSeF, OCR, PDF, Excel, or another format.

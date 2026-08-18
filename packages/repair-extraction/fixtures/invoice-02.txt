@@ -1,0 +1,27 @@
+Faktura VAT
+FV/BL/0002/26
+Numer KSeF: 0000000000-20260315-AAAAAAAAAA-AA
+Data wystawienia: 15.03.2026
+Data sprzedazy: 15.03.2026
+Numer sprawy: BL/0002/03/26
+Numer szkody: SAN-CLAIM-02
+Nr rejestracyjny: TESTPL02
+VIN: REDACTEDVIN0000001
+Marka: Hyundai
+Model: Tucson
+PLN  zl
+
+Lp  Nazwa                              Ilosc  JM    Cena     Rabat  Netto     VAT  Brutto
+1   Robocizna blacharska               6,60   rbg   180,00   0,0%   1 188,00  23%  1 461,24
+2   Robocizna lakiernicza              5,80   rbg   180,00   0,0%   1 044,00  23%  1 284,12
+3   96001A2000 WKLADKA CZUJNIKA        1,00   szt   177,23   0,0%   177,23    23%  217,99
+4   86130N7000 LISTWA                  1,00   szt   178,24   0,0%   178,24    23%  219,24
+5   8112637010 KLIPS                   14,00  szt   3,23    0,0%   45,22     23%  55,62
+6   Normalia                           1,00   szt   8,01    0,0%   8,01      23%  9,85
+7   Materialy lakiernicze              1,00   szt   1 213,95 0,0%   1 213,95  23%  1 493,16
+
+Razem netto: 3 854,65
+VAT: 886,57
+VAT 23 %
+Razem do zaplaty: 4 741,22
+Strona 1/2
