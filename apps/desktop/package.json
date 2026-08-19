@@ -1,6 +1,6 @@
 {
   "name": "@cm-flow-manager/desktop",
-  "version": "0.1.0-alpha",
+  "version": "0.2.0-alpha",
   "private": true,
   "description": "CM Flow Manager — local PDF Password Remover",
   "author": {

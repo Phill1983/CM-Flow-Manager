@@ -3,14 +3,21 @@
  * Writes SHA-256 checksums and release notes into /release for Alpha packaging.
  */
 import { createHash } from 'node:crypto';
-import { createReadStream, existsSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import {
+  createReadStream,
+  existsSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { pipeline } from 'node:stream/promises';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const RELEASE_DIR = join(ROOT, 'release');
-const VERSION = '0.1.0-alpha';
+const VERSION = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).version;
 
 async function sha256File(filePath) {
   const hash = createHash('sha256');
@@ -47,9 +54,9 @@ async function main() {
 
 ## What this is
 
-First standalone Windows Alpha of **CM Flow Manager** for real daily testing outside the development environment.
+Windows Alpha of **CM Flow Manager** — stable PDF tools release (Password Remover + Split/Merge + updater foundation).
 
-- Not a public/production release.
+- Not a signed production release.
 - Unsigned builds may trigger Windows SmartScreen warnings.
 
 ## Artifacts
@@ -57,36 +64,40 @@ First standalone Windows Alpha of **CM Flow Manager** for real daily testing out
 - NSIS installer: \`CM Flow Manager Setup ${VERSION}.exe\`
 - Portable: \`CM Flow Manager ${VERSION}.exe\`
 - Checksums: \`SHA256SUMS.txt\`
+- Update manifest: \`version-manifest.json\`
+- electron-updater metadata: \`alpha.yml\` (when emitted by builder)
 
 ## Included
 
-- Electron runtime (no Node/npm/pnpm/Git required for end users)
-- Password Remover (single-file) UI
-- Bundled qpdf 12.3.2 (Apache-2.0) under application resources
+- PDF Password Remover (picker, drag/drop, unlock, open folder)
+- PDF Split (page thumbnails, selection, drag-reorder, extract)
+- PDF Merge (multi-file picker, ordering, merge)
+- PDF.js page previews (local, renderer-only)
+- Bundled qpdf 12.3.2 (Apache-2.0)
+- Settings → Updates (GitHub Releases, SHA-256 verification, user-approved download/install)
 - Localization: Polish, Ukrainian, English
 
-## Not included yet
+## Not included
 
-- Vehicle plate → folder resolution (Phase 3B)
-- Batch unlock (Phase 4)
-- Code signing
-- Auto-update
+- Repair document extraction (Phase 4C)
+- Invoice reconciliation (Phase 4D)
+- OCR / AI / Repair Intelligence UI
+- Vehicle plate → folder (Phase 3B)
+- Code signing (Authenticode deferred)
 
 ## Default output behavior
 
-Unlocked PDFs are written next to the source as \`*_unlocked.pdf\` (collision-safe \`_2\`, \`_3\`, …) unless the user chooses Save As.
+- Unlock: \`*_unlocked.pdf\` next to source (collision-safe suffixes)
+- Split: \`*_pages_<selection>.pdf\`
+- Merge: \`merged.pdf\` (or user-chosen Save As)
 
 ## Verification checklist (packaged EXE)
 
-- [ ] Application starts
-- [ ] Dashboard loads
-- [ ] PDF Password Remover opens
-- [ ] Select PDF works
-- [ ] Drag & drop works
-- [ ] Unlock works with bundled qpdf
-- [ ] Output file created
-- [ ] Open output folder works
-- [ ] About shows version ${VERSION}
+- [ ] Application starts; About shows ${VERSION}
+- [ ] Password Remover: picker, drag/drop, unlock, open folder
+- [ ] Split: thumbnails, page select/reorder, extract
+- [ ] Merge: add/remove files, reorder, merge
+- [ ] Settings → Updates detects this release from an older install
 `;
 
   writeFileSync(join(RELEASE_DIR, `RELEASE_NOTES-${VERSION}.md`), notes, 'utf8');
@@ -95,13 +106,17 @@ Unlocked PDFs are written next to the source as \`*_unlocked.pdf\` (collision-sa
 
 ### Added
 
-- First standalone Windows Alpha packaging (NSIS installer + portable).
-- Bundled qpdf runtime for end users (no separate Node/qpdf install).
+- PDF Split and Merge workspaces with PDF.js page thumbnails, selection, and drag-reorder.
+- GitHub Releases updater foundation (SHA-256 verified, user-approved install).
+
+### Changed
+
+- Alpha version bump from \`0.1.0-alpha\` to \`${VERSION}\` for PDF-tools stable release.
 
 ### Notes
 
-- Alpha for internal/daily testing; not a signed public release.
-- Phase 3B plate/folder automation and batch processing remain later.
+- Excludes Phase 4C/4D repair extraction and reconciliation work (remains on \`main\`).
+- Alpha builds remain unsigned; SmartScreen may warn.
 `;
 
   writeFileSync(join(RELEASE_DIR, `CHANGELOG-excerpt-${VERSION}.md`), changelogExcerpt, 'utf8');
