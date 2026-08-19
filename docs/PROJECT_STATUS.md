@@ -2,9 +2,9 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 4C.2 + 4C.3 pending approval** (PDF.js adapter + human extraction validation). Do **not** start 4D, OCR, or AI until the owner opens them. |
+| Current phase | **Phase 4D pending approval** (deterministic invoice validation engine). Do **not** start 4E, OCR, or AI until the owner opens them. |
 | Application version | `0.1.0-alpha` |
-| Date | 2026-08-18 |
+| Date | 2026-08-19 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
 | Product display name | CM Flow Manager |
 | Window title | Flow Manager |
@@ -39,28 +39,31 @@
 - `@cm-flow-manager/repair-extraction` — deterministic Audatex + shop Faktura VAT parsers over extracted text; `OCR_REQUIRED` for image-only scans.
 - No desktop UI, no OCR engine, no AI, no estimate↔invoice comparison.
 
-### Phase 4C.2 (pending approval)
-- `@cm-flow-manager/pdf-text-layer` — local PDF.js text-layer adapter (`pdfjs-dist` 4.10.38, same as Split/Merge thumbnails).
-- Page-aware text → existing 4C.1 parsers. Parser tweaks only where real PDF.js layout differed from 4C.1 fixtures.
-- Dev soak: `pnpm repair:soak <local-folder>`. Desktop Repair Intelligence UI is **not** wired. No OCR/AI/comparison.
+### Phase 4C.2 + 4C.3 (approved 2026-08-19, commit `0306c2d`)
+- `@cm-flow-manager/pdf-text-layer` — local PDF.js text-layer adapter (`pdfjs-dist` 4.10.38).
+- Real-pair soak validated CASE-4A2-02/03 extraction path.
 - Doc: `docs/REPAIR_DOCUMENT_EXTRACTION.md`.
 
-### Phase 4C.3 (pending approval with 4C.2)
-- Human validation of real local PDF counts vs soak. CASE-02 reduced estimate has **6** catalog part rows (sum 589.04), not the example “17”. CASE-03 estimate **36** JC labour ops are real source lines. Invoice `Materiały dodatkowe` classified as additional cost from printed label.
+### Phase 4D (pending approval)
+- `@cm-flow-manager/repair-reconciliation` — `validateInvoiceAgainstEstimate(estimate, invoice)` (Process B only).
+- Deterministic part matching, category-level labour/paint/normalia/additional costs, net explained + residual invariant.
+- Golden tests + optional local reconcile soak (`REPAIR_SOAK_DIR`).
+- Doc: `docs/INVOICE_VALIDATION_ENGINE.md`.
+- **No desktop UI**, no AI, no Parts Intelligence, no commit until owner approves Phase Report.
 
 ## Work in progress
 
-- Phase 4C.2 waiting for owner approval together with 4C.3 validation. Do not start **Phase 4D** until opened.
+- Phase 4D waiting for owner approval. Do not start **Phase 4E** until opened.
 
 ## Blockers
 
-1. **Owner approval required** before Phase **4D** (reconciliation).
+1. **Owner approval required** before Phase **4D** commit.
 2. **Owner approval required** before Phase 3B (plate → folder).
 3. Authenticode certificate still required (TD-011).
 
 ## Next approved task
 
-Wait for approval of Phase 4C.2 / 4C.3, then the owner to open **Phase 4D**. Do not start 4D / OCR / AI unprompted.
+Wait for approval of Phase **4D**, then owner to open **Phase 4E** (Parts Intelligence PoC). Do not start 4E / OCR / AI unprompted.
 
 **Do not start** Emergency PDF Password Recovery (future / unnumbered; spec only: `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`).
 

@@ -8,6 +8,7 @@
     { "path": "./packages/repair-domain" },
     { "path": "./packages/repair-extraction" },
     { "path": "./packages/pdf-text-layer" },
+    { "path": "./packages/repair-reconciliation" },
     { "path": "./modules/pdf-password-remover" },
     { "path": "./modules/pdf-split-merge" }
   ]

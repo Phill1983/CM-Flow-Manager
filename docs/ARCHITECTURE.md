@@ -132,14 +132,15 @@ Prefer **REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION** (`.cursor/rules
 
 Phase **4B** implements `@cm-flow-manager/repair-domain` (`CanonicalRepairDocument`).  
 Phase **4C.1** implements `@cm-flow-manager/repair-extraction` (text → canonical).  
-Phase **4C.2** implements `@cm-flow-manager/pdf-text-layer` (PDF bytes → page-aware text). Engines still come later and **must depend on** the domain package — never the reverse.
+Phase **4C.2** implements `@cm-flow-manager/pdf-text-layer` (PDF bytes → page-aware text).  
+Phase **4D** implements `@cm-flow-manager/repair-reconciliation` (`validateInvoiceAgainstEstimate`). Engines still come later and **must depend on** the domain package — never the reverse.
 
 | Component | Status |
 | --- | --- |
 | `CanonicalRepairDocument` | **4B** — approved |
-| Repair document extraction | **4C.1** parsers (approved) + **4C.2** PDF.js adapter (pending approval) |
+| Repair document extraction | **4C.1** parsers (approved) + **4C.2** PDF.js adapter (approved) |
+| `InvoiceValidationEngine` | **4D** — `@cm-flow-manager/repair-reconciliation` (pending approval) |
 | `EstimateQaEngine` | Process A — later (4F) |
-| `InvoiceValidationEngine` | Process B — later (4D) |
 | `PartsIntelligenceService` | later (4E) |
 
 ```text

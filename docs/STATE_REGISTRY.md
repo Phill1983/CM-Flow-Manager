@@ -21,7 +21,8 @@ Living inventory of product and engineering state. Update after every meaningful
 - **Phase 4B canonical repair document** (`packages/repair-domain`) — approved 2026-08-17
 - **Phase 3.7 PDF Split / Merge** (`modules/pdf-split-merge` + `pdf-engine` extract/merge + PDF.js page preview + Split/Merge workspace UX) — approved 2026-08-18
 - **Phase 4C.1 repair document extraction** (`packages/repair-extraction`) — approved 2026-08-18
-- **Phase 4C.2 PDF.js text adapter** (`packages/pdf-text-layer`) — pending approval
+- **Phase 4C.2 PDF.js text adapter** (`packages/pdf-text-layer`) — approved 2026-08-19
+- **Phase 4D invoice validation engine** (`packages/repair-reconciliation`) — pending approval
 - **MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI** — permanent agent rule (`.cursor/rules/12-minimal-change.mdc`)
 
 ## Partially implemented features
@@ -35,7 +36,7 @@ Living inventory of product and engineering state. Update after every meaningful
 
 - Phase 3B: plate extract → normalize → configured-root folder resolve (after confirmation)
 - Password Remover Phase 4: batch unlock (distinct from repair 4A+)
-- **Repair track 4A+:** Estimate Quality Review (Process A) and Invoice Validation (Process B) — docs foundation in 4A.1; field inventory in 4A.2; canonical model in 4B; extraction PoC in **4C.1**; PDF.js adapter + soak in **4C.2**; comparison in 4D
+- **Repair track 4A+:** … extraction in **4C.1**/**4C.2**; reconciliation in **4D** (pending approval)
 - Global Command Palette (post-MVP / v0.2.x)
 - **Emergency PDF Password Recovery (future, not scheduled)** — authorized recovery when a known password is unavailable; not a generic cracker. Spec: `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`. Does **not** block 3.7 or 4C.
 - OCR and additional PDF/workflow modules after v0.1.0 (Split/Merge delivered in 3.7)
@@ -110,5 +111,5 @@ Canonical registry: **`docs/TECH_DEBT.md`**. Keep that file current; this sectio
 | Phase 3.7 Split / Merge | Approved 2026-08-18 |
 | Phase 4C.1 extraction PoC | Approved 2026-08-18 |
 | Phase 4C.2 PDF.js adapter + soak | Pending approval |
-| Phase 3B–5 MVP | 3B deferred; 4D not started |
+| Phase 3B–5 MVP | 3B deferred; 4D implemented (pending approval); 4E not started |
 | v0.1.0 readiness | Not ready |

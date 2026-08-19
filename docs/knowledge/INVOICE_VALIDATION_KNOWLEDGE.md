@@ -1,6 +1,6 @@
 # Invoice Validation Knowledge (Process B)
 
-Status: Phase 4A.1 category definition (+ Phase 4A.2 evidence cross-link)  
+Status: Phase 4A.1 category definition (+ Phase 4A.2 evidence; **4D engine implemented — pending approval**)  
 Process: **Invoice Validation**  
 Timing: **After** approved estimate + completed repair + invoice created
 
@@ -26,6 +26,8 @@ This catalog is **not** for deciding whether calibration or another technologica
 4. Different part numbers are **not** treated as equivalent unless Parts Intelligence + **human confirmation** say so.
 
 ## Comparison categories (future)
+
+Implemented in Phase **4D** (`@cm-flow-manager/repair-reconciliation`) at category/line level where canonical data supports it. See `docs/INVOICE_VALIDATION_ENGINE.md`.
 
 | Category | Intent |
 | --- | --- |

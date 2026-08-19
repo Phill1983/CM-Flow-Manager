@@ -17,17 +17,17 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 11. ~~Phase 4B Canonical repair document model.~~
 12. ~~Phase 3.7 PDF Split / Merge (approved 2026-08-18).~~
 13. ~~Phase 4C.1 repair document text-extraction PoC (approved 2026-08-18).~~
+14. ~~Phase 4C.2 PDF.js text adapter + 4C.3 real-pair validation (approved 2026-08-19).~~
 
 ## Now
 
-1. **Phase 4C.2** implemented — waiting for owner approval (do not commit/push until approved).
-2. Do not start **Phase 4D** unprompted.
+1. **Phase 4D** implemented — waiting for owner approval (do not commit/push until approved).
+2. Do not start **Phase 4E** unprompted.
 
 ## Next (proposed — owner gate each phase)
 
-1. **Phase 4D** — First deterministic invoice reconciliation engine.
-2. **Phase 4E** — Parts Intelligence PoC.
-3. **Phase 4F** — Estimate QA knowledge engine.
+1. **Phase 4E** — Parts Intelligence PoC.
+2. **Phase 4F** — Estimate QA knowledge engine.
 
 ## Deferred / blocked on owner approval
 
