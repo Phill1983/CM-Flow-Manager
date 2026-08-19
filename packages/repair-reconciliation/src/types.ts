@@ -43,6 +43,7 @@ export type PartMatchMethod =
   | 'unique_normalized_oem'
   | 'disambiguated_quantity_net'
   | 'disambiguated_quantity'
+  | 'human_confirmed'
   | 'ambiguous'
   | 'unmatched';
 
@@ -90,6 +91,7 @@ export type PartMatchingResult = {
   readonly estimateOnly: readonly EstimateOnlyPartLine[];
   readonly invoiceOnly: readonly InvoiceOnlyPartLine[];
   readonly ambiguous: readonly AmbiguousPartMatch[];
+  readonly overrideWarnings?: readonly string[];
 };
 
 export type LabourHoursComparison = {
@@ -162,3 +164,17 @@ export class ReconciliationInputError extends Error {
     this.code = code;
   }
 }
+
+/** Human-approved line-pair override — never accepts 4E.1 candidates directly. */
+export type HumanConfirmedPartOverride = {
+  readonly relationId: string;
+  readonly estimateLineId: string;
+  readonly invoiceLineId: string;
+  readonly leftNormalizedNumber: string;
+  readonly rightNormalizedNumber: string;
+  readonly sourceCandidateId: string;
+};
+
+export type InvoiceValidationOptions = {
+  readonly confirmedPartRelations?: readonly HumanConfirmedPartOverride[];
+};

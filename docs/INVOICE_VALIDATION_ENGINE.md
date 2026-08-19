@@ -50,7 +50,21 @@ residual = netDelta − explainedDifference
 2. **Tier 2** — duplicate OEM groups disambiguated by qty/net/unit price (conservative score); ties → `ambiguous`
 3. **Tier 3** — different normalized OEM → unmatched (`estimate_only` / `invoice_only`)
 
-No supersession, A-prefix equivalence, or fuzzy matching (Parts Intelligence is later).
+No supersession, A-prefix equivalence, or fuzzy matching in baseline 4D (Parts Intelligence candidates are separate; human-confirmed overrides optional — see below).
+
+## Optional human-confirmed part overrides (Phase 4E.1.1)
+
+Default call is unchanged. Optional trusted input:
+
+```ts
+validateInvoiceAgainstEstimate(estimate, invoice, {
+  confirmedPartRelations: [/* HumanConfirmedPartOverride from human review */],
+});
+```
+
+Only **explicit human-confirmed** line pairs are accepted — never 4E.1 candidates. Without overrides, results are identical to baseline 4D.
+
+See `docs/PARTS_INTELLIGENCE.md`.
 
 ### Labour
 

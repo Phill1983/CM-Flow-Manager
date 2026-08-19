@@ -134,14 +134,15 @@ Phase **4B** implements `@cm-flow-manager/repair-domain` (`CanonicalRepairDocume
 Phase **4C.1** implements `@cm-flow-manager/repair-extraction` (text → canonical).  
 Phase **4C.2** implements `@cm-flow-manager/pdf-text-layer` (PDF bytes → page-aware text).  
 Phase **4D** implements `@cm-flow-manager/repair-reconciliation` (`validateInvoiceAgainstEstimate`).  
-Phase **4E.1** implements `@cm-flow-manager/repair-parts-intelligence` (`analyzePartRelationCandidates`) — advisory candidates for unmatched part lines only. Engines still come later and **must depend on** the domain package — never the reverse.
+Phase **4E.1** implements `@cm-flow-manager/repair-parts-intelligence` (`analyzePartRelationCandidates`).  
+Phase **4E.1.1** adds human confirm/reject records and optional 4D override via `confirmedPartRelations`. Engines still come later and **must depend on** the domain package — never the reverse.
 
 | Component | Status |
 | --- | --- |
 | `CanonicalRepairDocument` | **4B** — approved |
 | Repair document extraction | **4C.1** parsers (approved) + **4C.2** PDF.js adapter (approved) |
 | `InvoiceValidationEngine` | **4D** — `@cm-flow-manager/repair-reconciliation` (approved on main) |
-| `PartsIntelligenceService` | **4E.1** PoC — `@cm-flow-manager/repair-parts-intelligence` (pending approval) |
+| `PartsIntelligenceService` | **4E.1** PoC + **4E.1.1** human confirmation (pending approval) |
 | `EstimateQaEngine` | Process A — later (4F) |
 
 ```text

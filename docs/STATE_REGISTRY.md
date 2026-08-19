@@ -23,7 +23,8 @@ Living inventory of product and engineering state. Update after every meaningful
 - **Phase 4C.1 repair document extraction** (`packages/repair-extraction`) — approved 2026-08-18
 - **Phase 4C.2 PDF.js text adapter** (`packages/pdf-text-layer`) — approved 2026-08-19
 - **Phase 4D invoice validation engine** (`packages/repair-reconciliation`) — approved 2026-08-19
-- **Phase 4E.1 parts intelligence PoC** (`packages/repair-parts-intelligence`) — pending approval
+- **Phase 4E.1 parts intelligence PoC** (`packages/repair-parts-intelligence`) — approved 2026-08-19
+- **Phase 4E.1.1 human confirmation layer** — pending approval
 - **MINIMUM NECESSARY CHANGE / ANTI-SPAGHETTI** — permanent agent rule (`.cursor/rules/12-minimal-change.mdc`)
 
 ## Partially implemented features

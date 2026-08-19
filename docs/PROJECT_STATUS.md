@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 4E.1 pending approval** (deterministic Parts Intelligence PoC). Do **not** start 4E.2 / AI until the owner opens it. |
+| Current phase | **Phase 4E.1.1 pending approval** (human confirmation layer for part relations). Do **not** start 4E.2 / AI until the owner opens it. |
 | Application version | `0.1.0-alpha` |
 | Date | 2026-08-19 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
@@ -50,26 +50,29 @@
 - Golden tests + optional local reconcile soak (`REPAIR_SOAK_DIR`).
 - Doc: `docs/INVOICE_VALIDATION_ENGINE.md`.
 
-### Phase 4E.1 (pending approval)
-- `@cm-flow-manager/repair-parts-intelligence` — `analyzePartRelationCandidates(validation, estimate, invoice)`.
-- Conservative part relation **candidates** for unmatched 4D lines (leading-A prefix, format variant, exact baseline).
-- **No** desktop UI, no AI, no network, no persistence, no 4D matcher changes.
+### Phase 4E.1 (approved 2026-08-19, commit `4ca7d7f`)
+- `@cm-flow-manager/repair-parts-intelligence` — deterministic part relation **candidates** for unmatched 4D lines.
 - Doc: `docs/PARTS_INTELLIGENCE.md`.
+
+### Phase 4E.1.1 (pending approval)
+- Human confirm / reject API (`confirmPartRelation`, `rejectPartRelation`) over 4E.1 candidates.
+- Optional 4D trusted override via `confirmedPartRelations` (default behavior unchanged).
+- **No** persistence, UI, auth, AI, or network.
 - **No commit/push** until owner approves Phase Report.
 
 ## Work in progress
 
-- Phase 4E.1 waiting for owner approval. Do not start **Phase 4E.2 / AI** until opened.
+- Phase 4E.1.1 waiting for owner approval. Do not start **Phase 4E.2 / AI** until opened.
 
 ## Blockers
 
-1. **Owner approval required** before Phase **4E.1** commit.
+1. **Owner approval required** before Phase **4E.1.1** commit.
 2. **Owner approval required** before Phase 3B (plate → folder).
 3. Authenticode certificate still required (TD-011).
 
 ## Next approved task
 
-Wait for approval of Phase **4E.1**, then owner to open **Phase 4E.2** (AI enrichment) if desired. Do not start 4E.2 / OCR / AI unprompted.
+Wait for approval of Phase **4E.1.1**, then owner to open **Phase 4E.2** (AI enrichment) if desired. Do not start 4E.2 / OCR / AI unprompted.
 
 **Do not start** Emergency PDF Password Recovery (future / unnumbered; spec only: `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`).
 

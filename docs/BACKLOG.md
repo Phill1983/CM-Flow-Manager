@@ -19,10 +19,11 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 13. ~~Phase 4C.1 repair document text-extraction PoC (approved 2026-08-18).~~
 14. ~~Phase 4C.2 PDF.js text adapter + 4C.3 real-pair validation (approved 2026-08-19).~~
 15. ~~Phase 4D deterministic invoice reconciliation engine (approved 2026-08-19).~~
+16. ~~Phase 4E.1 deterministic parts intelligence candidates (approved 2026-08-19).~~
 
 ## Now
 
-1. **Phase 4E.1** implemented — waiting for owner approval (do not commit/push until approved).
+1. **Phase 4E.1.1** implemented — waiting for owner approval (do not commit/push until approved).
 2. Do not start **Phase 4E.2 / AI** unprompted.
 
 ## Next (proposed — owner gate each phase)

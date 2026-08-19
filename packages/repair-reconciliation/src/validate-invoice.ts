@@ -21,6 +21,7 @@ import { moneyDelta } from './money-util.js';
 import {
   DELTA_SIGN_CONVENTION,
   ReconciliationInputError,
+  type InvoiceValidationOptions,
   type InvoiceValidationResult,
   type ReconciliationWarning,
 } from './types.js';
@@ -69,13 +70,21 @@ function assertInput(estimate: CanonicalRepairDocument, invoice: CanonicalRepair
 export function validateInvoiceAgainstEstimate(
   estimate: CanonicalRepairDocument,
   invoice: CanonicalRepairDocument,
+  options?: InvoiceValidationOptions,
 ): InvoiceValidationResult {
   assertInput(estimate, invoice);
 
   const currency = estimate.currency;
   const warnings: ReconciliationWarning[] = [];
 
-  const partMatches = matchParts(currency, estimate.parts ?? [], invoice.parts ?? []);
+  const partMatches = matchParts(currency, estimate.parts ?? [], invoice.parts ?? [], {
+    humanConfirmedOverrides: options?.confirmedPartRelations,
+  });
+  if (partMatches.overrideWarnings?.length) {
+    for (const message of partMatches.overrideWarnings) {
+      warnings.push({ code: 'human_override_invalid', message });
+    }
+  }
   const partContribs = partsExplainedContribution(partMatches);
   const partsCategory = comparePartsCategory(
     currency,

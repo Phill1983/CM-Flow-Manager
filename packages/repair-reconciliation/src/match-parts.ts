@@ -8,6 +8,7 @@ import { decomposePartLineDelta, subtractDecimalStrings } from './money-util.js'
 import type {
   AmbiguousPartMatch,
   EstimateOnlyPartLine,
+  HumanConfirmedPartOverride,
   InvoiceOnlyPartLine,
   MatchedPartLine,
   PartMatchingResult,
@@ -39,6 +40,96 @@ function scorePair(est: PartLine, inv: PartLine): number {
 }
 
 export function matchParts(
+  currency: string,
+  estimateParts: readonly PartLine[],
+  invoiceParts: readonly PartLine[],
+  options?: { humanConfirmedOverrides?: readonly HumanConfirmedPartOverride[] },
+): PartMatchingResult {
+  const overrideWarnings: string[] = [];
+  const humanMatched: MatchedPartLine[] = [];
+  const usedEst = new Set<string>();
+  const usedInv = new Set<string>();
+
+  if (options?.humanConfirmedOverrides?.length) {
+    const estById = new Map(estimateParts.map((line) => [line.lineId, line]));
+    const invById = new Map(invoiceParts.map((line) => [line.lineId, line]));
+    const seenEst = new Set<string>();
+    const seenInv = new Set<string>();
+
+    for (const override of options.humanConfirmedOverrides) {
+      if (seenEst.has(override.estimateLineId)) {
+        overrideWarnings.push(
+          `conflicting_human_override: estimate line ${override.estimateLineId} appears in multiple confirmed relations`,
+        );
+        continue;
+      }
+      if (seenInv.has(override.invoiceLineId)) {
+        overrideWarnings.push(
+          `conflicting_human_override: invoice line ${override.invoiceLineId} appears in multiple confirmed relations`,
+        );
+        continue;
+      }
+
+      const est = estById.get(override.estimateLineId);
+      const inv = invById.get(override.invoiceLineId);
+      if (!est || !inv) {
+        overrideWarnings.push(
+          `invalid_human_override: line not found for ${override.relationId}`,
+        );
+        continue;
+      }
+
+      const estNorm = normalizedKey(est);
+      const invNorm = normalizedKey(inv);
+      if (
+        estNorm !== override.leftNormalizedNumber ||
+        invNorm !== override.rightNormalizedNumber
+      ) {
+        overrideWarnings.push(
+          `invalid_human_override: normalized numbers mismatch for ${override.relationId}`,
+        );
+        continue;
+      }
+
+      seenEst.add(override.estimateLineId);
+      seenInv.add(override.invoiceLineId);
+      usedEst.add(override.estimateLineId);
+      usedInv.add(override.invoiceLineId);
+
+      humanMatched.push(
+        toHumanConfirmedMatched(currency, override.leftNormalizedNumber, est, inv),
+      );
+    }
+  }
+
+  const remainingEst = estimateParts.filter((line) => !usedEst.has(line.lineId));
+  const remainingInv = invoiceParts.filter((line) => !usedInv.has(line.lineId));
+  const baseline = matchPartsBaseline(currency, remainingEst, remainingInv);
+
+  return {
+    matched: [...humanMatched, ...baseline.matched],
+    estimateOnly: baseline.estimateOnly,
+    invoiceOnly: baseline.invoiceOnly,
+    ambiguous: baseline.ambiguous,
+    ...(overrideWarnings.length > 0 ? { overrideWarnings } : {}),
+  };
+}
+
+function toHumanConfirmedMatched(
+  currency: string,
+  key: string,
+  est: PartLine,
+  inv: PartLine,
+): MatchedPartLine {
+  const base = toMatched(currency, key, est, inv, 'human_confirmed');
+  return {
+    ...base,
+    certainty: 'observed',
+    matchMethod: 'human_confirmed',
+  };
+}
+
+function matchPartsBaseline(
   currency: string,
   estimateParts: readonly PartLine[],
   invoiceParts: readonly PartLine[],

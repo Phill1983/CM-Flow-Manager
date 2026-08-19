@@ -49,6 +49,6 @@ Short index of decisions. Detailed rationale lives in ADRs.
 | 2026-08-18 | Phase **4C.1**: `@cm-flow-manager/repair-extraction` over extracted text (qpdf is not a text extractor; pdfjs-dist not added to Node to avoid worker/canvas). Two concrete parsers, no plugin registry. JC/RBG is document-local. | docs/REPAIR_DOCUMENT_EXTRACTION.md |
 | 2026-08-18 | Phase **4C.2**: `@cm-flow-manager/pdf-text-layer` uses **existing** `pdfjs-dist@4.10.38` (Node legacy build + `getTextContent`). Not in `repair-extraction`. No second PDF binary. CLI soak instead of preview-token/Electron UI. Page slices kept; flatten with form-feed between pages for parsers. | docs/REPAIR_DOCUMENT_EXTRACTION.md |
 | 2026-08-19 | Phase **4D**: `@cm-flow-manager/repair-reconciliation` — pure TypeScript Process B engine over two `CanonicalRepairDocument` inputs; `delta = invoice − estimate`; `netDelta = explained + residual`; no AI/Parts Intelligence/UI; part matching tiers 1–3 only | docs/INVOICE_VALIDATION_ENGINE.md |
-| 2026-08-19 | Phase **4E.1**: `@cm-flow-manager/repair-parts-intelligence` — deterministic part relation **candidates** for unmatched 4D lines; leading-A prefix rule only; no AI/network/persistence; does not modify lexical normalization or 4D matcher | docs/PARTS_INTELLIGENCE.md |
+| 2026-08-19 | Phase **4E.1.1**: human confirm/reject for part relation candidates; optional 4D `confirmedPartRelations` override; no persistence/UI/auth/AI | docs/PARTS_INTELLIGENCE.md |
 
 Update this file when making durable technical choices.

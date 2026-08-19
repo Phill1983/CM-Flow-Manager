@@ -23,7 +23,7 @@ Detailed catalogs:
 - [ESTIMATE_QA_KNOWLEDGE.md](./ESTIMATE_QA_KNOWLEDGE.md)
 - [INVOICE_VALIDATION_KNOWLEDGE.md](./INVOICE_VALIDATION_KNOWLEDGE.md)
 - [AI_LEARNING_POLICY.md](./AI_LEARNING_POLICY.md) (includes candidate lifecycle)
-- [../PARTS_INTELLIGENCE.md](../PARTS_INTELLIGENCE.md) — Phase 4E.1 deterministic candidate engine (implementation)
+- [../PARTS_INTELLIGENCE.md](../PARTS_INTELLIGENCE.md) — Phase 4E.1 candidates + 4E.1.1 human confirmation (implementation)
 
 ## Separation invariant
 
