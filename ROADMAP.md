@@ -32,8 +32,9 @@ Separate from Password Remover “Phase 4” batch work. Owner-gated phases:
 | **3.7** | PDF Split / Merge + local page preview (**approved 2026-08-18** — inserted before 4C) |
 | **4C.1** | Estimate and invoice text extraction PoC (**approved 2026-08-18**) |
 | **4C.2** | Local PDF.js text-layer adapter + real-pair soak (**approved 2026-08-19**) |
-| **4D** | First deterministic invoice reconciliation engine (**pending approval**) |
-| **4E** | Parts Intelligence PoC |
+| **4D** | First deterministic invoice reconciliation engine (**approved 2026-08-19**) |
+| **4E.1** | Parts Intelligence PoC — deterministic relation candidates (**pending approval**) |
+| **4E.2** | AI enrichment for unresolved candidates (future) |
 | **4F** | Estimate QA knowledge engine |
 
 ## After v0.1.0 (candidates — not scheduled)

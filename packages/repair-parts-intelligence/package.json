@@ -1,0 +1,29 @@
+{
+  "name": "@cm-flow-manager/repair-parts-intelligence",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@cm-flow-manager/repair-domain": "workspace:*",
+    "@cm-flow-manager/repair-reconciliation": "workspace:*"
+  },
+  "devDependencies": {
+    "@cm-flow-manager/pdf-text-layer": "workspace:*",
+    "@cm-flow-manager/repair-extraction": "workspace:*",
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  }
+}
