@@ -65,13 +65,41 @@ function main() {
   writeFileSync(outPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
   console.log(`Wrote ${outPath}`);
 
-  // electron-updater alpha channel expects alpha.yml; builder often emits latest.yml only.
-  const latestYml = join(RELEASE_DIR, 'latest.yml');
-  const alphaYml = join(RELEASE_DIR, 'alpha.yml');
-  if (existsSync(latestYml) && !existsSync(alphaYml)) {
-    writeFileSync(alphaYml, readFileSync(latestYml));
-    console.log(`Wrote ${alphaYml} (copy of latest.yml)`);
+  syncUpdaterYml(RELEASE_DIR, VERSION, setupName);
+}
+
+/**
+ * electron-builder emits latest.yml with slugified path/url (hyphens) while
+ * artifactName keeps spaces. Upload and electron-updater must use the on-disk
+ * installer filename exactly.
+ */
+function syncUpdaterYml(releaseDir, version, setupFileName) {
+  const latestYml = join(releaseDir, 'latest.yml');
+  const alphaYml = join(releaseDir, 'alpha.yml');
+  if (!existsSync(latestYml)) {
+    console.warn(`Skipping updater yml sync — missing ${latestYml}`);
+    return;
   }
+
+  const setupPath = join(releaseDir, setupFileName);
+  if (!existsSync(setupPath)) {
+    throw new Error(
+      `Updater yml references ${setupFileName} but file is missing in ${releaseDir}`,
+    );
+  }
+
+  const raw = readFileSync(latestYml, 'utf8');
+  const fixed = raw
+    .replace(/^path: .+$/m, `path: ${setupFileName}`)
+    .replace(/^(\s+- url: ).+$/m, `$1${setupFileName}`);
+
+  if (!fixed.includes(`path: ${setupFileName}`)) {
+    throw new Error('Failed to rewrite path in latest.yml');
+  }
+
+  writeFileSync(latestYml, fixed, 'utf8');
+  writeFileSync(alphaYml, fixed, 'utf8');
+  console.log(`Synced ${latestYml} and ${alphaYml} path/url → ${setupFileName}`);
 }
 
 main();
