@@ -52,8 +52,12 @@ function main() {
     releaseNotesUrl: `https://github.com/${OWNER}/${REPO}/releases/tag/v${VERSION}`,
     publishedAt: new Date().toISOString(),
     artifacts: {
-      ...(setupHash ? { nsis: { fileName: setupName, sha256: setupHash } } : {}),
-      ...(portableHash ? { portable: { fileName: portableName, sha256: portableHash } } : {}),
+      ...(setupHash
+        ? { nsis: { fileName: githubAssetName(setupName), sha256: setupHash } }
+        : {}),
+      ...(portableHash
+        ? { portable: { fileName: githubAssetName(portableName), sha256: portableHash } }
+        : {}),
     },
     signing: {
       authenticodeRequired: false,
@@ -65,15 +69,20 @@ function main() {
   writeFileSync(outPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
   console.log(`Wrote ${outPath}`);
 
-  syncUpdaterYml(RELEASE_DIR, VERSION, setupName);
+  syncUpdaterYml(RELEASE_DIR, VERSION, setupName, githubAssetName(setupName));
+}
+
+/** GitHub Release uploads via gh CLI store assets with spaces replaced by dots. */
+function githubAssetName(localFileName) {
+  return localFileName.replace(/ /g, '.');
 }
 
 /**
  * electron-builder emits latest.yml with slugified path/url (hyphens) while
- * artifactName keeps spaces. Upload and electron-updater must use the on-disk
- * installer filename exactly.
+ * artifactName keeps spaces. GitHub stores uploads with dots instead of spaces.
+ * Updater yml must reference the GitHub-downloadable asset name exactly.
  */
-function syncUpdaterYml(releaseDir, version, setupFileName) {
+function syncUpdaterYml(releaseDir, version, setupFileName, githubSetupName) {
   const latestYml = join(releaseDir, 'latest.yml');
   const alphaYml = join(releaseDir, 'alpha.yml');
   if (!existsSync(latestYml)) {
@@ -90,16 +99,16 @@ function syncUpdaterYml(releaseDir, version, setupFileName) {
 
   const raw = readFileSync(latestYml, 'utf8');
   const fixed = raw
-    .replace(/^path: .+$/m, `path: ${setupFileName}`)
-    .replace(/^(\s+- url: ).+$/m, `$1${setupFileName}`);
+    .replace(/^path: .+$/m, `path: ${githubSetupName}`)
+    .replace(/^(\s+- url: ).+$/m, `$1${githubSetupName}`);
 
-  if (!fixed.includes(`path: ${setupFileName}`)) {
+  if (!fixed.includes(`path: ${githubSetupName}`)) {
     throw new Error('Failed to rewrite path in latest.yml');
   }
 
   writeFileSync(latestYml, fixed, 'utf8');
   writeFileSync(alphaYml, fixed, 'utf8');
-  console.log(`Synced ${latestYml} and ${alphaYml} path/url → ${setupFileName}`);
+  console.log(`Synced ${latestYml} and ${alphaYml} path/url → ${githubSetupName}`);
 }
 
 main();
