@@ -31,6 +31,7 @@ Separate from Password Remover “Phase 4” batch work. Owner-gated phases:
 | **4B** | Canonical repair document model (**approved 2026-08-17**) |
 | **3.7** | PDF Split / Merge + local page preview (**approved 2026-08-18** — inserted before 4C) |
 | **4C.1** | Estimate and invoice text extraction PoC (**approved 2026-08-18**) |
+| **4C.2** | Local PDF.js text-layer adapter + real-pair soak (**pending approval**) |
 | **4D** | First deterministic invoice reconciliation engine |
 | **4E** | Parts Intelligence PoC |
 | **4F** | Estimate QA knowledge engine |
@@ -39,7 +40,7 @@ Separate from Password Remover “Phase 4” batch work. Owner-gated phases:
 
 Prioritization requires product owner approval. Candidates:
 
-- **Emergency PDF Password Recovery (future, unnumbered)** — authorized emergency workflow when a known password is wrong or unavailable. **Not** a generic cracker; **not** v0.1.0; **does not block** 3.7 or 4C. Spec: [`docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`](docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md).
+- **Emergency PDF Password Recovery (planned capability, R&D / security-gated, unnumbered)** — authorized emergency workflow when a known password is wrong or unavailable. **Not** a generic cracker; **not** v0.1.0; **does not block** 4C / Repair Intelligence. First gate: Engine Feasibility & Security Evaluation. Hashcat-style GPU recovery and pdf2john-style hash extraction are **R&D candidates only**. Spec: [`docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`](docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md).
 - **Global Command Palette (v0.2.x, medium priority)** — shortcuts `Ctrl+Shift+P` / `Ctrl+K`; actions for navigation, select PDFs, open output folder, language, theme, module search. Not in v0.1.0.
 - PDF merge / split / page extract / rotate / compress (Split/Merge extract-to-one-PDF shipped in 3.7; per-page files / rotate / compress remain candidates)
 - Images ↔ PDF

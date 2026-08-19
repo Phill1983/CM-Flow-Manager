@@ -19,6 +19,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:pdf": "vitest run packages/pdf-engine",
+    "repair:soak": "node ./scripts/repair-soak.mjs",
     "fetch:qpdf": "node ./scripts/fetch-qpdf-dev.mjs",
     "fixtures:pdf": "pnpm --filter @cm-flow-manager/pdf-engine generate:fixtures",
     "pack:win": "pnpm fetch:qpdf && pnpm build && pnpm --filter @cm-flow-manager/desktop dist:win && pnpm release:checksums && pnpm release:manifest",

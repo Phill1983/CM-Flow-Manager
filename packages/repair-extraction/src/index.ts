@@ -1,5 +1,5 @@
 export { detectDocumentFormat } from './detect-format.js';
-export { extractRepairDocument } from './extract.js';
+export { extractRepairDocument, extractionInputFromPages } from './extract.js';
 export { parseDecimalString, parseSourceMoney } from './money-parse.js';
 export type {
   ExtractedPage,

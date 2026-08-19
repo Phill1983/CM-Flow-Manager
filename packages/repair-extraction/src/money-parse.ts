@@ -17,6 +17,9 @@ export function parseDecimalString(raw: string | undefined | null): string | und
   if (raw === undefined || raw === null) return undefined;
   let s = raw.trim().replace(NBSP, ' ');
   if (s.length === 0) return undefined;
+  s = s.replace(/\*+\s*$/g, '').trim();
+  s = s.replace(/(?:zł|zl|PLN)\s*$/i, '').trim();
+  if (s.length === 0) return undefined;
   s = s.replace(/\s+/g, '');
   if (s.length === 0) return undefined;
 
@@ -41,7 +44,7 @@ export function parseQuantityString(raw: string | undefined | null): string | un
   if (raw === undefined || raw === null) return undefined;
   const trimmed = raw.trim().replace(NBSP, ' ');
   if (trimmed.length === 0) return undefined;
-  const withoutUnit = trimmed.replace(/\s*(P|szt|SZT|jc|JC|rbg|RBG|usl)\s*$/i, '').trim();
+  const withoutUnit = trimmed.replace(/\s*(P|szt|SZT|jc|JC|rbg|RBG|usl|usł)\s*$/i, '').trim();
   return parseDecimalString(withoutUnit);
 }
 

@@ -1,55 +1,62 @@
 # Repair Document Extraction
 
-Status: Phase **4C.1** (approved 2026-08-18)  
-Package: `@cm-flow-manager/repair-extraction`  
-Depends on: `@cm-flow-manager/repair-domain` (never the reverse)
+Status: Phase **4C.2** (pending approval)  
+Packages: `@cm-flow-manager/repair-extraction` (4C.1 parsers) + `@cm-flow-manager/pdf-text-layer` (4C.2 PDF.js adapter)
 
 ## Purpose
 
-Turn **already extracted text** from supported repair PDFs into `CanonicalRepairDocument`, or return an explicit unavailable result. This phase answers whether the documents we actually receive can be parsed deterministically. It does **not** compare estimate vs invoice (Phase 4D).
+Prove a local end-to-end path from a supported PDF’s text layer to `CanonicalRepairDocument`. This does **not** compare estimate vs invoice (Phase 4D), and does not implement OCR or AI.
 
 ```text
-extracted text
-  → conservative format detection
-  → Audatex parser OR shop invoice parser
-  → CanonicalRepairDocument
-  → structural validateRepairDocument
-  → ExtractionResult
+4C.1  extracted text → detect → parse → CanonicalRepairDocument → validate
+4C.2  PDF bytes → PDF.js getTextContent() → page-aware text → 4C.1
+4C.3  human count check of real local PDFs vs soak (no architecture change)
 ```
 
-## Why a new package
+## Packages
 
-| Existing package | Why it is not the home for parsers |
+| Package | Role |
 | --- | --- |
-| `repair-domain` | Pure canonical types. No parsers, PDF, or FS (Phase 4B). |
-| `pdf-engine` | qpdf spawn: inspect / unlock / extract pages / merge. **Not a text extractor.** |
-| `apps/desktop` | No UI in 4C. Parsers must stay testable without Electron. |
+| `repair-domain` | Canonical types only. No parsers, PDF, or FS. |
+| `repair-extraction` | **TEXT IN → canonical OUT.** No Electron, PDF.js, worker, canvas, or filesystem. |
+| `pdf-text-layer` | PDF.js adapter only. Caller supplies bytes. Does not parse repair fields. |
+| `pdf-engine` | qpdf: inspect / unlock / split / merge. **Not** a text extractor. |
+| `apps/desktop` | Split/Merge still uses PDF.js for **thumbnails** via `cmflow-pdf://`. Repair extraction is **not** wired into UI. |
 
-Current consumer: unit tests and future Phase 4D. Desktop is not wired.
+## Why a separate adapter package
 
-## Text extraction (PDF → string)
+PDF.js must not live in `repair-extraction` (would couple parsers to a worker runtime). qpdf cannot extract page text. The desktop preview token protocol is for renderer thumbnails, not a CLI soak. Reuse the **same** `pdfjs-dist@4.10.38` (Apache-2.0, already in the renderer) via the Node **legacy** build.
 
-qpdf cannot extract page text. PDF.js is already used in the **renderer** for Split/Merge thumbnails (Apache-2.0). Putting `pdfjs-dist` into this Node package would add worker/canvas runtime for a PoC that is not packaged yet.
+## Page-aware text
 
-This PoC takes **text already extracted** from the PDF text layer (the same evidence path as Phase 4A.2). Wiring PDF bytes → text in Electron can reuse renderer PDF.js later; it is not required to prove the parsers.
+The adapter returns `{ pageNumber, text }[]`. `extractionInputFromPages` keeps those pages **and** concatenates them with `\n\f\n` so existing parsers can search snippets for `SourceRef.page`. No second document model.
 
-No new production npm dependency. No cloud. No native extraction binary.
+PDF.js joins text items by Y then X with **single spaces**. That is not `pdftotext -layout`. Parsers accept both the 4C.1 spaced-column fixtures and the observed PDF.js patterns (unit-before-qty invoices; Audatex catalog table; letter-spaced summary headers).
 
 ## Supported formats
 
-| Family | Detection | Parser behaviour |
+| Family | Detection | Behaviour |
 | --- | --- | --- |
 | Audatex kalkulacja | `SYSTEM AUDATEX` / `KALKULACJA NAPRAWY` | Identifiers, vehicle, parts, labour JC, document-local N JC=1 RBG, paint/material totals, normalia, totals |
-| Shop Faktura VAT / KSeF | `Faktura VAT` plus KSeF / `FV/BL/` | Identifiers, vehicle, line kinds (part / rbg / usl / Normalia / materials), footer totals |
-| Image-only / scan | sparse or empty text layer | `OCR_REQUIRED` — no invented `CanonicalRepairDocument` fields |
+| Shop Faktura VAT / KSeF | `Faktura VAT` plus KSeF / `FV/BL/` | Identifiers, vehicle, line kinds; qty × unit must match line net |
+| Image-only / scan | sparse or empty text layer | `OCR_REQUIRED` — no invented fields |
 | Anything else | no markers, or both families | `unknown` / `ambiguous` — not guessed |
 
 ## Money, labour, parts
 
-- Source amounts such as `1234.56`, `1 234,56`, `1 234.56` parse to `Money` minor units. Failure is omitted, never `0`.
-- JC→RBG conversion is read from the document (`N JC = 1 RBG`). 10 and 12 coexist. Conflicting paint `N JC/RBG` labels leave paint hours unresolved.
-- Part numbers keep `raw` + Phase 4B lexical `normalized`. Duplicate OEM lines stay separate. No A-prefix / supersession equivalence.
+- Source amounts parse to `Money` minor units. Failure is omitted, never `0`.
+- JC→RBG is read from the document (`N JC = 1 RBG`). 10 and 12 coexist. Conflicting paint `N JC/RBG` labels leave paint hours unresolved.
+- Duplicate OEM lines stay separate. No A-prefix / supersession equivalence.
 - Invoice column bleed: qty × unit price must match line net; otherwise amounts are omitted with `column_bleed_unresolved`.
+- Invoice `usł` / `usl` lump labour keeps hours unresolved.
+
+## Local soak (developers)
+
+```text
+pnpm repair:soak <local-folder>
+```
+
+Local PDFs only. Does not copy documents into the repo. Prints sanitized counts (format, status, parts/labour totals, JC, warning codes, timings). Does not print extracted text, VIN, plate, names, or NIP. Optional dump: `REPAIR_SOAK_DUMP=1` writes `.repair-soak/` (gitignored).
 
 ## Result statuses
 
@@ -57,8 +64,8 @@ No new production npm dependency. No cloud. No native extraction binary.
 
 ## Explicit non-goals
 
-OCR implementation, AI, estimate vs invoice reconciliation, Process A QA, semantic parts intelligence, desktop UI, persistence.
+OCR implementation, AI, estimate vs invoice reconciliation, Process A QA, semantic parts intelligence, production Repair Intelligence UI, persistence.
 
 ## Privacy
 
-Fixtures in `packages/repair-extraction/fixtures/` are synthetic. Do not commit customer PDFs or real identifiers. Do not log document contents.
+Fixtures in `packages/repair-extraction/fixtures/` are synthetic (including PDF.js-layout regressions). Real customer PDFs stay outside Git. Do not log document contents.

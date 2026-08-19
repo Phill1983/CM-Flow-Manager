@@ -23,7 +23,8 @@ cm-flow-manager/
 │   ├── pdf-engine/               # PdfEngineService + qpdf adapter
 │   ├── app-updater/              # Update policy / manifest (no Electron)
 │   ├── repair-domain/            # Phase 4B canonical model
-│   └── repair-extraction/        # Phase 4C.1 text → CanonicalRepairDocument
+│   ├── repair-extraction/        # Phase 4C.1 text → CanonicalRepairDocument
+│   └── pdf-text-layer/           # Phase 4C.2 PDF.js text-layer adapter
 ├── modules/
 │   ├── pdf-password-remover/     # flat src helpers; UI in desktop
 │   └── pdf-split-merge/          # flat src helpers; UI in desktop
@@ -39,6 +40,7 @@ cm-flow-manager/
 - `core`, `ui`, and `logging` remain **uncreated** until a second real consumer exists (avoid empty package noise). `file-utils` already exists.
 - Phase 4B adds `packages/repair-domain` — pure canonical repair-document types (no Electron/React/FS/parsers).
 - Phase 4C.1 adds `packages/repair-extraction` — deterministic Audatex + shop invoice parsers over extracted text; depends on `repair-domain`. Desktop UI is not wired. qpdf is not used for text extraction.
+- Phase 4C.2 adds `packages/pdf-text-layer` — PDF.js `getTextContent` adapter (same `pdfjs-dist` 4.10.38 as thumbnails). Parsers stay Electron-free. Production path: PDF bytes → one adapter → existing parser.
 - Phase 3.7 extends `pdf-engine` with `extractPages` / `mergePdfs` and adds module `pdf-split-merge`. Password Remover remains on the same qpdf binary. Page thumbnails use PDF.js in the renderer via an opaque `cmflow-pdf://` token protocol (qpdf is not used for rendering).
 - Package manager is **pnpm@9.15.9** only (`packageManager` field + `pnpm-lock.yaml`).
 
@@ -129,12 +131,13 @@ Prefer **REUSE → EXTEND → LOCAL CHANGE → NEW ABSTRACTION** (`.cursor/rules
 ## Future repair-document architecture
 
 Phase **4B** implements `@cm-flow-manager/repair-domain` (`CanonicalRepairDocument`).  
-Phase **4C.1** implements `@cm-flow-manager/repair-extraction` (text → canonical). Engines still come later and **must depend on** the domain package — never the reverse.
+Phase **4C.1** implements `@cm-flow-manager/repair-extraction` (text → canonical).  
+Phase **4C.2** implements `@cm-flow-manager/pdf-text-layer` (PDF bytes → page-aware text). Engines still come later and **must depend on** the domain package — never the reverse.
 
 | Component | Status |
 | --- | --- |
 | `CanonicalRepairDocument` | **4B** — approved |
-| Repair document extraction | **4C.1** — approved (Audatex + shop VAT invoice + OCR_REQUIRED) |
+| Repair document extraction | **4C.1** parsers (approved) + **4C.2** PDF.js adapter (pending approval) |
 | `EstimateQaEngine` | Process A — later (4F) |
 | `InvoiceValidationEngine` | Process B — later (4D) |
 | `PartsIntelligenceService` | later (4E) |

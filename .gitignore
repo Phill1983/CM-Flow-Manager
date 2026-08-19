@@ -90,3 +90,6 @@ vendor/qpdf/bin/
 
 # Local PDF text extracts for discovery (never commit)
 .tmp-discovery/
+
+# Local 4C.2 soak dumps (never commit customer text)
+.repair-soak/

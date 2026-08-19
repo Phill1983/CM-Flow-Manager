@@ -5,7 +5,7 @@ import {
 import { detectDocumentFormat } from './detect-format.js';
 import { parseAudatexDocument } from './parse-audatex.js';
 import { parseInvoiceDocument } from './parse-invoice.js';
-import type { ExtractionInput, ExtractionResult, ExtractionWarning } from './types.js';
+import type { ExtractedPage, ExtractionInput, ExtractionResult, ExtractionWarning } from './types.js';
 
 function ocrUnavailable(input: ExtractionInput, warnings: ExtractionWarning[]): ExtractionResult {
   const unavailable = {
@@ -111,4 +111,17 @@ export function extractRepairDocument(input: ExtractionInput): ExtractionResult 
       timingMs: Date.now() - started,
     };
   }
+}
+
+/** Flatten page-aware PDF.js output for the 4C.1 parsers without dropping page slices. */
+export function extractionInputFromPages(
+  documentId: string,
+  pages: readonly ExtractedPage[],
+): ExtractionInput {
+  return {
+    documentId,
+    pages,
+    pageCount: pages.length,
+    text: pages.map((page) => page.text).join('\n\f\n'),
+  };
 }

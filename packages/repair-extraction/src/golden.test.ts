@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { moneyToMajorString } from '@cm-flow-manager/repair-domain';
 import {
   extractRepairDocument,
+  extractionInputFromPages,
   parseDecimalString,
   parseSourceMoney,
 } from './index.js';
@@ -12,6 +13,8 @@ describe('money parsing', () => {
     expect(moneyToMajorString(parseSourceMoney('PLN', '1234.56')!)).toBe('1234.56');
     expect(moneyToMajorString(parseSourceMoney('PLN', '1 234,56')!)).toBe('1234.56');
     expect(moneyToMajorString(parseSourceMoney('PLN', '1 234.56')!)).toBe('1234.56');
+    expect(moneyToMajorString(parseSourceMoney('PLN', '180,00 zł')!)).toBe('180.00');
+    expect(moneyToMajorString(parseSourceMoney('PLN', '120.00*')!)).toBe('120.00');
   });
 
   it('does not turn parse failure or missing values into zero', () => {
@@ -150,5 +153,103 @@ describe('golden OCR CASE', () => {
     expect(result.unavailable?.reason).toBe('ocr_required');
     expect(result.unavailable?.source.textLayerStatus).toBe('no');
     expect(result.detection.status).toBe('ocr_required');
+  });
+});
+
+describe('page-aware input', () => {
+  it('keeps SourceRef.page when pages are supplied', () => {
+    const page1 = 'SYSTEM AUDATEX\nKALKULACJA NAPRAWY NR SAN-CLAIM-02\nNr rejestracyjny: TESTPL02';
+    const page2 = loadFixture('audatex-02.txt');
+    const result = extractRepairDocument(
+      extractionInputFromPages('paged-02', [
+        { pageNumber: 1, text: page1 },
+        { pageNumber: 2, text: page2 },
+      ]),
+    );
+    expect(result.document?.caseReference?.estimateNumber?.source?.page).toBe(1);
+    expect(result.document?.labourUnitConversions?.[0]?.source?.page).toBe(2);
+  });
+});
+
+describe('PDF.js layout AUDATEX 02', () => {
+  const result = extractRepairDocument({
+    documentId: 'pdfjs-audatex-02',
+    text: loadFixture('audatex-pdfjs-02.txt'),
+    pageCount: 6,
+  });
+
+  it('parses single-space tables, letter-spaced totals, and 10 JC=1 RBG', () => {
+    const doc = result.document!;
+    expect(result.detection.sourceFormat).toBe('audatex');
+    expect(doc.vehicle?.vin?.value).toBe('REDACTEDVIN0000001');
+    expect(doc.vehicle?.plate?.value).toBe('TESTPL02');
+    expect(doc.labourUnitConversions?.[0]?.sourceUnitsPerTargetUnit.numerator).toBe(10n);
+    expect(doc.parts?.some((p) => p.rawPartNumber?.value === '96001A2000')).toBe(true);
+    expect(doc.parts?.find((p) => p.rawPartNumber?.value === '8112637010')?.quantity?.value).toBe('14');
+    expect(doc.labour?.length).toBeGreaterThanOrEqual(2);
+    expect(doc.normalia?.[0]?.amountNet && moneyToMajorString(doc.normalia[0].amountNet.value)).toBe('11.78');
+    expect(doc.totals?.totalNet && moneyToMajorString(doc.totals.totalNet.value)).toBe('4046.77');
+    expect(doc.totals?.totalGross && moneyToMajorString(doc.totals.totalGross.value)).toBe('4977.53');
+  });
+});
+
+describe('PDF.js layout AUDATEX 03', () => {
+  const result = extractRepairDocument({
+    documentId: 'pdfjs-audatex-03',
+    text: loadFixture('audatex-pdfjs-03.txt'),
+    pageCount: 8,
+  });
+
+  it('keeps duplicate catalog lines, 12 JC=1 RBG, and conflicting paint JC labels', () => {
+    const doc = result.document!;
+    expect(doc.labourUnitConversions?.[0]?.sourceUnitsPerTargetUnit.numerator).toBe(12n);
+    const seals = doc.parts?.filter((p) => p.rawPartNumber?.value === '0007271300') ?? [];
+    expect(seals.length).toBe(2);
+    expect(seals[0]?.lineId).not.toBe(seals[1]?.lineId);
+    expect(result.warnings.some((w) => w.code === 'conflicting_jc_labels')).toBe(true);
+    expect(doc.paint?.paintMaterialsNet && moneyToMajorString(doc.paint.paintMaterialsNet.value)).toBe('2787.07');
+    expect(doc.totals?.totalNet && moneyToMajorString(doc.totals.totalNet.value)).toBe('23134.94');
+  });
+});
+
+describe('PDF.js layout INVOICE 02', () => {
+  const result = extractRepairDocument({
+    documentId: 'pdfjs-invoice-02',
+    text: loadFixture('invoice-pdfjs-02.txt'),
+    pageCount: 2,
+  });
+
+  it('parses unit-before-qty columns and comma-separated part codes', () => {
+    const doc = result.document!;
+    expect(doc.source.sourceFormat).toBe('shop_faktura_vat');
+    const body = doc.labour?.find((l) => l.category?.value === 'body');
+    expect(body?.quantity?.value).toBe('6.60');
+    expect(body?.lineNet && moneyToMajorString(body.lineNet.value)).toBe('1188.00');
+    expect(doc.parts?.some((p) => p.rawPartNumber?.value === '96001A2000')).toBe(true);
+    expect(doc.parts?.find((p) => p.rawPartNumber?.value === '8112637010')?.quantity?.value).toBe('14.00');
+    expect(doc.totals?.totalNet && moneyToMajorString(doc.totals.totalNet.value)).toBe('3854.65');
+    expect(doc.totals?.totalGross && moneyToMajorString(doc.totals.totalGross.value)).toBe('4741.22');
+  });
+});
+
+describe('PDF.js layout INVOICE 03', () => {
+  const result = extractRepairDocument({
+    documentId: 'pdfjs-invoice-03',
+    text: loadFixture('invoice-pdfjs-03.txt'),
+    pageCount: 2,
+  });
+
+  it('keeps usł lump hours unresolved, wrapped part lines, and duplicate OEM rows', () => {
+    const doc = result.document!;
+    const body = doc.labour?.find((l) => l.category?.value === 'body');
+    expect(body?.sourceUnit?.value).toBe('usl');
+    expect(body?.presentation).toBe('lump');
+    expect(body?.normalizedHours?.status).toBe('unresolved');
+    const dup = doc.parts?.filter((p) => p.rawPartNumber?.value === 'A0007271300') ?? [];
+    expect(dup.length).toBe(2);
+    expect(doc.additionalCosts?.[0]?.kind?.value).toBe('additional');
+    expect(doc.additionalCosts?.[0]?.lineNet && moneyToMajorString(doc.additionalCosts[0].lineNet.value)).toBe('60.00');
+    expect(result.warnings.some((w) => w.code === 'unclassified_line')).toBe(false);
+    expect(doc.totals?.totalGross && moneyToMajorString(doc.totals.totalGross.value)).toBe('28803.55');
   });
 });

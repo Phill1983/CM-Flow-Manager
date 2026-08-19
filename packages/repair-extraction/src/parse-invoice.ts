@@ -3,6 +3,7 @@ import {
   normalizePartNumberDeterministic,
   sourceValue,
   type CanonicalRepairDocument,
+  type AdditionalCostLine,
   type LabourLine,
   type MaterialLine,
   type Normalia,
@@ -19,9 +20,15 @@ import type { ExtractedPage, ExtractionWarning } from './types.js';
 const PLN = 'PLN';
 
 const LINE_START = /^(\d+)\s+(.*)$/;
-const UNIT_RE = /\b(szt|rbg|usl)\b/i;
+/** `usł` is not a JS `\w` character, so it cannot use `\\b`. */
+const UNIT_RE = /\b(szt|rbg|usl)\b|(?<![A-Za-z0-9])(usł)(?![A-Za-z0-9])/i;
 const MONEY_TOKEN = /\d{1,3}(?:[ \u00A0\u202F.]\d{3})*[.,]\d{2}|\d+[.,]\d{2}/g;
 const PCT_TOKEN = /(\d+[.,]?\d*)\s*%/g;
+
+function normalizeInvoiceUnit(raw: string): string {
+  const unit = raw.toLowerCase();
+  return unit === 'usł' ? 'usl' : unit;
+}
 
 export type InvoiceParseOutcome = {
   readonly document: CanonicalRepairDocument;
@@ -39,13 +46,14 @@ type MoneyAssignment = {
 function classifyKind(
   description: string,
   unit: string | undefined,
-): 'labour' | 'normalia' | 'paint_materials' | 'part' | 'other' {
+): 'labour' | 'normalia' | 'paint_materials' | 'additional' | 'part' | 'other' {
   const d = description.toLowerCase();
   if (/normalia/i.test(d)) return 'normalia';
   if (/materi[ae]\w*\s+lakier/i.test(d) || /materia[lły]+\s+lakiernicze/i.test(d)) {
     return 'paint_materials';
   }
-  if (unit === 'rbg' || unit === 'usl' || /robocizna|konserwacja\s+robocizna/i.test(d)) {
+  if (/materia[lły]+\s+dodatk/i.test(d)) return 'additional';
+  if (unit === 'rbg' || /robocizna|konserwacja\s+robocizna/i.test(d)) {
     return 'labour';
   }
   if (looksLikePartCode(description)) return 'part';
@@ -53,15 +61,15 @@ function classifyKind(
 }
 
 function looksLikePartCode(description: string): boolean {
-  const lead = description.trim().split(/\s+/)[0] ?? '';
-  return /^[A-Z0-9]{8,}$/i.test(lead) || /^\d{3}\s+\d{3}\s+\d{4}/.test(description);
+  const lead = (description.trim().split(/\s+/)[0] ?? '').replace(/,$/, '');
+  return /^(?=[A-Z0-9]*\d)[A-Z0-9]{8,}$/i.test(lead) || /^\d{3}\s+\d{3}\s+\d{4}/.test(description);
 }
 
 function splitCodeAndDescription(description: string): { code?: string; rest: string } {
   const trimmed = description.trim();
   const spaced = /^(\d{3}\s+\d{3}\s+\d{4})\s+(.*)$/.exec(trimmed);
   if (spaced) return { code: spaced[1], rest: spaced[2]!.trim() };
-  const compact = /^([A-Z0-9]{8,})\s+(.*)$/i.exec(trimmed);
+  const compact = /^([A-Z0-9]{8,}),?\s+(.*)$/i.exec(trimmed);
   if (compact) return { code: compact[1], rest: compact[2]!.trim() };
   return { rest: trimmed };
 }
@@ -183,6 +191,7 @@ export function parseInvoiceDocument(
   const parts: PartLine[] = [];
   const labour: LabourLine[] = [];
   const materials: MaterialLine[] = [];
+  const additional: AdditionalCostLine[] = [];
   const normalia: Normalia[] = [];
 
   for (const rawLine of logical) {
@@ -191,19 +200,26 @@ export function parseInvoiceDocument(
     const lp = start[1]!;
     const rest = start[2]!;
     const unitMatch = UNIT_RE.exec(rest);
-    const unit = unitMatch?.[1]?.toLowerCase();
+    const unitRaw = unitMatch?.[1] ?? unitMatch?.[2];
+    const unit = unitRaw ? normalizeInvoiceUnit(unitRaw) : undefined;
     let description = rest;
     let qty: string | undefined;
     let remainder = '';
     if (unitMatch && unitMatch.index !== undefined) {
       const before = rest.slice(0, unitMatch.index).trim();
       remainder = rest.slice(unitMatch.index + unitMatch[0].length);
-      const qtyMatch = before.match(/(\d+[.,]\d+|\d+)\s*$/);
-      if (qtyMatch) {
-        qty = parseDecimalString(qtyMatch[1]);
-        description = before.slice(0, qtyMatch.index).trim();
+      const qtyBefore = before.match(/(\d+[.,]\d+|\d+)\s*$/);
+      const qtyAfter = remainder.match(/^\s*(\d+[.,]\d+|\d+)/);
+      // 4C.1 pdftotext: qty before unit. PDF.js shop invoices: unit then qty.
+      if (qtyBefore) {
+        qty = parseDecimalString(qtyBefore[1]);
+        description = before.slice(0, qtyBefore.index).replace(/,\s*$/, '').trim();
+      } else if (qtyAfter) {
+        qty = parseDecimalString(qtyAfter[1]);
+        remainder = remainder.slice(qtyAfter[0].length);
+        description = before.replace(/,\s*$/, '').trim();
       } else {
-        description = before;
+        description = before.replace(/,\s*$/, '').trim();
       }
     }
 
@@ -280,6 +296,19 @@ export function parseInvoiceDocument(
       continue;
     }
 
+    if (kind === 'additional') {
+      additional.push({
+        lineId,
+        kind: sv('additional', 'additional', displayDesc),
+        description: sv(displayDesc, 'additional', displayDesc),
+        ...(!money.unresolved && money.lineNet
+          ? { lineNet: sv(money.lineNet, 'additional', remainder) }
+          : {}),
+        source: makeRef(documentId, 'additional', rawLine, pages, { lineId }),
+      });
+      continue;
+    }
+
     if (kind === 'part') {
       parts.push({
         lineId,
@@ -318,18 +347,22 @@ export function parseInvoiceDocument(
     });
   }
 
-  const totalsRegion = text.slice(Math.max(0, text.search(/Razem\s+netto|Razem\s+do\s+zap[lł]aty/i)));
+  const totalsRegion = text.slice(Math.max(0, text.search(/Razem\s+netto|Razem\s+do\s+zap[lł]aty|Razem:/i)));
+  const footerTriple = /Razem:\s*([\d\s]+[.,]\d{2})(?:\s*(?:zł|zl))?\s+([\d\s]+[.,]\d{2})(?:\s*(?:zł|zl))?\s+([\d\s]+[.,]\d{2})/i.exec(
+    totalsRegion,
+  );
   const totalNet = parseSourceMoney(
     PLN,
-    firstMatch(totalsRegion, /Razem\s+netto\s*:?\s*([\d\s]+[.,]\d{2})/i),
+    firstMatch(totalsRegion, /Razem\s+netto\s*:?\s*([\d\s]+[.,]\d{2})/i) ?? footerTriple?.[1],
   );
   const vatAmount = parseSourceMoney(
     PLN,
-    firstMatch(totalsRegion, /(?:VAT|Kwota\s+VAT)\s*:?\s*([\d\s]+[.,]\d{2})/i),
+    firstMatch(totalsRegion, /(?:^|\s)(?:VAT|Kwota\s+VAT)\s*:?\s*([\d\s]+[.,]\d{2})/im) ?? footerTriple?.[2],
   );
   const totalGross = parseSourceMoney(
     PLN,
-    firstMatch(totalsRegion, /(?:Razem\s+brutto|Razem\s+do\s+zap[lł]aty)\s*:?\s*([\d\s]+[.,]\d{2})/i),
+    firstMatch(totalsRegion, /(?:Razem\s+brutto|Razem\s+do\s+zap[lł]aty)\s*:?\s*([\d\s]+[.,]\d{2})/i)
+      ?? footerTriple?.[3],
   );
   const vatRate = parseDecimalString(firstMatch(text, /VAT\s+([\d.,]+)\s*%/i));
 
@@ -377,6 +410,7 @@ export function parseInvoiceDocument(
     ...(parts.length > 0 ? { parts } : {}),
     ...(labour.length > 0 ? { labour } : {}),
     ...(materials.length > 0 ? { materials } : {}),
+    ...(additional.length > 0 ? { additionalCosts: additional } : {}),
     ...(normalia.length > 0 ? { normalia } : {}),
     totals: {
       sourceProvided: true,

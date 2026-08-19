@@ -1,0 +1,13 @@
+Faktura VAT nr FV/BL/0002/26
+Numer KSeF: 0000000000-20260315-AAAAAAAAAA-AA
+Lp. Kod towaru, nazwa towaru lub uslugi J.m. Ilosc Cena netto Rabat Wartosc VAT
+1 Robocizna blacharska rbg 6,60 180,00 zl 0,0% 1 188,00 zl 23% 273,24 zl 1 461,24 zl
+2 Robocizna lakiernicza rbg 5,80 180,00 zl 0,0% 1 044,00 zl 23% 240,12 zl 1 284,12 zl
+3 96001A2000, WKLADKA CZUJNIKA szt 1,00 177,23 zl 0,0% 177,23 zl 23% 40,76 zl 217,99 zl
+4 86130N7000, LISTWA szt 1,00 178,24 zl 0,0% 178,24 zl 23% 41,00 zl 219,24 zl
+5 8112637010, SPINKA szt 14,00 3,23 zl 0,0% 45,22 zl 23% 10,40 zl 55,62 zl
+6 Normalia szt 1,00 8,01 zl 0,0% 8,01 zl 23% 1,84 zl 9,85 zl
+7 Materialy lakiernicze szt 1,00 1 213,95 zl 0,0% 1 213,95 zl 23% 279,21 zl 1 493,16 zl
+Razem do zaplaty: 4 741,22 zl Wedlug stawki VAT Wartosc netto Kwota VAT Wartosc brutto
+Razem: 3 854,65 zl 886,57 zl 4 741,22 zl
+Sprawdz, czy Twoja faktura znajduje sie w KSeF!

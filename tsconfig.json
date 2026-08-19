@@ -7,6 +7,7 @@
     { "path": "./packages/app-updater" },
     { "path": "./packages/repair-domain" },
     { "path": "./packages/repair-extraction" },
+    { "path": "./packages/pdf-text-layer" },
     { "path": "./modules/pdf-password-remover" },
     { "path": "./modules/pdf-split-merge" }
   ]

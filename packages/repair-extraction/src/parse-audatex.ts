@@ -9,7 +9,7 @@ import {
   type PartLine,
 } from '@cm-flow-manager/repair-domain';
 import { parseDecimalString, parseQuantityString, parseSourceMoney } from './money-parse.js';
-import { allMatches, firstMatch, makeRef } from './text-util.js';
+import { allMatches, firstMatch, letterSpacedPhrase, makeRef } from './text-util.js';
 import type { ExtractedPage, ExtractionWarning } from './types.js';
 
 const PLN = 'PLN';
@@ -19,6 +19,40 @@ const PART_LINE =
 
 const LABOUR_JC_LINE =
   /^(.{6,80}?)\s{2,}(\d+(?:[.,]\d+)?)\s*JC(?:\s{2,}([\d\s]+[.,]\d{2}))?\s*$/i;
+
+/** PDF.js labour ops: `81125R00 DESC 2 36.00` — no `JC` token on the line. */
+const LABOUR_OP_LINE =
+  /^([A-Z0-9][A-Z0-9.-]{3,})\s+(.+?)\s+(\d+)\*?\s+([\d\s]+[.,]\d{2})\s*$/;
+
+/** Price at EOL. Must not swallow a trailing all-digit catalog token. */
+const AUDATEX_MONEY_EOL = String.raw`(\d{1,3}(?:[ \u00A0]\d{3})+[.,]\d{2}|\d{1,7}[.,]\d{2})`;
+
+/** PDF.js parts table: `0482 14 P KLIPS 8112637010 45.36` (position, optional qty P, desc, catalog, price). */
+const AUDATEX_TABLE_PART = new RegExp(
+  `^(\\d{3,5})\\s+(?:(\\d+)\\s+(P)\\s+)?(.+?)\\s+${AUDATEX_MONEY_EOL}\\*?\\s*$`,
+);
+
+const SKIP_PART_LINE =
+  /^(KOD|SYSTEM|RAZEM|NORMALIA|VAT|KALKUL|STRONA|NUMER|CENY|OBJA|NR\s+KATALOG)/i;
+
+function headerRe(phrase: string): RegExp {
+  return new RegExp(letterSpacedPhrase(phrase), 'i');
+}
+
+function splitAudatexCatalog(middle: string): { catalog?: string; description: string } {
+  const tokens = middle.trim().split(/\s+/).filter(Boolean);
+  if (tokens.length >= 3) {
+    const spaced = `${tokens[tokens.length - 3]} ${tokens[tokens.length - 2]} ${tokens[tokens.length - 1]}`;
+    if (/^\d{3}\s+\d{3}\s+\d{4}$/.test(spaced)) {
+      return { catalog: spaced, description: tokens.slice(0, -3).join(' ') };
+    }
+  }
+  const last = tokens[tokens.length - 1] ?? '';
+  if (/^[A-Z0-9]{8,}$/i.test(last)) {
+    return { catalog: last, description: tokens.slice(0, -1).join(' ') };
+  }
+  return { description: middle.trim() };
+}
 
 export type AudatexParseOutcome = {
   readonly document: CanonicalRepairDocument;
@@ -90,22 +124,28 @@ export function parseAudatexDocument(
     ?? firstMatch(text, /PLN\s*\/\s*RBG\s*(\d+[.,]\d{2})/i);
   const rate = parseSourceMoney(PLN, rateRaw);
 
-  const estimateNumber = firstMatch(text, /KALKULACJA\s+NAPRAWY\s+NR\s+(\S+)/i);
-  const plate = firstMatch(text, /(?:Nr\s+rejestracyjny|Numer\s+rejestracyjny)\s*:\s*(\S+)/i);
-  const vin = firstMatch(text, /\bVIN\s*:\s*(\S+)/i);
-  const make = firstMatch(text, /\bMarka\s*:\s*([A-Za-z0-9-]+)/i);
+  const estimateNumber =
+    firstMatch(text, /KALKULACJA\s+NAPRAWY\s+NR\s+(\S+)/i)
+    ?? firstMatch(text, new RegExp(`${letterSpacedPhrase('KALKULACJA NAPRAWY')}\\s+NR\\s+(\\S+)`, 'i'));
+  const plate =
+    firstMatch(text, /(?:Nr\s+rejestracyjny|Numer\s+rejestracyjny)\s*:\s*(\S+)/i)
+    ?? firstMatch(text, /NR\s*REJ\.?\s+(\S+)/i);
+  const vin =
+    firstMatch(text, /\bVIN\s*:\s*(\S+)/i)
+    ?? firstMatch(text, /NUMER\s+VIN\s+(\S+)/i);
+  const make = firstMatch(text, /\bMarka\s*:?\s*([A-Za-z0-9-]+)/i);
   const model = firstMatch(text, /\bModel\s*:\s*([A-Za-z0-9-]+)/i);
   const docDate = firstMatch(text, /(?:Data\s+kalkulacji|Data)\s*:\s*([\d.-]+)/i);
 
   const partsSection = sectionSlice(
     text,
-    /CZ[EĘ][SŚ]CI\s+ZAMIENNE|NUMER\s+KATALOGOWY/i,
-    /KALKULACJA\s+KO[NŃ]COWA|STRONA\s+KONTROLNA/i,
+    /NUMER\s+KATALOGOWY|CZ[EĘ][SŚ]CI\s+ZAMIENNE/i,
+    new RegExp(`${letterSpacedPhrase('KALKULACJA KONCOWA')}|${letterSpacedPhrase('STRONA KONTROLNA')}`, 'i'),
   );
   const parts: PartLine[] = [];
   for (const line of partsSection.split(/\r?\n/)) {
     const trimmed = line.trim();
-    if (!trimmed || /NUMER\s+KATALOGOWY|^---/i.test(trimmed)) continue;
+    if (!trimmed || /NUMER\s+KATALOGOWY|^---/i.test(trimmed) || SKIP_PART_LINE.test(trimmed)) continue;
     if (/^BRAK\s+NR/i.test(trimmed)) {
       warnings.push({
         code: 'brak_nr_line',
@@ -114,39 +154,66 @@ export function parseAudatexDocument(
       });
       continue;
     }
-    const m = PART_LINE.exec(trimmed);
-    if (!m) continue;
-    const rawPart = m[1]!.replace(/\s+/g, ' ').trim();
-    const desc = m[2]!.trim();
-    const qty = parseQuantityString(m[3]);
-    const lineNet = parseSourceMoney(PLN, m[5]);
+    const spaced = PART_LINE.exec(trimmed);
+    if (spaced) {
+      const rawPart = spaced[1]!.replace(/\s+/g, ' ').trim();
+      const desc = spaced[2]!.trim();
+      const qty = parseQuantityString(spaced[3]);
+      const lineNet = parseSourceMoney(PLN, spaced[5]);
+      const lineId = `part-${parts.length + 1}`;
+      parts.push({
+        lineId,
+        rawPartNumber: sv(rawPart, 'parts', rawPart),
+        partNumberNormalization: normalizePartNumberDeterministic(rawPart),
+        description: sv(desc, 'parts', desc),
+        ...(qty ? { quantity: sv(qty, 'parts', spaced[3]!) } : {}),
+        ...(spaced[4] ? { unit: sv(spaced[4].toLowerCase() === 'p' ? 'P' : spaced[4], 'parts', spaced[4]) } : {}),
+        ...(lineNet
+          ? { lineNet: sourceValue(lineNet, { certainty: 'observed', source: makeRef(documentId, 'parts', trimmed, pages, { lineId }) }) }
+          : {}),
+        source: makeRef(documentId, 'parts', trimmed, pages, { lineId }),
+      });
+      continue;
+    }
+
+    const table = AUDATEX_TABLE_PART.exec(trimmed);
+    if (!table) continue;
+    const { catalog, description } = splitAudatexCatalog(table[4] ?? '');
+    if (!description && !catalog) continue;
+    const qty = parseQuantityString(table[2]);
+    const lineNet = parseSourceMoney(PLN, table[5]);
     const lineId = `part-${parts.length + 1}`;
-    const row: PartLine = {
+    const position = table[1]!.trim();
+    parts.push({
       lineId,
-      rawPartNumber: sv(rawPart, 'parts', rawPart),
-      partNumberNormalization: normalizePartNumberDeterministic(rawPart),
-      description: sv(desc, 'parts', desc),
-      ...(qty ? { quantity: sv(qty, 'parts', m[3]!) } : {}),
-      ...(m[4] ? { unit: sv(m[4].toLowerCase() === 'p' ? 'P' : m[4], 'parts', m[4]) } : {}),
+      position: sv(position, 'parts', position),
+      ...(catalog
+        ? {
+            rawPartNumber: sv(catalog, 'parts', catalog),
+            partNumberNormalization: normalizePartNumberDeterministic(catalog),
+          }
+        : {}),
+      description: sv(description || catalog || position, 'parts', description || trimmed),
+      ...(qty ? { quantity: sv(qty, 'parts', table[2]!) } : {}),
+      ...(table[3] ? { unit: sv('P', 'parts', table[3]) } : {}),
       ...(lineNet
         ? { lineNet: sourceValue(lineNet, { certainty: 'observed', source: makeRef(documentId, 'parts', trimmed, pages, { lineId }) }) }
         : {}),
       source: makeRef(documentId, 'parts', trimmed, pages, { lineId }),
-    };
-    parts.push(row);
+    });
   }
 
-  const labourSection = sectionSlice(text, /ROBOCIZNA\b/i, /LAKIEROWANIE|CZ[EĘ][SŚ]CI\s+ZAMIENNE/i);
+  const labourSection = sectionSlice(
+    text,
+    headerRe('ROBOCIZNA'),
+    new RegExp(
+      `KOD\\s+CZ[EĘ]|${letterSpacedPhrase('LAKIEROWANIE')}|${letterSpacedPhrase('CZESCI ZAMIENNE')}|NUMER\\s+KATALOGOWY`,
+      'i',
+    ),
+  );
   const labour: LabourLine[] = [];
-  for (const line of labourSection.split(/\r?\n/)) {
-    const trimmed = line.trim();
-    const m = LABOUR_JC_LINE.exec(trimmed);
-    if (!m) continue;
-    const desc = m[1]!.trim();
-    if (/^ROBOCIZNA$/i.test(desc) || /JC\s*=\s*1/i.test(desc)) continue;
-    const qty = parseDecimalString(m[2]);
-    if (!qty) continue;
-    const lineNet = parseSourceMoney(PLN, m[3]);
+  const pushLabour = (desc: string, qty: string, qtyRaw: string, lineNet: ReturnType<typeof parseSourceMoney>, trimmed: string) => {
+    if (/^ROBOCIZNA$/i.test(desc) || /JC\s*=\s*1/i.test(desc) || /^NR\s+POZ/i.test(desc)) return;
     const lineId = `lab-${labour.length + 1}`;
     const lower = desc.toLowerCase();
     const category = /lakier/i.test(lower)
@@ -163,19 +230,38 @@ export function parseAudatexDocument(
       lineId,
       description: sv(desc, 'labour', desc),
       ...(category ? { category: sourceValue(category, { certainty: 'derived', source: makeRef(documentId, 'labour', desc, pages) }) } : {}),
-      quantity: sv(qty, 'labour', m[2]!),
+      quantity: sv(qty, 'labour', qtyRaw),
       sourceUnit: sv('JC', 'labour', 'JC'),
       ...(rate && rateRaw
         ? { rate: sourceValue(rate, { certainty: 'observed', source: makeRef(documentId, 'labour', rateRaw, pages) }) }
         : {}),
-      ...(lineNet ? { lineNet: sv(lineNet, 'labour', m[3]!) } : {}),
+      ...(lineNet ? { lineNet: sv(lineNet, 'labour', trimmed) } : {}),
       presentation: 'detail',
       normalizedHours: hours,
       source: makeRef(documentId, 'labour', trimmed, pages, { lineId }),
     });
+  };
+  for (const line of labourSection.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    const jcLine = LABOUR_JC_LINE.exec(trimmed);
+    if (jcLine) {
+      const qty = parseDecimalString(jcLine[2]);
+      if (qty) pushLabour(jcLine[1]!.trim(), qty, jcLine[2]!, parseSourceMoney(PLN, jcLine[3]), trimmed);
+      continue;
+    }
+    const opLine = LABOUR_OP_LINE.exec(trimmed);
+    if (!opLine) continue;
+    const qty = parseDecimalString(opLine[3]);
+    if (!qty) continue;
+    const desc = `${opLine[1]} ${opLine[2]}`.trim();
+    pushLabour(desc, qty, opLine[3]!, parseSourceMoney(PLN, opLine[4]), trimmed);
   }
 
-  const finalCalc = sectionSlice(text, /KALKULACJA\s+KO[NŃ]COWA/i, /STRONA\s+KONTROLNA|$/i);
+  const finalCalc = sectionSlice(
+    text,
+    headerRe('KALKULACJA KONCOWA'),
+    headerRe('STRONA KONTROLNA'),
+  );
 
   const moneyAfter = (label: RegExp): ReturnType<typeof parseSourceMoney> => {
     const m = label.exec(finalCalc);
@@ -185,10 +271,16 @@ export function parseAudatexDocument(
 
   const labourBodyNet =
     moneyAfter(/Robocizna\s+blacharska\s+([\d\s]+[.,]\d{2})/i)
-    ?? moneyAfter(/^Robocizna\s+([\d\s]+[.,]\d{2})/im);
+    ?? moneyAfter(/^Robocizna\s+([\d\s]+[.,]\d{2})/im)
+    ?? parseSourceMoney(
+      PLN,
+      firstMatch(finalCalc, /RAZEM\s+\d+\s+JC\s+X\s+[\d\s.,]+\s*PLN\s*\/\s*RBG\s+([\d\s]+[.,]\d{2})/i),
+    );
   const paintLabourNet = parseSourceMoney(
     PLN,
-    firstMatch(finalCalc, /(?:Lakierowanie|Robocizna\s+lakiernicza|LAKIEROWANIE)\s+([\d\s]+[.,]\d{2})/i),
+    firstMatch(finalCalc, /(?:Lakierowanie|Robocizna\s+lakiernicza|LAKIEROWANIE)\s+([\d\s]+[.,]\d{2})/i)
+      ?? firstMatch(text, /JC\s*\/\s*RBG\s*:\s*\d+\s+([\d\s]+[.,]\d{2})/i)
+      ?? firstMatch(finalCalc, /KOSZTY\s+ROBOCIZNY\s+([\d\s]+[.,]\d{2})/i),
   );
   const paintMaterialsNet = parseSourceMoney(
     PLN,
@@ -197,7 +289,8 @@ export function parseAudatexDocument(
   );
   const partsNet = parseSourceMoney(
     PLN,
-    firstMatch(finalCalc, /CZ[EĘ][SŚ]CI(?:\s+ZAMIENNE)?\s+([\d\s]+[.,]\d{2})/i),
+    firstMatch(finalCalc, /CZ[EĘ][SŚ]CI(?:\s+ZAMIENNE)?\s+([\d\s]+[.,]\d{2})/i)
+      ?? firstMatch(finalCalc, new RegExp(`${letterSpacedPhrase('CZESCI ZAMIENNE')}\\s+([\\d\\s]+[.,]\\d{2})`, 'i')),
   );
   const additionalNet = parseSourceMoney(
     PLN,
@@ -205,11 +298,19 @@ export function parseAudatexDocument(
   );
   const totalNet = parseSourceMoney(
     PLN,
-    firstMatch(finalCalc, /RAZEM\s+NETTO\s+([\d\s]+[.,]\d{2})/i),
+    firstMatch(finalCalc, /RAZEM\s+NETTO\s+([\d\s]+[.,]\d{2})/i)
+      ?? firstMatch(
+        finalCalc,
+        new RegExp(`${letterSpacedPhrase('KOSZTY NAPRAWY')}\\s+BEZ\\s+VAT[.\\s]+([\\d\\s]+[.,]\\d{2})`, 'i'),
+      ),
   );
   const totalGross = parseSourceMoney(
     PLN,
-    firstMatch(finalCalc, /RAZEM\s+BRUTTO\s+([\d\s]+[.,]\d{2})/i),
+    firstMatch(finalCalc, /RAZEM\s+BRUTTO\s+([\d\s]+[.,]\d{2})/i)
+      ?? firstMatch(
+        finalCalc,
+        new RegExp(`${letterSpacedPhrase('KOSZTY NAPRAWY')}\\s+Z\\s+VAT[.\\s]+([\\d\\s]+[.,]\\d{2})`, 'i'),
+      ),
   );
   const vatAmount = parseSourceMoney(
     PLN,

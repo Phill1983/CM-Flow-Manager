@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Current phase | **Phase 4C.1 complete** (repair document text-extraction PoC). Do **not** start 4D, OCR, or AI until the owner opens them. |
+| Current phase | **Phase 4C.2 + 4C.3 pending approval** (PDF.js adapter + human extraction validation). Do **not** start 4D, OCR, or AI until the owner opens them. |
 | Application version | `0.1.0-alpha` |
 | Date | 2026-08-18 |
 | Workspace path | `D:\Projects\cm-flow-manager` |
@@ -37,12 +37,20 @@
 
 ### Phase 4C.1 (approved 2026-08-18)
 - `@cm-flow-manager/repair-extraction` — deterministic Audatex + shop Faktura VAT parsers over extracted text; `OCR_REQUIRED` for image-only scans.
-- No desktop UI, no OCR engine, no AI, no estimate↔invoice comparison, no PDF-bytes extractor in Node.
+- No desktop UI, no OCR engine, no AI, no estimate↔invoice comparison.
+
+### Phase 4C.2 (pending approval)
+- `@cm-flow-manager/pdf-text-layer` — local PDF.js text-layer adapter (`pdfjs-dist` 4.10.38, same as Split/Merge thumbnails).
+- Page-aware text → existing 4C.1 parsers. Parser tweaks only where real PDF.js layout differed from 4C.1 fixtures.
+- Dev soak: `pnpm repair:soak <local-folder>`. Desktop Repair Intelligence UI is **not** wired. No OCR/AI/comparison.
 - Doc: `docs/REPAIR_DOCUMENT_EXTRACTION.md`.
+
+### Phase 4C.3 (pending approval with 4C.2)
+- Human validation of real local PDF counts vs soak. CASE-02 reduced estimate has **6** catalog part rows (sum 589.04), not the example “17”. CASE-03 estimate **36** JC labour ops are real source lines. Invoice `Materiały dodatkowe` classified as additional cost from printed label.
 
 ## Work in progress
 
-- None. Waiting for the owner to open **Phase 4D** or a further 4C slice (for example PDF bytes → text in Electron).
+- Phase 4C.2 waiting for owner approval together with 4C.3 validation. Do not start **Phase 4D** until opened.
 
 ## Blockers
 
@@ -52,7 +60,7 @@
 
 ## Next approved task
 
-Wait for the owner to open the next phase. Do not start 4D / OCR / AI.
+Wait for approval of Phase 4C.2 / 4C.3, then the owner to open **Phase 4D**. Do not start 4D / OCR / AI unprompted.
 
 **Do not start** Emergency PDF Password Recovery (future / unnumbered; spec only: `docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`).
 

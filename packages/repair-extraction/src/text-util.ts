@@ -36,6 +36,38 @@ export function firstMatch(text: string, re: RegExp): string | undefined {
   return value && value.length > 0 ? value : undefined;
 }
 
+const LETTER_CLASS: Record<string, string> = {
+  A: '[AĄ]',
+  C: '[CĆ]',
+  E: '[EĘ]',
+  L: '[LŁ]',
+  N: '[NŃ]',
+  O: '[OÓ]',
+  S: '[SŚ]',
+  Z: '[ZŹŻ]',
+};
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Match a header whether PDF.js emits it compact (`KALKULACJA`) or letter-spaced
+ * (`K A L K U L A C J A`). Does not rewrite document semantics.
+ */
+export function letterSpacedPhrase(phrase: string): string {
+  return phrase
+    .trim()
+    .split(/\s+/)
+    .map((word) =>
+      [...word.toUpperCase()]
+        .map((ch) => `${LETTER_CLASS[ch] ?? escapeRegExp(ch)}\\s*`)
+        .join('')
+        .replace(/\\s\*$/, ''),
+    )
+    .join('\\s+');
+}
+
 export function allMatches(text: string, re: RegExp): string[] {
   const out: string[] = [];
   const flags = re.flags.includes('g') ? re.flags : `${re.flags}g`;

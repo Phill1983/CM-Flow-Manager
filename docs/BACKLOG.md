@@ -20,14 +20,14 @@ Prioritized for post–Phase 0 work. Items marked **blocked** need user approval
 
 ## Now
 
-1. Wait for the owner to open **Phase 4D** or a further 4C slice. Do not start 4D unprompted.
+1. **Phase 4C.2** implemented — waiting for owner approval (do not commit/push until approved).
+2. Do not start **Phase 4D** unprompted.
 
 ## Next (proposed — owner gate each phase)
 
-1. **Phase 4C.2** (optional) — PDF bytes → text in Electron, reusing renderer PDF.js; still no OCR/AI.
-2. **Phase 4D** — First deterministic invoice reconciliation engine.
-3. **Phase 4E** — Parts Intelligence PoC.
-4. **Phase 4F** — Estimate QA knowledge engine.
+1. **Phase 4D** — First deterministic invoice reconciliation engine.
+2. **Phase 4E** — Parts Intelligence PoC.
+3. **Phase 4F** — Estimate QA knowledge engine.
 
 ## Deferred / blocked on owner approval
 
@@ -55,9 +55,10 @@ Distinct numbering from repair **4A+**. Batch unlock with shared password + queu
 
 ### Emergency PDF Password Recovery
 
-- **Not** the next phase after 3.7. **Does not block** 3.7 or 4C.
-- Authorized emergency workflow when the Password Remover known-password path fails or the password is unavailable.
-- Not a generic PDF cracker. No implementation until governance/legal/security questions are answered.
+- Planned capability + **R&D / security-gated**. **Not** technical debt. **Not** the next phase after 3.7 or 4C.1.
+- **Does not block** Repair Intelligence (4C+) or current PDF tools.
+- First required subphase if ever opened: **Emergency Recovery — Engine Feasibility & Security Evaluation** (encryption types, CPU/GPU, packaging, licensing, supply chain, legal/security). No implementation before that evaluation is approved.
+- Hashcat-style recovery and pdf2john-style hash extraction: **candidates only**. JS must not search passwords; Electron orchestrates; worker is optional and spawn-only.
 - Canonical spec: [`docs/EMERGENCY_PDF_PASSWORD_RECOVERY.md`](EMERGENCY_PDF_PASSWORD_RECOVERY.md).
 
 ## Post-MVP / v0.2.x
